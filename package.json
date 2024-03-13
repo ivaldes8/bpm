@@ -2,7 +2,7 @@
   "name": "bpm",
   "version": "1.0.0",
   "description": "Bpm mern app",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "backend": "ts-node backend/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

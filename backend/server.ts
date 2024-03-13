@@ -1,81 +1,31 @@
-import express, { Request, Response } from 'express';
-import bodyParser from "body-parser";
+import express, { Express } from 'express';
+import path from 'path';
 import { PrismaClient } from '@prisma/client';
+import { NODE_ENV, PORT } from './secrets';
+import rootRouter from './routes';
+import { errorMiddleware } from './middlewares/errors';
 
-const app = express();
-app.use(bodyParser.json());
-const port = process.env.PORT || 5000;
+const app: Express = express();
+app.use(express.json());
 
-const prisma = new PrismaClient();
+app.use(errorMiddleware)
+app.use('/api', rootRouter)
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello, World!');
-});
 
-app.post("/users/create", async (req: Request, res: Response) => {
-    try {
-        const { name, email } = req.body;
-        const user = await prisma.user.create({
-            data: {
-                name,
-                email,
-            },
-        });
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to create user" });
-    }
-});
+const port = PORT || 5000;
 
-app.post("/posts/create", async (req: Request, res: Response) => {
-    try {
-        const { title, content, authorId } = req.body;
-        const post = await prisma.post.create({
-            data: {
-                title,
-                content,
-                authorId,
-            },
-        });
-        res.json(post);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to create post" });
-    }
-});
+export const prismaClient = new PrismaClient()
 
-app.post("/users/create-with-posts", (req: Request, res: Response) => { });
+if (NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../frontend/dist/")));
 
-app.get("/users", async (req: Request, res: Response) => {
-    try {
-        const users = await prisma.user.findMany();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch users" });
-    }
-});
+    app.get("*", (req, res) =>
+        res.sendFile(
+            path.resolve(__dirname, "../", "frontend", "dist", "index.html")
+        )
+    );
+} else {
+    app.get("/", (req, res) => res.send("Please set to production"));
+}
 
-app.get("/posts", async (req: Request, res: Response) => {
-    try {
-        const posts = await prisma.post.findMany();
-        res.json(posts);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch posts" });
-    }
-});
-
-app.get("/users-with-posts", async (req: Request, res: Response) => {
-    try {
-        const usersWithPosts = await prisma.user.findMany({
-            include: {
-                posts: true,
-            },
-        });
-        res.json(usersWithPosts);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch users with posts" });
-    }
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+app.listen(port, () => console.log(`Server started on port ${port}`));

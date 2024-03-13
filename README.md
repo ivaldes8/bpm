@@ -4,7 +4,7 @@
 # 2. Create a .env file and provide them with those vars:
 - NODE_ENV
 - PORT
-- MOGO_URI
+- DATABASE_URL
 - JWT_SECRET
 - VERSION
 

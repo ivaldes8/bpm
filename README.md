@@ -8,4 +8,11 @@
 - JWT_SECRET
 - VERSION
 
-# 3. Happy coding :smile: :alien: :star: :boom: :fire:
+# 3. Setup the dev enviroment:
+- yarn install
+- cd frontend && yarn install
+- cd ..
+- yarn backend
+- yarn frontend
+
+# 4. Happy coding :smile: :alien: :star: :boom: :fire:

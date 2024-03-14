@@ -2,9 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { type Themes } from "@/stores/themeSlice";
 import { icons } from "@/components/Base/Lucide";
-import sideMenu from "@/main/side-menu";
-import simpleMenu from "@/main/simple-menu";
-import topMenu from "@/main/top-menu";
+import { ADMIN_SIDE_MENU } from "@/utils/constants/Navigation";
 
 export interface Menu {
   icon: keyof typeof icons;
@@ -31,14 +29,14 @@ export const menuSlice = createSlice({
 
 export const selectMenu = (layout: Themes["layout"]) => (state: RootState) => {
   if (layout == "top-menu") {
-    return topMenu;
+    return ADMIN_SIDE_MENU;
   }
 
   if (layout == "simple-menu") {
-    return simpleMenu;
+    return ADMIN_SIDE_MENU;
   }
 
-  return sideMenu;
+  return ADMIN_SIDE_MENU;
 };
 
 export default menuSlice.reducer;

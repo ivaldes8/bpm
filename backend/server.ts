@@ -1,20 +1,21 @@
-import express, { Express } from 'express';
-import path from 'path';
-import { PrismaClient } from '@prisma/client';
-import { NODE_ENV, PORT } from './secrets';
-import rootRouter from './routes';
-import { errorMiddleware } from './middlewares/errors';
+import express, { Express, Request, Response } from "express"
+import rootRouter from "./routes"
+import { PrismaClient } from "@prisma/client";
+import { NODE_ENV, PORT } from "./secrets";
+import { errorMiddleware } from "./middlewares/errors";
+import { create } from "domain";
+import { SignUpSchema } from "./schema/users";
+import path from "path";
 
-const app: Express = express();
+const app: Express = express()
+
 app.use(express.json());
 
-app.use(errorMiddleware)
-app.use('/api', rootRouter)
+app.use("/api", rootRouter);
 
-
-const port = PORT || 5000;
-
-export const prismaClient = new PrismaClient()
+export const prismaClient = new PrismaClient({
+    log: ['query']
+})
 
 if (NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../frontend/dist/")));
@@ -28,4 +29,8 @@ if (NODE_ENV === "production") {
     app.get("/", (req, res) => res.send("Please set to production"));
 }
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.use(errorMiddleware)
+
+app.listen(PORT, () => {
+    console.log("App working!")
+})

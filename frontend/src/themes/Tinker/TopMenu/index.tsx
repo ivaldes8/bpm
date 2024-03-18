@@ -14,6 +14,9 @@ import { Transition } from "@headlessui/react";
 import logoUrl from "@/assets/images/logo.svg";
 import clsx from "clsx";
 import MobileMenu from "@/components/MobileMenu";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { logout } from "@/stores/authSlice";
 
 function Main() {
   const navigate = useNavigate();
@@ -30,6 +33,10 @@ function Main() {
   >([]);
   const menuStore = useAppSelector(selectMenu("top-menu"));
   const topMenu = () => nestedMenu(menuStore, location);
+
+  const dispatch = useDispatch()
+
+  const {t} = useTranslation()
 
   useEffect(() => {
     setFormattedMenu(topMenu());
@@ -241,8 +248,8 @@ function Main() {
                 <Lucide icon="HelpCircle" className="w-4 h-4 mr-2" /> Help
               </Menu.Item>
               <Menu.Divider className="bg-white/[0.08]" />
-              <Menu.Item className="hover:bg-white/5">
-                <Lucide icon="ToggleRight" className="w-4 h-4 mr-2" /> Logout
+              <Menu.Item className="hover:bg-white/5 cursor-pointer" onClick={() => dispatch(logout())}>
+                <Lucide icon="ToggleRight" className="w-4 h-4 mr-2" />{t("logout")}
               </Menu.Item>
             </Menu.Items>
           </Menu>

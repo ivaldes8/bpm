@@ -24,7 +24,16 @@ const initialState: MenuState = {
 export const menuSlice = createSlice({
   name: "menu",
   initialState,
-  reducers: {},
+  reducers: {
+    setSideMenu: (state) => {
+      const role = JSON.parse(sessionStorage.getItem("user")!)?.role
+      if (role && role === "admin") {
+        state.menu = ADMIN_SIDE_MENU
+      } else {
+        state.menu = ADMIN_SIDE_MENU
+      }
+    },
+  },
 });
 
 export const selectMenu = (layout: Themes["layout"]) => (state: RootState) => {
@@ -38,5 +47,7 @@ export const selectMenu = (layout: Themes["layout"]) => (state: RootState) => {
 
   return ADMIN_SIDE_MENU;
 };
+
+export const { setSideMenu } = menuSlice.actions;
 
 export default menuSlice.reducer;

@@ -6,10 +6,13 @@ import { errorMiddleware } from "./middlewares/errors";
 import { create } from "domain";
 import { SignUpSchema } from "./schema/users";
 import path from "path";
+import cors from 'cors';
 
 const app: Express = express()
 
 app.use(express.json());
+
+app.use(cors());
 
 app.use("/api", rootRouter);
 
@@ -32,5 +35,5 @@ if (NODE_ENV === "production") {
 app.use(errorMiddleware)
 
 app.listen(PORT, () => {
-    console.log("App working!")
+    console.log(`App working on port: ${PORT}!`)
 })

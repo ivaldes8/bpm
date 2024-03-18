@@ -12,6 +12,8 @@
 - yarn install
 - cd frontend && yarn install
 - cd ..
+- npx prisma generate
+- npx prisma db push
 - yarn backend
 - yarn frontend
 

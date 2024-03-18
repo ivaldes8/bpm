@@ -67,6 +67,7 @@ export const authSlice = createSlice({
             state.isSuccess = false
             state.message = ''
             storage.clear()
+            window.location.replace('/login')
         }
     },
     extraReducers: (builder) => {

@@ -23,8 +23,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         data: {
             name,
             email,
-            password: hashSync(password, 10),
-            role
+            password: hashSync(password, 10)
         }
     })
 

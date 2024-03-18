@@ -4,18 +4,19 @@ import { useAppSelector } from "@/stores/hooks";
 
 interface LoadingIconProps extends React.ComponentPropsWithoutRef<"span"> {
   icon:
-    | "audio"
-    | "ball-triangle"
-    | "bars"
-    | "circles"
-    | "grid"
-    | "hearts"
-    | "oval"
-    | "puff"
-    | "rings"
-    | "spinning-circles"
-    | "tail-spin"
-    | "three-dots";
+  | "audio"
+  | "ball-triangle"
+  | "bars"
+  | "circles"
+  | "grid"
+  | "hearts"
+  | "oval"
+  | "loadingSplash"
+  | "puff"
+  | "rings"
+  | "spinning-circles"
+  | "tail-spin"
+  | "three-dots";
   color?: string;
 }
 
@@ -452,7 +453,35 @@ function LoadingIcon(props: LoadingIconProps) {
               </g>
             </svg>
           );
-        } else if (icon == "puff") {
+        }
+        else if (icon == "loadingSplash") {
+          return (
+            <svg
+              width="75"
+              viewBox="-2 -2 42 42"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke={iconColor}
+              className="w-full h-full "
+            >
+              <g fill="none" fillRule="evenodd">
+                <g transform="translate(1 1)" strokeWidth="4">
+                  <circle strokeOpacity=".5" cx="18" cy="18" r="18" />
+                  <path d="M36 18c0-9.94-8.06-18-18-18">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0 18 18"
+                      to="360 18 18"
+                      dur="1s"
+                      repeatCount="indefinite"
+                    />
+                  </path>
+                </g>
+              </g>
+            </svg>
+          );
+        }
+        else if (icon == "puff") {
           return (
             <svg
               width="25"

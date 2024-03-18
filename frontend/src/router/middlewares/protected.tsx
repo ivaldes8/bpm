@@ -11,6 +11,8 @@ type Props = {
 const Protected = ({ permissions, children }: Props) => {
     const user = useAppSelector(selectUser);
 
+
+    //@ts-ignore
     if (user && (!permissions.length || permissions.find((p) => p === user.role))) {
         return children
     } else {

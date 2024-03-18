@@ -3,6 +3,8 @@ import { twMerge } from "tailwind-merge";
 
 export const { icons } = lucideIcons;
 
+export type Icon = keyof typeof icons;
+
 interface LucideProps extends React.ComponentPropsWithoutRef<"svg"> {
   icon: keyof typeof icons;
   title?: string;

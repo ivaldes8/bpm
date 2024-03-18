@@ -9,6 +9,9 @@ import fakerData from "@/utils/faker";
 import _ from "lodash";
 import clsx from "clsx";
 import { Transition } from "@headlessui/react";
+import { useDispatch } from "react-redux";
+import { logout } from "@/stores/authSlice";
+import { useTranslation } from "react-i18next";
 
 function Main(props: { layout?: "side-menu" | "simple-menu" | "top-menu" }) {
   const [searchDropdown, setSearchDropdown] = useState(false);
@@ -18,6 +21,10 @@ function Main(props: { layout?: "side-menu" | "simple-menu" | "top-menu" }) {
   const hideSearchDropdown = () => {
     setSearchDropdown(false);
   };
+
+  const dispatch = useDispatch()
+
+  const {t} = useTranslation()
 
   return (
     <>
@@ -246,8 +253,8 @@ function Main(props: { layout?: "side-menu" | "simple-menu" | "top-menu" }) {
                 <Lucide icon="HelpCircle" className="w-4 h-4 mr-2" /> Help
               </Menu.Item>
               <Menu.Divider className="bg-white/[0.08]" />
-              <Menu.Item className="hover:bg-white/5">
-                <Lucide icon="ToggleRight" className="w-4 h-4 mr-2" /> Logout
+              <Menu.Item className="hover:bg-white/5 cursor-pointer" onClick={() => dispatch(logout())}>
+                <Lucide icon="ToggleRight" className="w-4 h-4 mr-2" /> {t("logout")}
               </Menu.Item>
             </Menu.Items>
           </Menu>

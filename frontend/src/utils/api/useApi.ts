@@ -5,7 +5,7 @@ import { store } from '@/stores/store'
 import { logout } from '@/stores/authSlice'
 
 const api = create({
-    baseURL: '/api',
+    baseURL: "http://localhost:5000/api",
     timeout: 60000
 })
 
@@ -22,7 +22,7 @@ api.addResponseTransform((response: any) => {
         if (response && response.status === 401) {
             store.dispatch(logout())
 
-            return window.location.replace('/login')
+            return
         }
 
         if (data) {

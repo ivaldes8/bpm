@@ -4,12 +4,12 @@ const baseUrl = "/auth"
 
 export default {
     loginUser(data: any) {
-        return api.post('/login', {
+        return api.post(`${baseUrl}/login`, {
             ...data,
         })
     },
 
     getUserProfile() {
-        return api.get('/me')
+        return api.get(`${baseUrl}/me`)
     },
 }

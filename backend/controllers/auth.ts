@@ -7,6 +7,7 @@ import { BadRequestsException } from "../exceptions/bad-requests"
 import { ErrorCode } from "../exceptions/root"
 import { SignUpSchema } from "../schema/users"
 import { NotFoundException } from "../exceptions/not-found"
+import { Role } from "@prisma/client"
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -19,11 +20,26 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         throw new BadRequestsException("User already exist", ErrorCode.USER_ALREADY_EXIST)
     }
 
+    const roleUser: any = await prismaClient.role.findFirst({
+        where: {
+            name: "USER"
+        }
+    })
+
+    if (!roleUser) {
+        throw new NotFoundException("User role not found", ErrorCode.USER_NOT_FOUND);
+    }
+
     user = await prismaClient.user.create({
         data: {
             name,
             email,
-            password: hashSync(password, 10)
+            password: hashSync(password, 10),
+            role: {
+                connect: {
+                    id: roleUser.id
+                }
+            }
         }
     })
 

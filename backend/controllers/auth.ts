@@ -5,14 +5,13 @@ import * as jwt from "jsonwebtoken"
 import { JWT_SECRET } from "../secrets"
 import { BadRequestsException } from "../exceptions/bad-requests"
 import { ErrorCode } from "../exceptions/root"
-import { SignUpSchema } from "../schema/users"
+import { SignUpSchema, UpdateUserSchema } from "../schema/users"
 import { NotFoundException } from "../exceptions/not-found"
-import { Role } from "@prisma/client"
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
 
     SignUpSchema.parse(req.body)
-    const { email, password, name, role } = req.body
+    const { email, password, name, role, code } = req.body
 
     let user = await prismaClient.user.findFirst({ where: { email } });
 
@@ -34,6 +33,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         data: {
             name,
             email,
+            code,
             password: hashSync(password, 10),
             role: {
                 connect: {
@@ -69,7 +69,48 @@ export const login = async (req: Request, res: Response) => {
 
 
 export const me = async (req: Request, res: Response) => {
-
     //@ts-ignore
     res.json(req.user)
+}
+
+export const updateProfile = async (req: Request, res: Response) => {
+    const validatedData = UpdateUserSchema.parse(req.body)
+
+    if (validatedData.role) {
+        throw new NotFoundException("User cannot change her role", ErrorCode.FORBIDDEN)
+    }
+
+    if (validatedData.code) {
+        const code: any = await prismaClient.user.findMany({
+            where: {
+                code: validatedData.code
+            }
+        })
+
+        if (code.length > 1) {
+            throw new NotFoundException("Code already in use", ErrorCode.CODE_ALREADY_IN_USE)
+        }
+    }
+
+    if (validatedData.email) {
+        const email: any = await prismaClient.user.findMany({
+            where: {
+                email: validatedData.email
+            }
+        })
+
+        if (email.length > 1) {
+            throw new NotFoundException("Code already in use", ErrorCode.EMAIL_ALREADY_IN_USE)
+        }
+    }
+
+    const updatedUser = await prismaClient.user.update({
+        where: {
+            //@ts-ignore
+            id: parseInt(req.user.id)
+        },
+        data: validatedData as any
+    })
+
+    return res.json(updatedUser)
 }

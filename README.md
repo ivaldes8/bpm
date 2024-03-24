@@ -18,6 +18,7 @@
 - npx prisma generate
 - npx prisma db push
 - npx prisma db seed
+- npx prisma studio (If want to open the db manager only)
 - yarn backend
 - yarn frontend
 

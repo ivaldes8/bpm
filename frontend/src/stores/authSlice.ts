@@ -1,9 +1,8 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState, store } from "./store";
 import { User } from "@prisma/client";
 import storage from "@/utils/storage";
 import handlePromise from "@/utils/promise";
-import api from "../utils/api/useApi";
 import AuthService from "@/services/AuthService";
 import _ from "lodash";
 
@@ -22,6 +21,17 @@ export const login = createAsyncThunk('auth/login', async (formData: any, thunkA
 export const getUserData = createAsyncThunk('auth/getUser', async (_, thunkAPI) => {
     const [error, response, data] = await handlePromise(
         AuthService.getUserProfile()
+    );
+    if (!response.ok) {
+        return thunkAPI.rejectWithValue(error)
+    }
+
+    return data
+})
+
+export const updateProfile = createAsyncThunk('auth/updateProfile', async (formData: any, thunkAPI) => {
+    const [error, response, data] = await handlePromise(
+        AuthService.updateProfile(formData)
     );
     if (!response.ok) {
         return thunkAPI.rejectWithValue(error)
@@ -94,7 +104,6 @@ export const authSlice = createSlice({
             })
             .addCase(getUserData.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.isSuccess = true
                 state.userData = action.payload
 
                 storage.set(JSON.stringify({
@@ -107,6 +116,26 @@ export const authSlice = createSlice({
                 state.isError = true
                 state.message = `${action.payload}`
                 state.userData = null
+            })
+
+            //updateProfile
+            .addCase(updateProfile.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateProfile.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.userData = { ...state.userData, ...action.payload }
+
+                storage.set(JSON.stringify({
+                    user: state.user,
+                    userData: { ...state.userData, ...action.payload }
+                }))
+            })
+            .addCase(updateProfile.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = `${action.payload}`
             })
     }
 });

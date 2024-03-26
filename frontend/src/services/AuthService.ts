@@ -12,4 +12,8 @@ export default {
     getUserProfile() {
         return api.get(`${baseUrl}/me`)
     },
+
+    updateProfile(data: any) {
+        return api.put(`${baseUrl}/`, data)
+    },
 }

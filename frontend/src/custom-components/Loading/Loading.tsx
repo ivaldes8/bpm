@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import LoadingIcon from '@/components/Base/LoadingIcon'
 import { LoadingContext } from '../../utils/Contexts/LoadingContext';
 
@@ -6,6 +6,11 @@ import { LoadingContext } from '../../utils/Contexts/LoadingContext';
 const Loading = () => {
 
     const [loading, setLoading] = useContext(LoadingContext);
+
+    useEffect(() => {
+     console.log(loading)
+    }, [loading])
+    
 
     return (
         <div>

@@ -8,7 +8,6 @@ import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
 
 import Layout from "../themes";
-import { LOGIN_SCREEN } from "@/utils/constants/Navigation";
 
 function Router() {
   const routes = [
@@ -25,7 +24,7 @@ function Router() {
           element: <UsersLayout1 />,
         },
         {
-          path: "update-profile",
+          path: "profile",
           element: <UpdateProfile />,
         },
         {
@@ -35,7 +34,7 @@ function Router() {
       ],
     },
     {
-      path: LOGIN_SCREEN,
+      path: "/login",
       element: <Login />,
     },
     {

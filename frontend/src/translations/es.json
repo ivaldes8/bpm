@@ -54,5 +54,12 @@
     "contact": "Contacto",
     "no": "No",
     "yes": "Si",
-    "sendMail": "Enviar correo"
+    "sendMail": "Enviar correo",
+    "change-password": "Cambiar contraseña",
+    "updateProfile": "Actualizar perfil",
+    "personalInfo": "Información personal",
+    "code": "Código",
+    "role": "Rol",
+    "Action failed!": "Acción fallida",
+    "Profile updated successfully!": "Perfil actualisado satisfactoriamente!"
 }

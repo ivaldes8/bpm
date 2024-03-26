@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState, Dispatch, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import Toast from "toastify-js";
 import { AlertContext, AlertType } from '../../utils/Contexts/AlertContext'
 import Notification from '@/components/Base/Notification'
@@ -17,6 +17,7 @@ const Toastify = () => {
                 .querySelectorAll("#show-notification")[0]
                 .cloneNode(true) as HTMLElement;
             element.classList.remove("hidden");
+            element.classList.add("flex");
             Toast({
                 node: element,
                 duration: 3000,

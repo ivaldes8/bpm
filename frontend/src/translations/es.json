@@ -6,7 +6,8 @@
         "maxValue": "Este campo no debe exceder los {{value}} caracteres",
         "onlyAllowed": "Solo son permitidos los valores {{value}}",
         "number": "Solo se permiten números, no letras",
-        "phoneNumber": "Este número de teléfono no es válido"
+        "phoneNumber": "Este número de teléfono no es válido",
+        "passwordMatch": "Las contraseñas no coinciden"
     },
     "email": "Correo",
     "password": "Contraseña",
@@ -61,5 +62,9 @@
     "code": "Código",
     "role": "Rol",
     "Action failed!": "Acción fallida",
-    "Profile updated successfully!": "Perfil actualisado satisfactoriamente!"
+    "Profile updated successfully!": "Perfil actualisado satisfactoriamente!",
+    "Change Password": "Cambiar contraseña",
+    "Password changed successfully!": "Su contraseña ha sido cambiada satisfactoriamente!",
+    "oldPassword": "Contraseña antigua",
+    "confirmPassword": "Confirmar contraseña"
 }

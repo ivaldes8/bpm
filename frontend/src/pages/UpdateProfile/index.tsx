@@ -94,7 +94,6 @@ function Main() {
   }, [isSuccess])
 
   useEffect(() => {
-    console.log(isLoading)
     if (isLoading) {
       setLoading(true)
     } else {

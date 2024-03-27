@@ -23,3 +23,7 @@ export const UpdateUserSchema = z.object({
     active: z.boolean().optional()
 })
 
+export const ChangePasswordSchema = z.object({
+    oldPassword: z.string(),
+    newPassword: z.string()
+})

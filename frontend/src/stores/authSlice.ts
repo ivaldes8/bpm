@@ -40,6 +40,17 @@ export const updateProfile = createAsyncThunk('auth/updateProfile', async (formD
     return data
 })
 
+export const changePassword = createAsyncThunk('auth/changePassword', async (formData: any, thunkAPI) => {
+    const [error, response, data] = await handlePromise(
+        AuthService.changePassword(formData)
+    );
+    if (!response.ok) {
+        return thunkAPI.rejectWithValue(error)
+    }
+
+    return data
+})
+
 
 interface UserState {
     user: User | null;
@@ -96,6 +107,20 @@ export const authSlice = createSlice({
                 state.isError = true
                 state.message = `${action.payload}`
                 state.user = null
+            })
+
+            //changePassword
+            .addCase(changePassword.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(changePassword.fulfilled, (state) => {
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(changePassword.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = `${action.payload}`
             })
 
             //getProfile

@@ -8,12 +8,13 @@ export default {
             ...data,
         })
     },
-
     getUserProfile() {
         return api.get(`${baseUrl}/me`)
     },
-
     updateProfile(data: any) {
         return api.put(`${baseUrl}/`, data)
     },
+    changePassword(data: any) {
+        return api.post(`${baseUrl}/change-password`, data)
+    }
 }

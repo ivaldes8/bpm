@@ -5,7 +5,7 @@ import * as jwt from "jsonwebtoken"
 import { JWT_SECRET } from "../secrets"
 import { BadRequestsException } from "../exceptions/bad-requests"
 import { ErrorCode } from "../exceptions/root"
-import { SignUpSchema, UpdateUserSchema } from "../schema/users"
+import { ChangePasswordSchema, SignUpSchema, UpdateUserSchema } from "../schema/users"
 import { NotFoundException } from "../exceptions/not-found"
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
@@ -113,4 +113,30 @@ export const updateProfile = async (req: Request, res: Response) => {
     })
 
     return res.json(updatedUser)
+}
+
+export const changePassword = async (req: Request, res: Response) => {
+
+    ChangePasswordSchema.parse(req.body)
+    const { oldPassword, newPassword } = req.body
+
+    //@ts-ignore
+    const userId = req.user.id
+
+    let user = await prismaClient.user.findFirst({ where: { id: userId } });
+
+    if (user && !compareSync(oldPassword, user.password)) {
+        throw new BadRequestsException("Incorrect old password", ErrorCode.INCORRECT_PASSWORD);
+    }
+
+    user = await prismaClient.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            password: hashSync(newPassword, 10)
+        }
+    })
+
+    res.json(user)
 }

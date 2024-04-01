@@ -4,7 +4,6 @@ import { Transition } from "react-transition-group";
 import { useState, useEffect, createRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toRaw } from "@/utils/helper";
-import { selectMenu } from "@/stores/menuSlice";
 import { selectTheme } from "@/stores/themeSlice";
 import { useAppSelector } from "@/stores/hooks";
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./mobile-menu";
@@ -20,8 +19,8 @@ function Main() {
     Array<FormattedMenu | "divider">
   >([]);
   const themeStore = useAppSelector(selectTheme);
-  const menuStore = useAppSelector(selectMenu(themeStore.layout));
-  const menu = () => nestedMenu(toRaw(menuStore), location);
+  const { menu } = useAppSelector((state) => state.menu);
+  const mobileMenu = () => nestedMenu(toRaw(menu), location);
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
   const scrollableRef = createRef<HTMLDivElement>();
 
@@ -29,8 +28,8 @@ function Main() {
     if (scrollableRef.current) {
       new SimpleBar(scrollableRef.current);
     }
-    setFormattedMenu(menu());
-  }, [menuStore, location.pathname]);
+    setFormattedMenu(mobileMenu());
+  }, [menu, location.pathname]);
 
   return (
     <>

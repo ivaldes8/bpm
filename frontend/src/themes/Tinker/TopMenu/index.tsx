@@ -1,16 +1,12 @@
 import "@/assets/css/themes/tinker/top-nav.css";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { selectMenu } from "@/stores/menuSlice";
 import { useAppSelector } from "@/stores/hooks";
-import fakerData from "@/utils/faker";
 import _ from "lodash";
 import { FormattedMenu, linkTo, nestedMenu } from "./top-menu";
 import Lucide from "@/components/Base/Lucide";
 import Breadcrumb from "@/components/Base/Breadcrumb";
-import { FormInput } from "@/components/Base/Form";
-import { Menu, Popover } from "@/components/Base/Headless";
-import { Transition } from "@headlessui/react";
+import { Menu } from "@/components/Base/Headless";
 import logoUrl from "@/assets/images/logo.svg";
 import clsx from "clsx";
 import MobileMenu from "@/components/MobileMenu";
@@ -24,8 +20,8 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const menuStore = useAppSelector(selectMenu("top-menu"));
-  const topMenu = () => nestedMenu(menuStore, location);
+  const { menu } = useAppSelector((state) => state.menu);
+  const topMenu = () => nestedMenu(menu, location);
 
   const { userData } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch()
@@ -33,7 +29,7 @@ function Main() {
 
   useEffect(() => {
     setFormattedMenu(topMenu());
-  }, [menuStore, location.pathname]);
+  }, [menu, location.pathname]);
 
   return (
     <div

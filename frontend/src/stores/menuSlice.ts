@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "./store";
-import { type Themes } from "@/stores/themeSlice";
 import { icons } from "@/components/Base/Lucide";
-import { ADMIN_SIDE_MENU } from "@/utils/constants/Navigation";
+import ADMIN_NAVIGATION from "@/navigation/admin-navigation";
+import USER_NAVIGATION from "@/navigation/user-navigation";
+import _ from "lodash";
+import storage from "@/utils/storage";
 
 export interface Menu {
   icon: keyof typeof icons;
@@ -14,7 +15,7 @@ export interface Menu {
 }
 
 export interface MenuState {
-  menu: Array<Menu | string>;
+  menu: Array<Menu>;
 }
 
 const initialState: MenuState = {
@@ -26,27 +27,16 @@ export const menuSlice = createSlice({
   initialState,
   reducers: {
     setSideMenu: (state) => {
-      const role = JSON.parse(sessionStorage.getItem("user")!)?.role
-      if (role && role === "admin") {
-        state.menu = ADMIN_SIDE_MENU
+      const userData = _.get(storage.get(), 'userData')
+      const role = userData.role.name ?? "USER";
+      if (role && role === "ADMIN") {
+        state.menu = ADMIN_NAVIGATION
       } else {
-        state.menu = ADMIN_SIDE_MENU
+        state.menu = USER_NAVIGATION
       }
     },
   },
 });
-
-export const selectMenu = (layout: Themes["layout"]) => (state: RootState) => {
-  if (layout == "top-menu") {
-    return ADMIN_SIDE_MENU;
-  }
-
-  if (layout == "simple-menu") {
-    return ADMIN_SIDE_MENU;
-  }
-
-  return ADMIN_SIDE_MENU;
-};
 
 export const { setSideMenu } = menuSlice.actions;
 

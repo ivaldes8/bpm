@@ -1,16 +1,12 @@
 import "@/assets/css/themes/rubick/top-nav.css";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { selectMenu } from "@/stores/menuSlice";
 import { useAppSelector } from "@/stores/hooks";
-import fakerData from "@/utils/faker";
 import _ from "lodash";
 import { FormattedMenu, linkTo, nestedMenu } from "./top-menu";
 import Lucide from "@/components/Base/Lucide";
 import Breadcrumb from "@/components/Base/Breadcrumb";
-import { FormInput } from "@/components/Base/Form";
-import { Menu, Popover } from "@/components/Base/Headless";
-import { Transition } from "@headlessui/react";
+import { Menu } from "@/components/Base/Headless";
 import logoUrl from "@/assets/images/logo.svg";
 import clsx from "clsx";
 import MobileMenu from "@/components/MobileMenu";
@@ -24,16 +20,16 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const menuStore = useAppSelector(selectMenu("top-menu"));
-  const topMenu = () => nestedMenu(menuStore, location);
+  const { menu } = useAppSelector((state) => state.menu);
+  const topMenu = () => nestedMenu(menu, location);
 
   const dispatch = useDispatch()
   const { userData } = useAppSelector((state) => state.auth);
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   useEffect(() => {
     setFormattedMenu(topMenu());
-  }, [menuStore, location.pathname]);
+  }, [menu, location.pathname]);
 
   return (
     <div
@@ -69,7 +65,7 @@ function Main() {
           {/* END: Breadcrumb */}
           {/* BEGIN: Account Menu */}
           <Menu>
-          <Menu.Button className="flex justify-center items-center w-10 h-10 bg-theme-1 dark:bg-slate-700 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">
+            <Menu.Button className="flex justify-center items-center w-10 h-10 bg-theme-1 dark:bg-slate-700 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">
               <Lucide icon="User" className="w-8 h-8 text-white" />
             </Menu.Button>
             <Menu.Items className="w-56 mt-px relative bg-primary/70 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white">

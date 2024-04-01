@@ -2,7 +2,6 @@ import "@/assets/css/themes/enigma/side-nav.css";
 import { Transition } from "react-transition-group";
 import { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { selectMenu } from "@/stores/menuSlice";
 import { useAppSelector } from "@/stores/hooks";
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./side-menu";
 import Tippy from "@/components/Base/Tippy";
@@ -17,8 +16,8 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const menuStore = useAppSelector(selectMenu("side-menu"));
-  const sideMenu = () => nestedMenu(menuStore, location);
+  const { menu } = useAppSelector((state) => state.menu);
+  const sideMenu = () => nestedMenu(menu, location);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ function Main() {
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
-  }, [menuStore, location.pathname]);
+  }, [menu, location.pathname]);
 
   return (
     <div

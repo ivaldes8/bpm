@@ -8,7 +8,11 @@ import { hashSync } from "bcrypt";
 export const getUserList = async (req: Request, res: Response) => {
 
 
-    const userList = await prismaClient.user.findMany();
+    const userList = await prismaClient.user.findMany({
+        include: {
+            role: true
+        }
+    });
 
     return res.json(userList)
 
@@ -169,7 +173,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     const deletedUser = await prismaClient.user.delete({
         where: {
             //@ts-ignore
-            id: req.user.id
+            id: parseInt(req.params.id)
         }
     })
 

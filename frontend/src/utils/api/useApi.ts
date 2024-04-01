@@ -3,10 +3,11 @@ import * as _ from 'lodash'
 import storage from '@/utils/storage'
 import { store } from '@/stores/store'
 import { logout } from '@/stores/authSlice'
+import { apiTimeout, apiUrl } from '@/config/config'
 
 const api = create({
-    baseURL: "http://localhost:5000/api",
-    timeout: 60000
+    baseURL: apiUrl,
+    timeout: apiTimeout
 })
 
 api.addRequestTransform(request => {

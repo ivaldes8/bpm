@@ -66,5 +66,20 @@
     "Change Password": "Cambiar contraseña",
     "Password changed successfully!": "Su contraseña ha sido cambiada satisfactoriamente!",
     "oldPassword": "Contraseña antigua",
-    "confirmPassword": "Confirmar contraseña"
+    "confirmPassword": "Confirmar contraseña",
+    "users": "Usuarios",
+    "addUser": "Añadir usuario",
+    "column": "Columna",
+    "type": "Tipo",
+    "clear": "Limpiar",
+    "print": "Imprimir",
+    "export": "Exportar",
+    "value": "Valor",
+    "active": "Activo",
+    "noSelected": "No seleccionado",
+    "Update failed": "Actualización fallida",
+    "Updated successfully": "Actualizado satisfactoriamente",
+    "Creation failed": "Creación fallida",
+    "Created successfully": "Creado satisfactoriamente",
+    "proccessUndoneText": "Esta acción no se puede deshacer"
 }

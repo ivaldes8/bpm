@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-type Variant =
+export type Variant =
   | "primary"
   | "secondary"
   | "success"

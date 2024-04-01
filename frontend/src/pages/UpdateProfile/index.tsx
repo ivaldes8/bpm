@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { useContext, useEffect } from "react";
 import Button from "@/components/Base/Button";
-import Lucide from "@/components/Base/Lucide";
 import { useTranslation } from "react-i18next";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";

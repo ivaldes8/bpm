@@ -2,7 +2,6 @@ import "@/assets/css/themes/tinker/side-nav.css";
 import { Transition } from "react-transition-group";
 import { useState, useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { selectMenu } from "@/stores/menuSlice";
 import { useAppSelector } from "@/stores/hooks";
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./simple-menu";
 import Lucide from "@/components/Base/Lucide";
@@ -18,12 +17,12 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const menuStore = useAppSelector(selectMenu("simple-menu"));
-  const menu = () => nestedMenu(menuStore, location);
+  const { menu } = useAppSelector((state) => state.menu);
+  const simpleMenu = () => nestedMenu(menu, location);
 
   useEffect(() => {
-    setFormattedMenu(menu());
-  }, [menuStore, location.pathname]);
+    setFormattedMenu(simpleMenu());
+  }, [menu, location.pathname]);
 
   return (
     <div

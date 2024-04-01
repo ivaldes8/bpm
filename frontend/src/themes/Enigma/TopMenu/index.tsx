@@ -1,7 +1,6 @@
 import "@/assets/css/themes/enigma/top-nav.css";
 import { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { selectMenu } from "@/stores/menuSlice";
 import { useAppSelector } from "@/stores/hooks";
 import _ from "lodash";
 import { FormattedMenu, linkTo, nestedMenu } from "./top-menu";
@@ -16,12 +15,12 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const menuStore = useAppSelector(selectMenu("top-menu"));
-  const topMenu = () => nestedMenu(menuStore, location);
+  const { menu } = useAppSelector((state) => state.menu);
+  const topMenu = () => nestedMenu(menu, location);
 
   useEffect(() => {
     setFormattedMenu(topMenu());
-  }, [menuStore, location.pathname]);
+  }, [menu, location.pathname]);
 
   return (
     <div

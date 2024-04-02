@@ -6,8 +6,6 @@ import { ErrorCode } from "../exceptions/root";
 import { hashSync } from "bcrypt";
 
 export const getUserList = async (req: Request, res: Response) => {
-
-
     const userList = await prismaClient.user.findMany({
         include: {
             role: true

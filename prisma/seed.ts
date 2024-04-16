@@ -1,17 +1,11 @@
 import { PrismaClient } from '@prisma/client'
+import rolSeeder from './seeders/rolSeeder'
+import adminUserSeeder from './seeders/adminUserSeeder'
 const prisma = new PrismaClient()
 async function main() {
-    const roleAdmin = await prisma.role.create({
-        data: {
-            name: 'ADMIN',
-        }
-    })
-    const roleUser = await prisma.role.create({
-        data: {
-            name: 'USER',
-        }
-    })
-    console.log({ roleAdmin, roleUser })
+    await rolSeeder()
+
+    await adminUserSeeder()
 }
 main()
     .then(async () => {

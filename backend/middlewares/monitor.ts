@@ -2,11 +2,11 @@ import { UnauthorizedException } from './../exceptions/unauthorized';
 import { NextFunction, Request, Response } from "express";
 import { ErrorCode } from "../exceptions/root";
 
-const adminMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+const monitorMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     //@ts-ignore
     const user = req.user
 
-    if (user.Rol.Nombre === "ADMIN") {
+    if (user.Rol.Nombre === "MONITOR") {
         next()
     } else {
         next(new UnauthorizedException('Unauthorized', ErrorCode.UNAUTHORIZED))
@@ -14,4 +14,4 @@ const adminMiddleware = async (req: Request, res: Response, next: NextFunction) 
 
 }
 
-export default adminMiddleware
+export default monitorMiddleware

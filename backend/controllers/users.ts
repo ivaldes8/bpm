@@ -6,9 +6,9 @@ import { ErrorCode } from "../exceptions/root";
 import { hashSync } from "bcrypt";
 
 export const getUserList = async (req: Request, res: Response) => {
-    const userList = await prismaClient.user.findMany({
+    const userList = await prismaClient.usuario.findMany({
         include: {
-            role: true
+            Rol: true
         }
     });
 
@@ -21,9 +21,9 @@ export const getUser = async (req: Request, res: Response) => {
     const userId = req.params.id
 
     try {
-        const user: any = await prismaClient.user.findFirstOrThrow({
+        const user: any = await prismaClient.usuario.findFirstOrThrow({
             where: {
-                id: parseInt(userId)
+                UsuarioId: parseInt(userId)
             }
         })
 
@@ -36,10 +36,10 @@ export const getUser = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
     const validatedData = CreateUSerSchema.parse(req.body)
 
-    if (validatedData.code) {
-        const code: any = await prismaClient.user.findFirst({
+    if (validatedData.Codigo) {
+        const code: any = await prismaClient.usuario.findFirst({
             where: {
-                code: validatedData.code
+                Codigo: validatedData.Codigo
             }
         })
 
@@ -48,21 +48,9 @@ export const createUser = async (req: Request, res: Response) => {
         }
     }
 
-    if (validatedData.email) {
-        const email: any = await prismaClient.user.findFirst({
-            where: {
-                email: validatedData.email
-            }
-        })
-
-        if (email) {
-            throw new NotFoundException("Email already in use", ErrorCode.EMAIL_ALREADY_IN_USE)
-        }
-    }
-
-    const roleUser: any = await prismaClient.role.findFirst({
+    const roleUser: any = await prismaClient.rol.findFirst({
         where: {
-            name: validatedData.role
+            Nombre: validatedData.Rol
         }
     })
 
@@ -70,15 +58,16 @@ export const createUser = async (req: Request, res: Response) => {
         throw new NotFoundException("Role not found", ErrorCode.ROLE_NOT_FOUND);
     }
 
-    const createdUser = await prismaClient.user.create({
+    const createdUser = await prismaClient.usuario.create({
         data: {
-            name: validatedData.name,
-            email: validatedData.email,
-            code: validatedData.code,
-            password: hashSync(validatedData.password, 10),
-            role: {
+            Nombre: validatedData.Nombre,
+            Codigo: validatedData.Codigo,
+            Password: hashSync(validatedData.Password, 10),
+            Activo: validatedData.Activo,
+            CaducidadPassword: validatedData.CaducidadPassword,
+            Rol: {
                 connect: {
-                    id: roleUser.id
+                    RolId: roleUser.id
                 }
             }
         }
@@ -92,9 +81,9 @@ export const updateUser = async (req: Request, res: Response) => {
     let validatedData = UpdateUserSchema.parse(req.body) as any
 
     try {
-        const user = await prismaClient.user.findFirstOrThrow({
+        const user = await prismaClient.usuario.findFirstOrThrow({
             where: {
-                id: parseInt(req.params.id)
+                UsuarioId: parseInt(req.params.id)
             }
         })
     } catch (error) {
@@ -103,9 +92,9 @@ export const updateUser = async (req: Request, res: Response) => {
 
     if (validatedData.role) {
         try {
-            const roleUser: any = await prismaClient.role.findFirstOrThrow({
+            const roleUser: any = await prismaClient.rol.findFirstOrThrow({
                 where: {
-                    name: validatedData.role
+                    Nombre: validatedData.Rol
                 }
             })
 
@@ -123,32 +112,20 @@ export const updateUser = async (req: Request, res: Response) => {
 
 
     if (validatedData.code) {
-        const code: any = await prismaClient.user.findMany({
+        const code: any = await prismaClient.usuario.findFirst({
             where: {
-                code: validatedData.code
+                Codigo: validatedData.Codigo
             }
         })
 
-        if (code.length > 1) {
+        if (code) {
             throw new NotFoundException("Code already in use", ErrorCode.CODE_ALREADY_IN_USE)
         }
     }
 
-    if (validatedData.email) {
-        const email: any = await prismaClient.user.findMany({
-            where: {
-                email: validatedData.email
-            }
-        })
-
-        if (email.length > 1) {
-            throw new NotFoundException("Code already in use", ErrorCode.EMAIL_ALREADY_IN_USE)
-        }
-    }
-
-    const updatedUser = await prismaClient.user.update({
+    const updatedUser = await prismaClient.usuario.update({
         where: {
-            id: parseInt(req.params.id)
+            UsuarioId: parseInt(req.params.id)
         },
         data: validatedData as any,
     })
@@ -159,16 +136,16 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const user: any = await prismaClient.user.findFirstOrThrow({
+        const user: any = await prismaClient.usuario.findFirstOrThrow({
             where: {
-                id: parseInt(req.params.id)
+                UsuarioId: parseInt(req.params.id)
             }
         })
     } catch (error) {
         throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND)
     }
 
-    const deletedUser = await prismaClient.user.delete({
+    const deletedUser = await prismaClient.usuario.delete({
         where: {
             //@ts-ignore
             id: parseInt(req.params.id)

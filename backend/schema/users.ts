@@ -1,26 +1,19 @@
 import { z } from "zod"
 
-export const SignUpSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string().min(6),
-    code: z.string()
-})
-
 export const CreateUSerSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string().min(6),
-    code: z.string(),
-    role: z.string()
+    Nombre: z.string(),
+    Password: z.string().min(6),
+    Codigo: z.string(),
+    Activo: z.boolean().optional(),
+    Rol: z.string().optional(),
+    CaducidadPassword: z.string().optional()
 })
 
 export const UpdateUserSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    role: z.string().optional(),
-    code: z.string(),
-    active: z.boolean().optional()
+    Nombre: z.string(),
+    Rol: z.string().optional(),
+    Codigo: z.string(),
+    Activo: z.boolean().optional()
 })
 
 export const ChangePasswordSchema = z.object({

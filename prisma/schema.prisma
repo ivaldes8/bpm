@@ -12,11 +12,11 @@ datasource db {
 
 model Rol {
   RolId            Int       @id @default(autoincrement())
-  Nombre           String
-  Activo           Boolean   @default(true)
-  FechaAlta        DateTime  @default(now())
-  FechaBaja        DateTime  @default(now())
-  FechaUltimaModif DateTime
+  Nombre           String    @unique
+  Activo           Boolean?  @default(true)
+  FechaAlta        DateTime? @default(now())
+  FechaBaja        DateTime?
+  FechaUltimaModif DateTime? @default(now())
   Usuario          Usuario[]
 }
 
@@ -27,10 +27,10 @@ model Usuario {
   CaducidadPassword     DateTime?
   RolId                 Int
   Codigo                String?                 @unique
-  FechAlta              DateTime                @default(now())
-  Activo                Boolean                 @default(true)
-  FechaBaja             DateTime                @default(now())
-  FechaUltimaModif      DateTime
+  FechAlta              DateTime?               @default(now())
+  Activo                Boolean?                @default(true)
+  FechaBaja             DateTime?
+  FechaUltimaModif      DateTime?               @default(now())
   Rol                   Rol                     @relation(fields: [RolId], references: [RolId])
   LogAccion             LogAccion[]
   Contrato              Contrato[]
@@ -49,16 +49,16 @@ model LogAccion {
 }
 
 model Compania {
-  CompaniaId       Int        @id
+  CompaniaId       Int        @id @default(autoincrement())
   Nombre           String
   Codigo           String     @unique
   Descripcion      String     @unique
   Telefono         String
   CorreoComp       String
-  ReclamarComp     Boolean
+  ReclamarComp     Boolean    @default(false)
   CorreoSoporte    String
-  ReclamarSoporte  Boolean
-  Activo           Boolean
+  ReclamarSoporte  Boolean    @default(false)
+  Activo           Boolean    @default(true)
   FechaInicio      DateTime   @default(now())
   FechaBaja        DateTime?
   FechaUltimaModif DateTime   @default(now())

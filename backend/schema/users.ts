@@ -12,7 +12,7 @@ export const CreateUSerSchema = z.object({
 export const UpdateUserSchema = z.object({
     Nombre: z.string(),
     Rol: z.string().optional(),
-    Codigo: z.string(),
+    Codigo: z.string().optional(),
     Activo: z.boolean().optional()
 })
 

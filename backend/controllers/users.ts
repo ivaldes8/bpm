@@ -7,13 +7,17 @@ import { hashSync } from "bcrypt";
 
 export const getUserList = async (req: Request, res: Response) => {
     const userList = await prismaClient.usuario.findMany({
-        include: {
+        select: {
+            UsuarioId: true,
+            Nombre: true,
+            Codigo: true,
+            Activo: true,
+            CaducidadPassword: true,
             Rol: true
         }
     });
 
     return res.json(userList)
-
 }
 
 export const getUser = async (req: Request, res: Response) => {
@@ -22,6 +26,14 @@ export const getUser = async (req: Request, res: Response) => {
 
     try {
         const user: any = await prismaClient.usuario.findFirstOrThrow({
+            select: {
+                UsuarioId: true,
+                Nombre: true,
+                Codigo: true,
+                Activo: true,
+                CaducidadPassword: true,
+                Rol: true
+            },
             where: {
                 UsuarioId: parseInt(userId)
             }
@@ -67,11 +79,17 @@ export const createUser = async (req: Request, res: Response) => {
             CaducidadPassword: validatedData.CaducidadPassword,
             Rol: {
                 connect: {
-                    RolId: roleUser.id
+                    RolId: roleUser.RolId
                 }
             }
+        },
+        include: {
+            Rol: true
         }
     })
+
+    //@ts-ignore
+    delete createdUser.Password
 
     return res.json(createdUser)
 
@@ -90,7 +108,7 @@ export const updateUser = async (req: Request, res: Response) => {
         throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND)
     }
 
-    if (validatedData.role) {
+    if (validatedData.Rol) {
         try {
             const roleUser: any = await prismaClient.rol.findFirstOrThrow({
                 where: {
@@ -99,9 +117,9 @@ export const updateUser = async (req: Request, res: Response) => {
             })
 
             validatedData = {
-                ...validatedData, role: {
+                ...validatedData, Rol: {
                     connect: {
-                        id: roleUser.id
+                        RolId: roleUser.RolId
                     }
                 }
             }
@@ -111,7 +129,7 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 
 
-    if (validatedData.code) {
+    if (validatedData.Codigo) {
         const code: any = await prismaClient.usuario.findFirst({
             where: {
                 Codigo: validatedData.Codigo
@@ -127,7 +145,10 @@ export const updateUser = async (req: Request, res: Response) => {
         where: {
             UsuarioId: parseInt(req.params.id)
         },
-        data: validatedData as any,
+        data: { ...validatedData as any, FechaUltimaModif: new Date() },
+        include: {
+            Rol: true
+        }
     })
 
     return res.json(updatedUser)
@@ -136,7 +157,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const user: any = await prismaClient.usuario.findFirstOrThrow({
+        await prismaClient.usuario.findFirstOrThrow({
             where: {
                 UsuarioId: parseInt(req.params.id)
             }
@@ -145,13 +166,12 @@ export const deleteUser = async (req: Request, res: Response) => {
         throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND)
     }
 
-    const deletedUser = await prismaClient.usuario.delete({
+    await prismaClient.usuario.delete({
         where: {
             //@ts-ignore
-            id: parseInt(req.params.id)
+            UsuarioId: parseInt(req.params.id)
         }
     })
 
-    return res.json(deletedUser)
-
+    return res.json({ message: "deleted" });
 } 

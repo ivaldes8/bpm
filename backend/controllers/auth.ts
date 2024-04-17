@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import { Request, Response } from "express"
 import { prismaClient } from "../server"
 import { compareSync, hashSync } from "bcrypt"
 import * as jwt from "jsonwebtoken"
@@ -12,7 +12,12 @@ import { NotFoundException } from "../exceptions/not-found"
 export const login = async (req: Request, res: Response) => {
     const { codigo, password } = req.body
 
-    const user = await prismaClient.usuario.findFirst({ where: { Codigo: codigo } });
+    const user = await prismaClient.usuario.findFirst({
+        where: { Codigo: codigo },
+        include: {
+            Rol: true
+        }
+    });
 
     if (!user) {
         throw new NotFoundException("User not found", ErrorCode.USER_NOT_FOUND);
@@ -26,13 +31,17 @@ export const login = async (req: Request, res: Response) => {
         UsuarioId: user.UsuarioId
     }, JWT_SECRET)
 
+    //@ts-ignore
+    delete user.Password
     res.json({ user, token })
 }
 
 
 export const me = async (req: Request, res: Response) => {
     //@ts-ignore
-    res.json(req.user)
+    const user = req.user
+    delete user.Password
+    res.json(user)
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
@@ -42,7 +51,7 @@ export const updateProfile = async (req: Request, res: Response) => {
         throw new NotFoundException("User cannot change her role", ErrorCode.FORBIDDEN)
     }
 
-    if (validatedData.Activo) {
+    if (validatedData.Activo !== undefined && validatedData.Activo !== null) {
         throw new NotFoundException("User cannot change her status", ErrorCode.FORBIDDEN)
     }
 
@@ -62,10 +71,16 @@ export const updateProfile = async (req: Request, res: Response) => {
     const updatedUser = await prismaClient.usuario.update({
         where: {
             //@ts-ignore
-            id: parseInt(req.user.id)
+            UsuarioId: parseInt(req.user.UsuarioId)
         },
-        data: validatedData as any
+        data: { ...validatedData as any, FechaUltimaModif: new Date() },
+        include: {
+            Rol: true
+        }
     })
+
+    //@ts-ignore
+    delete updatedUser.Password
 
     return res.json(updatedUser)
 }
@@ -76,7 +91,7 @@ export const changePassword = async (req: Request, res: Response) => {
     const { oldPassword, newPassword } = req.body
 
     //@ts-ignore
-    const userId = req.user.id
+    const userId = req.user.UsuarioId
 
     let user = await prismaClient.usuario.findFirst({ where: { UsuarioId: userId } });
 
@@ -89,9 +104,16 @@ export const changePassword = async (req: Request, res: Response) => {
             UsuarioId: userId
         },
         data: {
-            Password: hashSync(newPassword, 10)
+            Password: hashSync(newPassword, 10),
+            FechaUltimaModif: new Date()
+        },
+        include: {
+            Rol: true
         }
     })
+
+    //@ts-ignore
+    delete user.Password
 
     res.json(user)
 }

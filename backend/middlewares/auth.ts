@@ -16,7 +16,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
         const payload = jwt.verify(token!, JWT_SECRET) as any
 
         const user = await prismaClient.usuario.findFirst({
-            where: { UsuarioId: payload.userId }, include: {
+            where: { UsuarioId: payload.UsuarioId }, include: {
                 Rol: true
             }
         })

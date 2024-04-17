@@ -1,10 +1,8 @@
-import express, { Express, Request, Response } from "express"
+import express, { Express } from "express"
 import rootRouter from "./routes"
 import { PrismaClient } from "@prisma/client";
 import { NODE_ENV, PORT } from "./secrets";
 import { errorMiddleware } from "./middlewares/errors";
-import { create } from "domain";
-import { SignUpSchema } from "./schema/users";
 import path from "path";
 import cors from 'cors';
 

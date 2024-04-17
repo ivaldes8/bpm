@@ -9,7 +9,7 @@ const monitorMiddleware = async (req: Request, res: Response, next: NextFunction
     if (user.Rol.Nombre === "MONITOR") {
         next()
     } else {
-        next(new UnauthorizedException('Unauthorized', ErrorCode.UNAUTHORIZED))
+        next(new UnauthorizedException('Unauthorized', ErrorCode.FORBIDDEN))
     }
 
 }

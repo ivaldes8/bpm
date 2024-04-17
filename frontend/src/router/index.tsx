@@ -2,7 +2,6 @@ import { useRoutes } from "react-router-dom";
 import DashboardOverview1 from "../pages/DashboardOverview1";
 import UsersLayout1 from "../pages/UsersLayout1";
 import Login from "../pages/Login";
-import Register from "../pages/Register";
 import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
@@ -42,10 +41,6 @@ function Router() {
     {
       path: "/login",
       element: <Login />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
     },
     {
       path: "/error-page",

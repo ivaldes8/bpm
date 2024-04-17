@@ -24,14 +24,14 @@ function Main() {
 
     const table = useRef();
     const [filter, setFilter] = useState({
-        field: "name",
+        field: "Nombre",
         type: "like",
         value: "",
     });
 
     const onDeleteUser = async () => {
         setLoading(true)
-        const [error, response, data] = await handlePromise(UserService.deleteUser(selectedRow.id));
+        const [error, response, data] = await handlePromise(UserService.deleteUser(selectedRow.UsuarioId));
         setLoading(false)
         if (!response.ok) {
             return setAlert({
@@ -65,7 +65,7 @@ function Main() {
     const onResetFilter = () => {
         setFilter({
             ...filter,
-            field: "name",
+            field: "Nombre",
             type: "like",
             value: "",
         });

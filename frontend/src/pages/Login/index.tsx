@@ -30,13 +30,13 @@ function Main() {
   const dispatch = useAppDispatch();
 
   const defaultValue = {
-    email: "",
+    codigo: "",
     password: "",
   }
 
   const loginSchema = yup.object().shape(
     {
-      email: yup.string().email(t("errors.email") ?? '').required(t("errors.required") ?? ''),
+      codigo: yup.string().required(t("errors.required") ?? ''),
       password: yup.string().required(t("errors.required") ?? '').min(6, t('errors.minValue', { value: 6 }) ?? ''),
     }
   )
@@ -45,7 +45,7 @@ function Main() {
     control,
     trigger,
     getValues,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(loginSchema),
@@ -69,13 +69,13 @@ function Main() {
       setAlert({
         type: "error",
         show: true,
-        text: "Registration failed!",
-        desc: "Please check the fileld form."
+        text: t("Login failed!"),
+        desc: t("Please check the form fields.")
       })
     } else {
 
       const toSend = {
-        email: data.email,
+        codigo: data.codigo,
         password: data.password
       }
 
@@ -146,9 +146,9 @@ function Main() {
                 <div className="mt-8 intro-x">
                   <InputField
                     control={control}
-                    name="email"
-                    label="email"
-                    placeholder="Email ..."
+                    name="codigo"
+                    label="code"
+                    placeholder="Código ..."
 
                   />
                   <InputField
@@ -162,6 +162,7 @@ function Main() {
 
                 <div className="mt-5 text-center intro-x xl:mt-8 xl:text-left">
                   <Button
+                    disabled={!isValid || loading}
                     type="submit"
                     variant="primary"
                     className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"

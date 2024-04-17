@@ -81,5 +81,7 @@
     "Updated successfully": "Actualizado satisfactoriamente",
     "Creation failed": "Creación fallida",
     "Created successfully": "Creado satisfactoriamente",
-    "proccessUndoneText": "Esta acción no se puede deshacer"
+    "proccessUndoneText": "Esta acción no se puede deshacer",
+    "Login failed!" : "Login fallido!",
+    "Please check the form fields.": "Por favor revise los campos del formulario."
 }

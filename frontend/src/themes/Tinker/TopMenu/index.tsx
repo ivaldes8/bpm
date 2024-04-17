@@ -71,9 +71,9 @@ function Main() {
             </Menu.Button>
             <Menu.Items className="w-56 mt-px relative bg-primary/70 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white">
               <Menu.Header className="font-normal">
-                <div className="font-medium">{userData?.name}-{userData?.code}</div>
+                <div className="font-medium">{userData?.Codigo}</div>
                 <div className="text-xs text-white/70 mt-0.5 dark:text-slate-500">
-                  {userData?.email}
+                  {userData?.Nombre}
                 </div>
               </Menu.Header>
               <Menu.Divider className="bg-white/[0.08]" />

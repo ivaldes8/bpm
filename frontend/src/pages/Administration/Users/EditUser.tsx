@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import ParentModal from '@/custom-components/Modals/ParentModal'
 import { AlertContext } from '@/utils/Contexts/AlertContext'
 import * as yup from "yup";
@@ -12,6 +12,7 @@ import Select from '@/custom-components/FormElements/Select';
 import { LoadingContext } from '@/utils/Contexts/LoadingContext';
 import handlePromise from "@/utils/promise";
 import UserService from '@/services/UserService';
+import { error } from 'console';
 
 type Props = {
     show: boolean,
@@ -28,22 +29,20 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
     const [loading, setLoading] = useContext(LoadingContext);
 
     const defaultValue = {
-        email: "",
-        name: "",
-        code: "",
-        role: "USER",
-        password: "",
-        active: false
+        Nombre: "",
+        Codigo: "",
+        Rol: "BASE",
+        Password: "",
+        Activo: false
     }
 
     const updateProfileSchema = (selectedRow: any) => yup.object().shape(
         {
-            email: yup.string().email(t("errors.email") ?? '').required(t("errors.required") ?? ''),
-            name: yup.string().required(t("errors.required") ?? ''),
-            code: yup.string().required(t("errors.required") ?? ''),
-            role: yup.string().required(t("errors.required") ?? ''),
-            password: selectedRow && selectedRow.id ? yup.string() : yup.string().required(t("errors.required") ?? ''),
-            active: yup.boolean()
+            Nombre: yup.string().required(t("errors.required") ?? ''),
+            Codigo: yup.string().required(t("errors.required") ?? ''),
+            Rol: yup.string().required(t("errors.required") ?? ''),
+            Password: selectedRow && selectedRow.UsuarioId ? yup.string() : yup.string().required(t("errors.required") ?? ''),
+            Activo: yup.boolean()
         }
     )
 
@@ -62,30 +61,36 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
     const handleSubmit = async () => {
         const formData = getValues()
         const toSend = {
-            name: formData.name,
-            email: formData.email,
-            code: formData.code,
-            role: formData.role,
-            active: formData.active
+            Nombre: formData.Nombre,
+            Codigo: formData.Codigo,
+            Rol: formData.Rol,
+            Activo: formData.Activo
+        }
+
+        if (selectedRow) {
+            if (selectedRow.Codigo === toSend.Codigo) {
+                //@ts-ignore
+                delete toSend.Codigo
+            }
         }
         setLoading(true)
         const [error, response, data] = await handlePromise(
-            selectedRow && selectedRow.id ? UserService.updateUser(selectedRow.id, toSend) :
-                UserService.createUser({...toSend, password: formData.password})
+            selectedRow && selectedRow.UsuarioId ? UserService.updateUser(selectedRow.UsuarioId, toSend) :
+                UserService.createUser({ ...toSend, Password: formData.Password })
         );
         setLoading(false)
         if (!response.ok) {
             return setAlert({
                 type: "error",
                 show: true,
-                text: selectedRow && selectedRow.id ? "Update failed" : "Creation failed",
+                text: error ? error : selectedRow && selectedRow.UsuarioId ? "Update failed" : "Creation failed",
             })
         }
 
         setAlert({
             type: "success",
             show: true,
-            text: selectedRow && selectedRow.id ? "Updated successfully" : "Created successfully",
+            text: selectedRow && selectedRow.UsuarioId ? "Updated successfully" : "Created successfully",
         })
 
         onSubmit()
@@ -94,13 +99,12 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
     useEffect(() => {
         if (selectedRow) {
             const vals = {
-                name: selectedRow.name,
+                Nombre: selectedRow.Nombre,
                 email: selectedRow.email,
-                code: selectedRow.code,
-                role: selectedRow.roleName,
-                active: selectedRow.active
+                Codigo: selectedRow.Codigo,
+                Rol: selectedRow.roleName,
+                Activo: selectedRow.Activo
             }
-
             reset(vals)
         } else {
             reset(defaultValue)
@@ -120,33 +124,25 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 auto-cols-max w-full justify-center">
                 <InputField
                     control={control}
-                    name="email"
-                    label="email"
-                    placeholder="Email ..."
-                />
-
-                <InputField
-                    control={control}
-                    name="name"
+                    name="Nombre"
                     label="name"
-                    placeholder="Name ..."
+                    placeholder="Nombre ..."
                 />
 
                 <InputField
                     control={control}
-                    name="code"
+                    name="Codigo"
                     label="code"
-                    placeholder="Code ..."
+                    placeholder="Código ..."
                 />
 
                 <Select
                     control={control}
-                    name="role"
+                    name="Rol"
                     label="role"
                     placeholder="Roles ..."
                     valueKey="id"
                     labelKey="name"
-
                     options={userRoles() as any[]}
                 />
 
@@ -154,7 +150,7 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
                     !selectedRow && (
                         <InputField
                             control={control}
-                            name="password"
+                            name="Password"
                             label="password"
                             placeholder="Password ..."
                         />
@@ -163,7 +159,7 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
 
                 <CheckBoxField
                     control={control}
-                    name="active"
+                    name="Activo"
                     label="active"
                 />
             </div>

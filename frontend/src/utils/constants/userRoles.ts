@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 const userRoles = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     return [
         {
@@ -9,8 +9,12 @@ const userRoles = () => {
             name: t("ADMIN")
         },
         {
-            id: "USER",
-            name: t("USER")
+            id: "MONITOR",
+            name: t("MONITOR")
+        },
+        {
+            id: "BASE",
+            name: t("BASE")
         }
     ]
 }

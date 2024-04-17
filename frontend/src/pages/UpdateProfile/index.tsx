@@ -22,18 +22,14 @@ function Main() {
   const [loading, setLoading] = useContext(LoadingContext);
 
   const defaultValue = {
-    email: "",
-    name: "",
-    code: "",
-    role: ""
+    Nombre: "",
+    Codigo: ""
   }
 
   const updateProfileSchema = yup.object().shape(
     {
-      email: yup.string().email(t("errors.email") ?? '').required(t("errors.required") ?? ''),
-      name: yup.string().required(t("errors.required") ?? ''),
-      code: yup.string().required(t("errors.required") ?? ''),
-      role: yup.string()
+      Nombre: yup.string().required(t("errors.required") ?? ''),
+      Codigo: yup.string().required(t("errors.required") ?? '')
     }
   )
 
@@ -50,9 +46,12 @@ function Main() {
 
   const onSubmit: SubmitHandler<any> = (data) => {
     const toSend = {
-      name: data.name,
-      email: data.email,
-      code: data.code
+      Nombre: data.Nombre,
+      Codigo: data.Codigo
+    }
+
+    if (userData.Codigo === toSend.Codigo) {
+      delete toSend.Codigo
     }
 
     dispatch(updateProfile(toSend))
@@ -61,10 +60,8 @@ function Main() {
   useEffect(() => {
     if (userData) {
       const vals = {
-        email: userData.email,
-        name: userData.name,
-        code: userData.code,
-        role: userData.role.name
+        Nombre: userData.Nombre,
+        Codigo: userData.Codigo
       }
 
       reset(vals)
@@ -120,31 +117,16 @@ function Main() {
           <div className="flex flex-col gap-x-5">
             <InputField
               control={control}
-              name="email"
-              label="email"
-              placeholder="Email ..."
-            />
-
-            <InputField
-              control={control}
-              name="name"
+              name="Nombre"
               label="name"
               placeholder="Name ..."
             />
 
             <InputField
               control={control}
-              name="code"
+              name="Codigo"
               label="code"
               placeholder="Code ..."
-            />
-
-            <InputField
-              disabled
-              control={control}
-              name="role"
-              label="role"
-              placeholder="Role ..."
             />
           </div>
           <div className="flex justify-end items-end mt-4">

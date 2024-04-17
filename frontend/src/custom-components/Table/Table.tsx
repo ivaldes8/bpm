@@ -72,7 +72,7 @@ const Table = forwardRef(({ tableName, columns, hasActions, endpoint, filter, po
 
                         if (populateRole) {
                             responseData = responseData.map((d: any) => {
-                                return { ...d, roleName: d.role.name }
+                                return { ...d, roleName: d.Rol.Nombre }
                             })
                         }
                         return responseData;

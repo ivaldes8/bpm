@@ -1,5 +1,5 @@
 import ThemeSwitcher from "@/components/ThemeSwitcher";
-import logoUrl from "@/assets/images/logo.svg";
+import logoUrl from "@/assets/images/serviformlogo.png";
 import illustrationUrl from "@/assets/images/illustration.svg";
 import Button from "@/components/Base/Button";
 import clsx from "clsx";
@@ -110,7 +110,7 @@ function Main() {
               <a href="" className="flex items-center pt-5 -intro-x">
                 <img
                   alt="Midone Tailwind HTML Admin Template"
-                  className="w-6"
+                  className="w-[150px]"
                   src={logoUrl}
                 />
                 <span className="ml-3 text-lg text-white"> BPM </span>
@@ -122,11 +122,10 @@ function Main() {
                   src={illustrationUrl}
                 />
                 <div className="mt-10 text-4xl font-medium leading-tight text-white -intro-x">
-                  A few more clicks to <br />
-                  sign in to your account.
+                  {t("loginText1")}
                 </div>
                 <div className="mt-5 text-lg text-white -intro-x text-opacity-70 dark:text-slate-400">
-                  Manage all your e-commerce accounts in one place
+                  {t("loginText2")}
                 </div>
               </div>
             </div>
@@ -141,7 +140,7 @@ function Main() {
                   {t("login")}
                 </h2>
                 <div className="mt-2 text-center intro-x text-slate-400 xl:hidden">
-                  Manage all your e-commerce accounts in one place
+                  {t("loginText2")}
                 </div>
                 <div className="mt-8 intro-x">
                   <InputField

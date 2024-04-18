@@ -4,6 +4,24 @@ import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
 import { CompanyCreateSchema, CompanyUpdateSchema } from "../schema/company";
 
+export const getCompanies = async (req: Request, res: Response) => {
+    const companies = await prismaClient.compania.findMany({})
+
+    res.json(companies)
+}
+
+export const getCompaniesSimplified = async (req: Request, res: Response) => {
+    const companies = await prismaClient.compania.findMany({
+        select: {
+            CompaniaId: true,
+            Nombre: true,
+            Codigo: true
+        }
+    })
+
+    res.json(companies)
+}
+
 export const createCompany = async (req: Request, res: Response) => {
 
     const validatedData = CompanyCreateSchema.parse(req.body)
@@ -99,12 +117,6 @@ export const getCompanyById = async (req: Request, res: Response) => {
     } catch (error) {
         throw new NotFoundException("Compañía not found", ErrorCode.COMPANY_NOT_FOUND);
     }
-}
-
-export const getCompanies = async (req: Request, res: Response) => {
-    const companies = await prismaClient.compania.findMany({})
-
-    res.json(companies)
 }
 
 export const deleteCompany = async (req: Request, res: Response) => {

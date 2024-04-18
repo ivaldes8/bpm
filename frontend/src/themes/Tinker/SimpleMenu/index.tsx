@@ -6,7 +6,7 @@ import { useAppSelector } from "@/stores/hooks";
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./simple-menu";
 import Lucide from "@/components/Base/Lucide";
 import Tippy from "@/components/Base/Tippy";
-import logoUrl from "@/assets/images/logo.svg";
+import logoUrl from "@/assets/images/serviformlogoOnly.png";
 import clsx from "clsx";
 import TopBar from "@/components/Themes/Tinker/TopBar";
 import MobileMenu from "@/components/MobileMenu";

@@ -93,5 +93,8 @@
     "claimSupport": "Reclamar soporte",
     "description": "Descripción",
     "supportEmail": "Correo de soporte",
-    "companyEmail": "Correo de la compañía"
+    "companyEmail": "Correo de la compañía",
+    "loginText1": "Autentícate con tu cuenta",
+    "loginText2": "Gestiona todas las pólizas desde un solo lugar",
+    "selectCompany": "Seleccionar compañía"
 }

@@ -1,5 +1,5 @@
 import Lucide from "@/components/Base/Lucide";
-import logoUrl from "@/assets/images/logo.svg";
+import logoUrl from "@/assets/images/serviformlogoOnly.png";
 import { Link, useNavigate } from "react-router-dom";
 import Breadcrumb from "@/components/Base/Breadcrumb";
 import { Menu } from "@/components/Base/Headless";
@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { logout } from "@/stores/authSlice";
 import { useAppSelector } from "@/stores/hooks";
+import Button from "@/components/Base/Button";
 
 function Main() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function Main() {
               className="w-6"
               src={logoUrl}
             />
-            <span className="ml-3 text-lg text-white"> Icewall </span>
+            <span className="ml-3 text-lg text-white"> BPM </span>
           </Link>
           {/* END: Logo */}
           {/* BEGIN: Breadcrumb */}
@@ -42,6 +43,7 @@ function Main() {
             </Breadcrumb.Link>
           </Breadcrumb>
           {/* END: Breadcrumb */}
+         
           {/* BEGIN: Account Menu */}
           <Menu>
             <Menu.Button className="flex justify-center items-center w-10 h-10 bg-theme-1 dark:bg-slate-700 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">

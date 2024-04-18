@@ -8,26 +8,70 @@ import { useTranslation } from "react-i18next";
 import { logout } from "@/stores/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/stores/hooks";
+import Button from "@/components/Base/Button";
+import { setCompany } from "@/stores/settingsSlice";
 
 function Main() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const { userData } = useAppSelector((state) => state.auth);
+  const { companyList, company } = useAppSelector((state) => state.settings);
   const { t } = useTranslation()
 
   return (
     <>
       {/* BEGIN: Top Bar */}
-      <div className="h-[67px] z-[51] flex items-center relative border-b border-slate-200">
-        {/* BEGIN: Breadcrumb */}
+      <div className="h-[67px] z-[51] justify-between sm:justify-normal flex items-center relative border-b border-slate-200">
         <Breadcrumb className="hidden mr-auto -intro-x sm:flex">
           <Breadcrumb.Link to="/">Application</Breadcrumb.Link>
           <Breadcrumb.Link to="/" active={true}>
             Dashboard
           </Breadcrumb.Link>
         </Breadcrumb>
-        {/* END: Breadcrumb */}
+
+        <div className="mr-4 sm:mr-8 flex gap-2">
+          <Menu >
+            <Menu.Button as={Button} variant="outline-primary">
+              {company?.Codigo ?? t("selectCompany")}
+            </Menu.Button>
+            <Menu.Items className="w-64" placement={window.innerWidth < 640 ? "bottom-start" : "bottom-end"}>
+              {
+                companyList.map((company, index) => (
+                  <Menu.Item key={index} onClick={() => dispatch(setCompany(company))}>{company.Codigo}-{company.Nombre}</Menu.Item>
+                ))
+              }
+            </Menu.Items>
+          </Menu>
+
+          {/* <Menu >
+            <Menu.Button as={Button} variant="outline-primary">
+              Caja: ---
+            </Menu.Button>
+            <Menu.Items className="w-64" placement={window.innerWidth < 640 ? "bottom-start" : "bottom-end"}>
+              {
+                companyList.map((company, index) => (
+                  <Menu.Item key={index} onClick={() => dispatch(setCompany(company))}>{company.Codigo}-{company.Nombre}</Menu.Item>
+                ))
+              }
+            </Menu.Items>
+          </Menu>
+
+          <Menu >
+            <Menu.Button as={Button} variant="outline-primary">
+              Lote: ---
+            </Menu.Button>
+            <Menu.Items className="w-64" placement={window.innerWidth < 640 ? "bottom-start" : "bottom-end"}>
+              {
+                companyList.map((company, index) => (
+                  <Menu.Item key={index} onClick={() => dispatch(setCompany(company))}>{company.Codigo}-{company.Nombre}</Menu.Item>
+                ))
+              }
+            </Menu.Items>
+          </Menu> */}
+        </div>
+
+
         {/* BEGIN: Account Menu */}
         <Menu>
           <Menu.Button className="flex justify-center items-center w-10 h-10 bg-theme-1 dark:bg-slate-700 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">

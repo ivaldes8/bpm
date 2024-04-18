@@ -1,3 +1,4 @@
+import { getCompanyList } from "@/stores/settingsSlice"
 import api from "@/utils/api/useApi"
 
 const baseUrl = "/companies"
@@ -12,4 +13,7 @@ export default {
     deleteCompany(id: any) {
         return api.delete(`${baseUrl}/${id}`)
     },
+    getCompanyList() {
+        return api.get(`${baseUrl}/list/simplified`)
+    }
 }

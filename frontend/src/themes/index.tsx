@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { getCompanyList } from "@/stores/settingsSlice";
 
 function Main() {
   const dispatch = useAppDispatch();
@@ -32,6 +33,8 @@ function Main() {
         switchTheme(selectedTheme.name);
       }
     }
+
+    dispatch(getCompanyList());
   }, []);
 
   return (

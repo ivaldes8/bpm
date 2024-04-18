@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { logout } from "@/stores/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/stores/hooks";
+import Button from "@/components/Base/Button";
 
 function Main() {
 
@@ -32,6 +33,7 @@ function Main() {
           </Breadcrumb.Link>
         </Breadcrumb>
         {/* END: Breadcrumb */}
+       
         {/* BEGIN: Account Menu */}
         <Menu>
           <Menu.Button className="flex justify-center items-center w-10 h-10 bg-theme-1 dark:bg-slate-700 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">

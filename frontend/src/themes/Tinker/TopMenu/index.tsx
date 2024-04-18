@@ -7,7 +7,7 @@ import { FormattedMenu, linkTo, nestedMenu } from "./top-menu";
 import Lucide from "@/components/Base/Lucide";
 import Breadcrumb from "@/components/Base/Breadcrumb";
 import { Menu } from "@/components/Base/Headless";
-import logoUrl from "@/assets/images/logo.svg";
+import logoUrl from "@/assets/images/serviformlogoOnly.png";
 import clsx from "clsx";
 import MobileMenu from "@/components/MobileMenu";
 import { useDispatch } from "react-redux";
@@ -49,7 +49,7 @@ function Main() {
               className="w-6"
               src={logoUrl}
             />
-            <span className="ml-3 text-lg text-white"> Tinker </span>
+            <span className="ml-3 text-lg text-white"> BPM </span>
           </Link>
           {/* END: Logo */}
           {/* BEGIN: Breadcrumb */}

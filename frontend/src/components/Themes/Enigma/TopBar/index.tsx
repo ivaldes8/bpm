@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import Lucide from "@/components/Base/Lucide";
-import logoUrl from "@/assets/images/logo.svg";
+import logoUrl from "@/assets/images/serviformlogoOnly.png";
 import Breadcrumb from "@/components/Base/Breadcrumb";
 import { Menu } from "@/components/Base/Headless";
 import _ from "lodash";
@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "@/stores/authSlice";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/stores/hooks";
+import Button from "@/components/Base/Button";
 
 function Main(props: { layout?: "side-menu" | "simple-menu" | "top-menu" }) {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ function Main(props: { layout?: "side-menu" | "simple-menu" | "top-menu" }) {
               ])}
             >
               {" "}
-              Enigma{" "}
+              BPM{" "}
             </span>
           </Link>
           {/* END: Logo */}
@@ -69,6 +70,9 @@ function Main(props: { layout?: "side-menu" | "simple-menu" | "top-menu" }) {
             </Breadcrumb.Link>
           </Breadcrumb>
           {/* END: Breadcrumb */}
+
+        
+
           {/* BEGIN: Account Menu */}
           <Menu>
             <Menu.Button className="flex justify-center items-center w-10 h-10 bg-theme-1 dark:bg-slate-700 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">

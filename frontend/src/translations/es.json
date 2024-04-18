@@ -82,6 +82,16 @@
     "Creation failed": "Creación fallida",
     "Created successfully": "Creado satisfactoriamente",
     "proccessUndoneText": "Esta acción no se puede deshacer",
-    "Login failed!" : "Login fallido!",
-    "Please check the form fields.": "Por favor revise los campos del formulario."
+    "Login failed!": "Login fallido!",
+    "Please check the form fields.": "Por favor revise los campos del formulario.",
+    "companies": "Compañías",
+    "addCompany": "Añadir compañía",
+    "company": "Compañía",
+    "editCompany": "Editar compañía",
+    "createCompany": "Crear compañía",
+    "claimCompany": "Reclamar compañía",
+    "claimSupport": "Reclamar soporte",
+    "description": "Descripción",
+    "supportEmail": "Correo de soporte",
+    "companyEmail": "Correo de la compañía"
 }

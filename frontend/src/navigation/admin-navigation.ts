@@ -11,6 +11,11 @@ const ADMIN_NAVIGATION: Array<Menu> = [
         title: "Administración",
         subMenu: [
             {
+                icon: "Building",
+                pathname: "/company-list",
+                title: "Compañías"
+            },
+            {
                 icon: "UserRoundCog",
                 pathname: "/user-list",
                 title: "Usuarios"

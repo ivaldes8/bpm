@@ -6,6 +6,7 @@ import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
 import UserList from "../pages/Administration/Users/UserList"
+import CompanyList from "../pages/Administration/Company/CompanyList"
 
 import Layout from "../themes";
 
@@ -32,10 +33,15 @@ function Router() {
           element: <ChangePassword />,
         },
 
+        // Administration
+        {
+          path: "company-list",
+          element: <CompanyList />,
+        },
         {
           path: "user-list",
           element: <UserList />,
-        }    
+        }
       ],
     },
     {

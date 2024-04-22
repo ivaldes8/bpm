@@ -1,39 +1,69 @@
 import Lucide from "@/components/Base/Lucide";
-import Breadcrumb from "@/components/Base/Breadcrumb";
 import { Menu } from "@/components/Base/Headless";
-import fakerData from "@/utils/faker";
-import _ from "lodash";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { logout } from "@/stores/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/stores/hooks";
 import Button from "@/components/Base/Button";
-import { setCompany } from "@/stores/settingsSlice";
+import { setCaja, setCompany, setLote } from "@/stores/settingsSlice";
+import { FormInput } from "@/components/Base/Form";
+import { useState } from "react";
+import ParentModal from "@/custom-components/Modals/ParentModal";
 
 function Main() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const { userData } = useAppSelector((state) => state.auth);
-  const { companyList, company } = useAppSelector((state) => state.settings);
+  const { companyList, company, lote, caja } = useAppSelector((state) => state.settings);
   const { t } = useTranslation()
+
+  const [showLoteCajaModal, setShowLoteCajaModal] = useState<boolean>(false);
 
   return (
     <>
       {/* BEGIN: Top Bar */}
       <div className="h-[67px] z-[51] justify-between sm:justify-normal flex items-center relative border-b border-slate-200">
-        <Breadcrumb className="hidden mr-auto -intro-x sm:flex">
-          <Breadcrumb.Link to="/">Application</Breadcrumb.Link>
-          <Breadcrumb.Link to="/" active={true}>
-            Dashboard
-          </Breadcrumb.Link>
-        </Breadcrumb>
+        <div className="mr-4 sm:ml-auto flex gap-2 items-center">
+          <div className="items-center hidden sm:flex">
+            <div className="relative intro-x">
+              <div className="hidden sm:block">
+                <FormInput
+                  value={lote ?? ''}
+                  type="text"
+                  className="border-transparent w-24 shadow-none rounded-full bg-slate-200 transition-[width] duration-300 ease-in-out focus:border-transparent focus:w-28 dark:bg-darkmode-400/70"
+                  placeholder={t("batch")}
+                  onChange={(e) => dispatch(setLote(e.target.value))}
+                />
+              </div>
+            </div>
+            <Lucide icon="SeparatorVertical" className="w-5 h-5 dark:text-slate-500" />
+            <div className="relative intro-x">
+              <div className="hidden sm:block">
+                <FormInput
+                  value={caja ?? ''}
+                  type="text"
+                  className="border-transparent w-24 shadow-none rounded-full bg-slate-200 transition-[width] duration-300 ease-in-out focus:border-transparent focus:w-28 dark:bg-darkmode-400/70"
+                  placeholder={t("box")}
+                  onChange={(e) => dispatch(setCaja(e.target.value))}
+                />
+              </div>
+            </div>
+          </div>
 
-        <div className="mr-4 sm:mr-8 flex gap-2">
+          <div className="relative sm:hidden">
+            <Button variant="outline-primary" onClick={() => setShowLoteCajaModal(true)}>
+              {lote ?? t("batch")}
+              {"/"}
+              {caja ?? t("box")}
+            </Button>
+          </div>
+
+
           <Menu >
             <Menu.Button as={Button} variant="outline-primary">
-              {company?.Codigo ?? t("selectCompany")}
+              {company?.Codigo ?? t("company")}
             </Menu.Button>
             <Menu.Items className="w-64" placement={window.innerWidth < 640 ? "bottom-start" : "bottom-end"}>
               {
@@ -43,36 +73,9 @@ function Main() {
               }
             </Menu.Items>
           </Menu>
-
-          {/* <Menu >
-            <Menu.Button as={Button} variant="outline-primary">
-              Caja: ---
-            </Menu.Button>
-            <Menu.Items className="w-64" placement={window.innerWidth < 640 ? "bottom-start" : "bottom-end"}>
-              {
-                companyList.map((company, index) => (
-                  <Menu.Item key={index} onClick={() => dispatch(setCompany(company))}>{company.Codigo}-{company.Nombre}</Menu.Item>
-                ))
-              }
-            </Menu.Items>
-          </Menu>
-
-          <Menu >
-            <Menu.Button as={Button} variant="outline-primary">
-              Lote: ---
-            </Menu.Button>
-            <Menu.Items className="w-64" placement={window.innerWidth < 640 ? "bottom-start" : "bottom-end"}>
-              {
-                companyList.map((company, index) => (
-                  <Menu.Item key={index} onClick={() => dispatch(setCompany(company))}>{company.Codigo}-{company.Nombre}</Menu.Item>
-                ))
-              }
-            </Menu.Items>
-          </Menu> */}
         </div>
 
 
-        {/* BEGIN: Account Menu */}
         <Menu>
           <Menu.Button className="flex justify-center items-center w-10 h-10 bg-theme-1 dark:bg-slate-700 overflow-hidden scale-110 rounded-full shadow-lg image-fit zoom-in intro-x">
             <Lucide icon="User" className="w-8 h-8 text-white" />
@@ -98,7 +101,41 @@ function Main() {
           </Menu.Items>
         </Menu>
       </div>
-      {/* END: Top Bar */}
+
+
+      <ParentModal
+        size='sm'
+        title={t("batchBoxEdit")}
+        show={showLoteCajaModal}
+        setShow={setShowLoteCajaModal}
+        hideFooter={true}
+      >
+        <div className="items-center flex justify-center">
+          <div className="relative intro-x">
+            <div className="block">
+              <FormInput
+                value={lote ?? ''}
+                type="text"
+                className="border-transparent w-24 shadow-none rounded-full bg-slate-200 transition-[width] duration-300 ease-in-out focus:border-transparent focus:w-28 dark:bg-darkmode-400/70"
+                placeholder={t("batch")}
+                onChange={(e) => dispatch(setLote(e.target.value))}
+              />
+            </div>
+          </div>
+          <Lucide icon="SeparatorVertical" className="w-5 h-5 dark:text-slate-500" />
+          <div className="relative intro-x">
+            <div className="block">
+              <FormInput
+                value={caja ?? ''}
+                type="text"
+                className="border-transparent w-24 shadow-none rounded-full bg-slate-200 transition-[width] duration-300 ease-in-out focus:border-transparent focus:w-28 dark:bg-darkmode-400/70"
+                placeholder={t("box")}
+                onChange={(e) => dispatch(setCaja(e.target.value))}
+              />
+            </div>
+          </div>
+        </div>
+      </ParentModal>
     </>
   );
 }

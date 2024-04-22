@@ -96,5 +96,8 @@
     "companyEmail": "Correo de la compañía",
     "loginText1": "Autentícate con tu cuenta",
     "loginText2": "Gestiona todas las pólizas desde un solo lugar",
-    "selectCompany": "Seleccionar compañía"
+    "selectCompany": "Seleccionar compañía",
+    "batch": "Lote",
+    "box": "Caja",
+    "batchBoxEdit": "Editar lote/caja"
 }

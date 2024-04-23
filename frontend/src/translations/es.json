@@ -99,5 +99,13 @@
     "selectCompany": "Seleccionar compañía",
     "batch": "Lote",
     "box": "Caja",
-    "batchBoxEdit": "Editar lote/caja"
+    "batchBoxEdit": "Editar lote/caja",
+    "uploadDailyFile": "Fichero de carga diaria",
+    "add": "Añadir",
+    "DailyFiles": "Ficheros diarios",
+    "loadPolicy": "Grabación de póliza",
+    "accountNumber/branch": "Número de cuenta/Sucursal",
+    "dni": "DNI",
+    "secuencialDni": "DNI secuencial",
+    "noPolicyLoaded": "No se ha cargado ninguna póliza"
 }

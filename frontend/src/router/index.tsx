@@ -7,6 +7,12 @@ import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
 import UserList from "../pages/Administration/Users/UserList"
 import CompanyList from "../pages/Administration/Company/CompanyList"
+import UploadDaily from "../pages/Upload/Daily/DailyList"
+import UploadTablet from "../pages/Upload/Tablet/TabletList"
+import UploadCancellation from "../pages/Upload/Cancellation/CancellationList"
+import UploadDigitalSignature from "../pages/Upload/DigitalSignature/DigitalSignatureList"
+
+import LoadPolicy from "../pages/Load/LoadPolicy/Dashboard"
 
 import Layout from "../themes";
 
@@ -31,6 +37,34 @@ function Router() {
         {
           path: "change-password",
           element: <ChangePassword />,
+        },
+
+        // Upload
+        {
+          path: "upload-daily",
+          element: <UploadDaily />,
+        },
+        {
+          path: "upload-tablet",
+          element: <UploadTablet />,
+        },
+        {
+          path: "upload-cancellation",
+          element: <UploadCancellation />,
+        },
+        {
+          path: "upload-digital-signature",
+          element: <UploadDigitalSignature />,
+        },
+
+         // Load
+         {
+          path: "load-policy",
+          element: <LoadPolicy />,
+        },
+        {
+          path: "upload-tablet",
+          element: <UploadTablet />,
         },
 
         // Administration

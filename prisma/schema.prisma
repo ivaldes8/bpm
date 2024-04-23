@@ -41,11 +41,25 @@ model Usuario {
 }
 
 model LogAccion {
-  LogId       Int      @id @default(autoincrement())
+  LogId       Int        @id @default(autoincrement())
   UsuarioId   Int
   Accion      String
   FechaAccion DateTime
-  Usuario     Usuario  @relation(fields: [UsuarioId], references: [UsuarioId])
+  Usuario     Usuario    @relation(fields: [UsuarioId], references: [UsuarioId])
+  LogCarga    LogCarga[]
+}
+
+model LogCarga {
+  LogCargaId       Int       @id @default(autoincrement())
+  LogId            Int
+  Tipo             String
+  TotalRegistros   Int
+  RegistrosOk      Int
+  RegistrosError   Int
+  FechaCarga       DateTime  @default(now())
+  FechaBaja        DateTime?
+  FechaUltimaModif DateTime  @default(now())
+  LogAccion        LogAccion @relation(fields: [LogId], references: [LogId])
 }
 
 model Compania {

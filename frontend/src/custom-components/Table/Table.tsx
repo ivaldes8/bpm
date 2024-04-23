@@ -22,7 +22,7 @@ type Props = {
     onClickDelete?: (row: any) => void;
 }
 
-const Table = forwardRef(({ tableName, columns, hasActions, endpoint, filter, populateRole = false, setFilter, onClickEdit, onClickDelete }: Props, ref) => {
+const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, filter, populateRole = false, setFilter, onClickEdit, onClickDelete }: Props, ref) => {
     const { t } = useTranslation();
     const [alert, setAlert] = useContext(AlertContext);
 

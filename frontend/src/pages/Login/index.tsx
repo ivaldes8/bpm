@@ -148,7 +148,6 @@ function Main() {
                     name="codigo"
                     label="code"
                     placeholder="Código ..."
-
                   />
                   <InputField
                     control={control}

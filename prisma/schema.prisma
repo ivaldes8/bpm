@@ -44,7 +44,7 @@ model LogAccion {
   LogId       Int        @id @default(autoincrement())
   UsuarioId   Int
   Accion      String
-  FechaAccion DateTime
+  FechaAccion DateTime   @default(now())
   Usuario     Usuario    @relation(fields: [UsuarioId], references: [UsuarioId])
   LogCarga    LogCarga[]
 }
@@ -56,6 +56,7 @@ model LogCarga {
   TotalRegistros   Int
   RegistrosOk      Int
   RegistrosError   Int
+  ErrorLogs        String?
   FechaCarga       DateTime  @default(now())
   FechaBaja        DateTime?
   FechaUltimaModif DateTime  @default(now())
@@ -82,22 +83,22 @@ model Compania {
 }
 
 model Mediador {
-  MediadorId        Int        @id
+  MediadorId        Int        @id @default(autoincrement())
   Nombre            String
   Codigo            String
   Canal             String
   Zona              String
   Email             String
-  Responsable       String
-  EmailResponsable  String
-  Responsable2      String
-  EmailResponsable2 String
-  Reclamar          Boolean
-  Activo            Boolean
-  FechaAlta         DateTime   @default(now())
+  Responsable       String?
+  EmailResponsable  String?
+  Responsable2      String?
+  EmailResponsable2 String?
+  Reclamar          Boolean?   @default(false)
+  Activo            Boolean?   @default(true)
+  FechaAlta         DateTime?  @default(now())
   FechaBaja         DateTime?
-  FechaUltimaModif  DateTime   @default(now())
-  Observaciones     String
+  FechaUltimaModif  DateTime?  @default(now())
+  Observaciones     String?
   Contrato          Contrato[]
 }
 
@@ -235,17 +236,19 @@ model TipoConciliacion {
 }
 
 model Contrato {
-  ContratoId Int     @id @default(autoincrement())
-  CompaniaId Int
-  RamoId     Int
-  OficinaId  Int
-  Activo     Boolean
+  ContratoId         Int  @id @default(autoincrement())
+  CompaniaId         Int
+  RamoId             Int?
+  OficinaId          Int
+  UsuarioUltimaModif Int
+  TipoConciliacionId Int?
 
+  Activo               Boolean?              @default(true)
   FechaAltaSolicitud   DateTime              @default(now())
   FechaAltaContrato    DateTime              @default(now())
-  CCC                  String
-  CodigoSolicitud      String
-  CodigoPoliza         String
+  CCC                  String?
+  CodigoSolicitud      String?
+  CodigoPoliza         String?
   FechaEfectoSolicitud DateTime?
   FechaEfectoContrato  DateTime?
   AnuladoSE            Boolean
@@ -259,21 +262,20 @@ model Contrato {
   EdadAsegurado        Int
   CanalMediador        String
   CanalOperador        String
-  IndicadorFDPRECON    Boolean
-  TipoEnvioFDPRECON    String
-  ResultadoFDPRECON    String
-  IndicadorFDCON       Boolean
-  TipoEnvioFDCON       String
-  ResultadoFDCON       String
-  Conciliado           Boolean
+  IndicadorFDPRECON    Boolean?
+  TipoEnvioFDPRECON    String?
+  ResultadoFDPRECON    String?
+  IndicadorFDCON       Boolean?
+  TipoEnvioFDCON       String?
+  ResultadoFDCON       String?
+  Revizar              Boolean
+  Conciliar            Boolean
   FechaConciliacion    DateTime              @default(now())
-  UsuarioUltimaModif   Int
-  TipoConciliacionId   Int
   FechaUltimaModif     DateTime              @default(now())
   Compania             Compania              @relation(fields: [CompaniaId], references: [CompaniaId])
-  Ramo                 Ramo                  @relation(fields: [RamoId], references: [RamoId])
+  Ramo                 Ramo?                 @relation(fields: [RamoId], references: [RamoId])
   Mediador             Mediador              @relation(fields: [OficinaId], references: [MediadorId])
-  TipoConciliacion     TipoConciliacion      @relation(fields: [TipoConciliacionId], references: [TipoConciliacionId])
+  TipoConciliacion     TipoConciliacion?     @relation(fields: [TipoConciliacionId], references: [TipoConciliacionId])
   Usuario              Usuario               @relation(fields: [UsuarioUltimaModif], references: [UsuarioId])
   ObservacionContrato  ObservacionContrato[]
   DocumentoContrato    DocumentoContrato[]

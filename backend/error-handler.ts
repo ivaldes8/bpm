@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { ErrorCode, HttpException } from "./exceptions/root"
-import { InternalException } from "./exceptions/interna-exception"
+import { InternalException } from "./exceptions/internal-exception"
 import { ZodError } from "zod"
-import { BadRequestsException } from "./exceptions/bad-requests"
 import { UnprocessableEntity } from "./exceptions/validation"
 
 export const errorHandler = (method: Function) => {

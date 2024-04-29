@@ -174,16 +174,16 @@ model RepositorioPlantillas {
 }
 
 model Ramo {
-  RamoId            Int                 @id
+  RamoId            Int                 @id @default(autoincrement())
   CompId            Int
-  Codigo            String
-  Descripcion       String
-  Reclamar          Boolean
-  Activo            Boolean
-  FechaAlta         DateTime            @default(now())
+  Codigo            String              @unique
+  Descripcion       String?
+  Reclamar          Boolean?            @default(false)
+  Activo            Boolean?            @default(true)
+  FechaAlta         DateTime?           @default(now())
   FechaBaja         DateTime?
-  FechaUltimaModif  DateTime            @default(now())
-  Observaciones     String
+  FechaUltimaModif  DateTime?           @default(now())
+  Observaciones     String?
   Compania          Compania            @relation(fields: [CompId], references: [CompaniaId])
   RamoTipoOperacion RamoTipoOperacion[]
   Contrato          Contrato[]
@@ -238,7 +238,7 @@ model TipoConciliacion {
 model Contrato {
   ContratoId         Int  @id @default(autoincrement())
   CompaniaId         Int
-  RamoId             Int?
+  RamoId             Int
   OficinaId          Int
   UsuarioUltimaModif Int
   TipoConciliacionId Int?
@@ -255,26 +255,27 @@ model Contrato {
   CSRespAfirm          Boolean
   DNITomador           String
   NombreTomador        String
+  FechaDNITomador      DateTime?
   DNIAsegurado         String
   NombreAsegurado      String
   ProfesionAsegurado   String
   DeporteAsegurado     String
   EdadAsegurado        Int
-  CanalMediador        String
-  CanalOperador        String
   IndicadorFDPRECON    Boolean?
   TipoEnvioFDPRECON    String?
   ResultadoFDPRECON    String?
   IndicadorFDCON       Boolean?
   TipoEnvioFDCON       String?
   ResultadoFDCON       String?
-  Revizar              Boolean
+  Revisar              Boolean
   Conciliar            Boolean
+  Suplemento           Boolean?              @default(false)
+  NoDigitalizar        Boolean               @default(false)
   FechaConciliacion    DateTime              @default(now())
   FechaUltimaModif     DateTime              @default(now())
   Compania             Compania              @relation(fields: [CompaniaId], references: [CompaniaId])
-  Ramo                 Ramo?                 @relation(fields: [RamoId], references: [RamoId])
-  Mediador             Mediador              @relation(fields: [OficinaId], references: [MediadorId])
+  Ramo                 Ramo                  @relation(fields: [RamoId], references: [RamoId])
+  CanalMediador        Mediador              @relation(fields: [OficinaId], references: [MediadorId])
   TipoConciliacion     TipoConciliacion?     @relation(fields: [TipoConciliacionId], references: [TipoConciliacionId])
   Usuario              Usuario               @relation(fields: [UsuarioUltimaModif], references: [UsuarioId])
   ObservacionContrato  ObservacionContrato[]

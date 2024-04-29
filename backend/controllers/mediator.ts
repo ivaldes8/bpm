@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { prismaClient } from "../server";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
-import { CompanyCreateSchema, CompanyUpdateSchema } from "../schema/company";
 import { MediadorCreateSchema, MediadorUpdateSchema } from "../schema/mediator";
 
 export const getMediators = async (req: Request, res: Response) => {

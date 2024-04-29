@@ -78,7 +78,7 @@ export const updateCompany = async (req: Request, res: Response) => {
             }
         })
 
-        if (code) {
+        if (code && code.CompaniaId !== parseInt(req.params.id)) {
             throw new NotFoundException("Code already in use", ErrorCode.COMPANY_CODE_ALREADY_IN_USE)
         }
     }

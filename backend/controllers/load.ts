@@ -139,6 +139,19 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
             }
         }
 
+        if (record["PRODUCTO"]) {
+            const branch = await prismaClient.ramo.findFirst({
+                where: {
+                    Codigo: record["PRODUCTO"]
+                }
+            })
+
+            if (!branch) {
+                errors.push("Ramo no encontrado")
+                hasError = true;
+            }
+        }
+
         if (!record["PRODUCTO"]) {
             errors.push("Producto es obligatorio")
             hasError = true;
@@ -207,7 +220,6 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
             hasError = true;
         }
 
-
         if (!record["MEDIADOR"]) {
             errors.push("Mediador es obligatorio")
             hasError = true;
@@ -265,6 +277,12 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
                 }
             })
 
+            const branch = await prismaClient.ramo.findFirst({
+                where: {
+                    Codigo: record["PRODUCTO"]
+                }
+            })
+
             const mediator = await prismaClient.mediador.findFirst({
                 where: {
                     Codigo: `${record["MEDIADOR"]}`
@@ -278,7 +296,12 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
                             CompaniaId: company?.CompaniaId
                         }
                     },
-                    Mediador: {
+                    Ramo: {
+                        connect: {
+                            RamoId: branch?.RamoId
+                        }
+                    },
+                    CanalMediador: {
                         connect: {
                             MediadorId: mediator?.MediadorId
                         }
@@ -302,16 +325,16 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
                     DeporteAsegurado: record["DEPORTE"],
                     DNITomador: record["ID_TOMADOR_PARTICIPE"],
                     NombreTomador: record["NOMBRE TOMADOR_PARTICIPE"],
-                    CanalOperador: record["OPERADOR"],
-                    CanalMediador: record["MEDIADOR"],
+                    FechaDNITomador: record["FECHA VALIDEZ IDENTIDAD TOMADOR"] ? new Date(record["FECHA VALIDEZ IDENTIDAD TOMADOR"]) : null,
                     IndicadorFDPRECON: record["INDICADOR FIRMA DIGITAL PRECON"] === 'SI' ? true : false,
                     TipoEnvioFDPRECON: record["TIPO ENVIO FIRMA DIGITAL PRECON"] ?? null,
                     ResultadoFDPRECON: record["RESULTADO FIRMA DIGITAL PRECON"] ?? null,
                     IndicadorFDCON: record["INDICADOR FIRMA DIGITAL CON"] === 'SI' ? true : false,
                     TipoEnvioFDCON: record["TIPO ENVIO FIRMA DIGITAL CON"] ?? null,
                     ResultadoFDCON: record["RESULTADO FIRMA DIGITAL CON"] ?? null,
-                    Revizar: record["REVISAR"] === 'SI' ? true : false,
+                    Revisar: record["REVISAR"] === 'SI' ? true : false,
                     Conciliar: record["CONCILIAR"] === 'SI' ? true : false,
+                    Suplemento: record["SUPLEMENTO"] && parseInt(record["SUPLEMENTO"]) === 1 ? true : false,
                 }
             })
             RegistrosOk++;

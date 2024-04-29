@@ -11,15 +11,19 @@ import Table from "@/custom-components/Table/Table";
 import columns from "./Columns";
 import TableFilters from "./TableFilters";
 import CompanyService from "@/services/CompanyService";
+import UploadDetail from "./UploadDetail";
 
 function Main() {
     const { t } = useTranslation();
     const [alert, setAlert] = useContext(AlertContext);
     const [loading, setLoading] = useContext(LoadingContext);
 
+    const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
+    const [selectedRow, setSelectedRow] = useState<any>(null);
+
     const table = useRef();
     const [filter, setFilter] = useState({
-        field: "Nombre",
+        field: "Tipo",
         type: "like",
         value: "",
     });
@@ -94,10 +98,21 @@ function Main() {
                 <Table
                     ref={table}
                     tableName="DailyFiles"
-                    endpoint="/companies"
+                    endpoint="/load"
                     columns={columns() as ColumnDefinition[]}
                     filter={filter}
                     setFilter={setFilter}
+                    onClickDetail={(row: any) => {
+                        setSelectedRow(row);
+                        setShowDetailModal(true);
+                    }}
+                    hasActions
+                />
+
+                <UploadDetail
+                    show={showDetailModal}
+                    setShow={setShowDetailModal}
+                    selectedRow={selectedRow}
                 />
             </div>
         </>

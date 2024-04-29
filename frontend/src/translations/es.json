@@ -107,5 +107,11 @@
     "accountNumber/branch": "Número de cuenta/Sucursal",
     "dni": "DNI",
     "secuencialDni": "DNI secuencial",
-    "noPolicyLoaded": "No se ha cargado ninguna póliza"
+    "noPolicyLoaded": "No se ha cargado ninguna póliza",
+    "totalRecords": "Total de registros",
+    "okRecords": "Registros correctos",
+    "errorRecords": "Registros con error",
+    "createdAt": "Creado en",
+    "updatedAt": "Actualizado en",
+    "uploadDetail": "Detalle de la carga"
 }

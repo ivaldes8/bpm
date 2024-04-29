@@ -14,25 +14,9 @@ const columns = () => {
             headerSort: false,
         },
         {
-            title: t("company"),
+            title: t("type"),
             minWidth: 200,
-            responsive: 0,
-            field: "Nombre",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell: any) {
-                const response: any = cell.getData();
-                return `<div>
-                            <div class="font-medium whitespace-nowrap">${response.Nombre}</div>
-                            <div class="text-slate-500 text-xs whitespace-nowrap">${response.Codigo}</div>
-                        </div>`;
-            },
-        },
-        {
-            title: t("email"),
-            minWidth: 200,
-            field: "CorreoComp",
+            field: "Tipo",
             hozAlign: "center",
             headerHozAlign: "center",
             vertAlign: "middle",
@@ -41,14 +25,14 @@ const columns = () => {
             formatter(cell: any) {
                 const response: any = cell.getData();
                 return `<div class="flex items-center lg:justify-center">
-                            ${response?.CorreoComp ?? '---'}
+                            ${response?.Tipo ?? '---'}
                         </div>`;
             },
         },
         {
-            title: t("phone"),
+            title: t("totalRecords"),
             minWidth: 200,
-            field: "Telefono",
+            field: "TotalRegistros",
             hozAlign: "center",
             headerHozAlign: "center",
             vertAlign: "middle",
@@ -57,14 +41,14 @@ const columns = () => {
             formatter(cell: any) {
                 const response: any = cell.getData();
                 return `<div class="flex items-center lg:justify-center">
-                            ${response?.Telefono ?? '---'}
+                            ${response?.TotalRegistros ?? '---'}
                         </div>`;
             },
         },
         {
-            title: t("description"),
+            title: t("okRecords"),
             minWidth: 200,
-            field: "Descripcion",
+            field: "RegistrosOk",
             hozAlign: "center",
             headerHozAlign: "center",
             vertAlign: "middle",
@@ -72,15 +56,15 @@ const columns = () => {
             download: false,
             formatter(cell: any) {
                 const response: any = cell.getData();
-                return `<div class="truncate w-48">
-                            ${response?.Descripcion ?? '---'}
+                return `<div class="flex items-center lg:justify-center">
+                            ${response?.RegistrosOk ?? '---'}
                         </div>`;
             },
         },
         {
-            title: t("active"),
+            title: t("errorRecords"),
             minWidth: 200,
-            field: "Activo",
+            field: "RegistrosError",
             hozAlign: "center",
             headerHozAlign: "center",
             vertAlign: "middle",
@@ -88,8 +72,40 @@ const columns = () => {
             download: false,
             formatter(cell: any) {
                 const response: any = cell.getData();
-                return `<div class="flex items-center lg:justify-center ${response.Activo ? "text-success" : "text-danger"}">
-                            <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> ${response.Activo ? "Active" : "Inactive"}
+                return `<div class="flex items-center lg:justify-center">
+                            ${response?.RegistrosError ?? '---'}
+                        </div>`;
+            },
+        },
+        {
+            title: t("createdAt"),
+            minWidth: 200,
+            field: "FechaCarga",
+            hozAlign: "center",
+            headerHozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell: any) {
+                const response: any = cell.getData();
+                return `<div class="flex items-center lg:justify-center">
+                            ${response?.FechaCarga ? new Date(response?.FechaCarga).toLocaleDateString() : '---'}
+                        </div>`;
+            },
+        },
+        {
+            title: t("updatedAt"),
+            minWidth: 200,
+            field: "FechaUltimaModif",
+            hozAlign: "center",
+            headerHozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell: any) {
+                const response: any = cell.getData();
+                return `<div class="flex items-center lg:justify-center">
+                ${response?.FechaUltimaModif ? new Date(response?.FechaUltimaModif).toLocaleDateString() : '---'}
                         </div>`;
             },
         },
@@ -97,49 +113,46 @@ const columns = () => {
 
         // For print format
         {
-            title: t("name"),
-            field: "Nombre",
+            title: t("type"),
+            field: "Tipo",
             visible: false,
             print: true,
             download: true,
         },
         {
-            title: t("code"),
-            field: "Codigo",
+            title: t("totalRecords"),
+            field: "TotalRegistros",
             visible: false,
             print: true,
             download: true,
         },
         {
-            title: t("email"),
-            field: "CorreoComp",
+            title: t("okRecords"),
+            field: "RegistrosOk",
             visible: false,
             print: true,
             download: true,
         },
         {
-            title: t("phone"),
-            field: "Telefono",
+            title: t("errorRecords"),
+            field: "RegistrosError",
             visible: false,
             print: true,
             download: true,
         },
         {
-            title: t("description"),
-            field: "Descripcion",
+            title: t("createdAt"),
+            field: "FechaCarga",
             visible: false,
             print: true,
             download: true,
         },
         {
-            title: t("active"),
-            field: "Activo",
+            title: t("updatedAt"),
+            field: "FechaUltimaModif",
             visible: false,
             print: true,
             download: true,
-            formatterPrint(cell: any) {
-                return cell.getValue() ? "Activo" : "Inactivo";
-            },
         },
     ]
 

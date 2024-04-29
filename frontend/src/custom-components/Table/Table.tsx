@@ -20,9 +20,10 @@ type Props = {
     setFilter?: (filter: any) => void;
     onClickEdit?: (row: any) => void;
     onClickDelete?: (row: any) => void;
+    onClickDetail?: (row: any) => void;
 }
 
-const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, filter, populateRole = false, setFilter, onClickEdit, onClickDelete }: Props, ref) => {
+const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, filter, populateRole = false, setFilter, onClickEdit, onClickDelete, onClickDetail }: Props, ref) => {
     const { t } = useTranslation();
     const [alert, setAlert] = useContext(AlertContext);
 
@@ -111,17 +112,15 @@ const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, fi
                             formatter(cell) {
                                 const response: any = cell.getData()
                                 const a = stringToHTML(`<div class="flex lg:justify-center items-center">
-                                                        <a class="edit-action flex items-center text-warning mr-3" href="javascript:;">
-                                                            <i data-lucide="pencil" class="w-4 h-4 mr-1"></i> Edit
-                                                        </a>
-                                                        <a class="delete-action flex items-center text-danger" href="javascript:;">
-                                                            <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-                                                        </a>
+                                                        ${onClickEdit ? "<a class='edit-action flex items-center text-warning mr-3'><i data-lucide='pencil' class='w-4 h-4 mr-1'></i>Edit</a>" : ''}
+                                                        ${onClickDelete ? "<a class='delete-action flex items-center text-danger'><i data-lucide='trash-2' class='w-4 h-4 mr-1'></i>Delete</a>" : ''}
+                                                        ${onClickDetail ? "<a class='detail-action flex items-center text-primary ml-3'><i data-lucide='eye' class='w-4 h-4 mr-1'></i>Detail</a>" : ''}
                                                     </div>`);
 
                                 // Adding event listeners for edit and delete actions
                                 const editLink = a.querySelector('.edit-action');
                                 const deleteLink = a.querySelector('.delete-action');
+                                const detailLink = a.querySelector('.detail-action');
 
                                 if (editLink && deleteLink) {
                                     editLink.addEventListener("click", function () {
@@ -130,6 +129,12 @@ const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, fi
 
                                     deleteLink.addEventListener("click", function () {
                                         if (onClickDelete) onClickDelete(response)
+                                    });
+                                }
+
+                                if (detailLink) {
+                                    detailLink.addEventListener("click", function () {
+                                        if (onClickDetail) onClickDetail(response)
                                     });
                                 }
                                 return a;

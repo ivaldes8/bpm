@@ -3,7 +3,6 @@ import Lucide from '@/components/Base/Lucide';
 import InputField from '@/custom-components/FormElements/InputField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 
 type Props = {
@@ -11,7 +10,6 @@ type Props = {
 }
 
 const PolicyFilters = ({ onFilter }: Props) => {
-    const { t } = useTranslation();
 
     const defaultValue = {
         policy: "",

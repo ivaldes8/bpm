@@ -113,5 +113,14 @@
     "errorRecords": "Registros con error",
     "createdAt": "Creado en",
     "updatedAt": "Actualizado en",
-    "uploadDetail": "Detalle de la carga"
+    "uploadDetail": "Detalle de la carga",
+    "uploadFile": "Fichero de carga",
+    "upload": "Cargar",
+    "Upload failed": "Carga fallida",
+    "Uploaded successfully": "Cargado satisfactoriamente",
+    "Error while retrieving contracts": "Error al recuperar los contratos",
+    "selectContract": "Seleccionar contrato",
+    "select": "Seleccionar",
+    "branch": "Ramo",
+    "insuranceDNI": "DNI del asegurado"
 }

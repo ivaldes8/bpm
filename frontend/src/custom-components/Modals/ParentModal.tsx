@@ -64,7 +64,7 @@ const ParentModal = ({ navigateOnClose ,show = false, setShow, handleOnSubmit, c
                     )
                 }
 
-                <Dialog.Description className={`grid gap-4 gap-y-3  ${!disableHeight && 'max-h-[80vh]'} `} style={{ overflowY: "auto" }}>
+                <Dialog.Description className={`grid gap-4 gap-y-3  ${!disableHeight && 'max-h-[70vh]'} `} style={{ overflowY: "auto" }}>
                     {children}
                 </Dialog.Description>
                 {

@@ -12,6 +12,7 @@ import columns from "./Columns";
 import TableFilters from "./TableFilters";
 import CompanyService from "@/services/CompanyService";
 import UploadDetail from "./UploadDetail";
+import UploadFile from "./UploadFile";
 
 function Main() {
     const { t } = useTranslation();
@@ -19,6 +20,7 @@ function Main() {
     const [loading, setLoading] = useContext(LoadingContext);
 
     const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
+    const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
     const [selectedRow, setSelectedRow] = useState<any>(null);
 
     const table = useRef();
@@ -77,7 +79,7 @@ function Main() {
             <div className="flex flex-col items-center mt-8 intro-y sm:flex-row">
                 <h2 className="mr-auto text-lg font-medium">{t("uploadDailyFile")}</h2>
                 <div className="flex w-full mt-4 sm:w-auto sm:mt-0">
-                    <Button variant="primary" className="mr-2 shadow-md" onClick={() => { }}>
+                    <Button variant="primary" className="mr-2 shadow-md" onClick={() => { setShowUploadModal(true) }}>
                         {t("add")}
                     </Button>
                 </div>
@@ -113,6 +115,15 @@ function Main() {
                     show={showDetailModal}
                     setShow={setShowDetailModal}
                     selectedRow={selectedRow}
+                />
+
+                <UploadFile
+                    show={showUploadModal}
+                    setShow={setShowUploadModal}
+                    onRefresh={() => {
+                        //@ts-ignore
+                        table.current?.refetchData()
+                    }}
                 />
             </div>
         </>

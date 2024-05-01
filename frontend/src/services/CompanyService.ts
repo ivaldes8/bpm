@@ -1,4 +1,3 @@
-import { getCompanyList } from "@/stores/settingsSlice"
 import api from "@/utils/api/useApi"
 
 const baseUrl = "/companies"

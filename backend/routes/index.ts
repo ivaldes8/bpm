@@ -5,6 +5,7 @@ import userRoutes from "./user";
 import loadRoutes from "./load";
 import mediatorRoutes from "./mediator";
 import branchRoutes from "./branch";
+import contractRoutes from "./contract";
 
 const rootRouter: Router = Router()
 
@@ -14,5 +15,7 @@ rootRouter.use("/companies", companyRoutes)
 rootRouter.use("/mediators", mediatorRoutes)
 rootRouter.use("/branches", branchRoutes)
 rootRouter.use("/load", loadRoutes)
+rootRouter.use("/contracts", contractRoutes)
+
 
 export default rootRouter

@@ -122,5 +122,13 @@
     "selectContract": "Seleccionar contrato",
     "select": "Seleccionar",
     "branch": "Ramo",
-    "insuranceDNI": "DNI del asegurado"
+    "insuranceDNI": "DNI del asegurado",
+    "RegistrationDateRequest": "Fecha de alta de solicitud",
+    "Branch": "Ramo",
+    "InsuranceProfession": "Profesión del asegurado",
+    "InsuranceName": "Nombre del asegurado",
+    "InsuranceSport": "Deporte del asegurado",
+    "InsuranceAge": "Edad del asegurado",
+    "goBack": "Volver",
+    "clearForm": "Limpiar formulario"
 }

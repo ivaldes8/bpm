@@ -8,6 +8,7 @@ import Lucide from "@/components/Base/Lucide";
 import handlePromise from "@/utils/promise";
 import ContractService from "@/services/ContractService";
 import SelectContractModal from "./components/SelectContractModal";
+import ContractForm from "./components/ContractForm";
 
 function Main() {
     const { t } = useTranslation();
@@ -35,10 +36,11 @@ function Main() {
     }
 
     const onFilter = async (data: any) => {
-        console.log(data, contractList, "Filter")
         const filtered = contractList.filter((contract) => {
             if (data.dni) {
                 if (contract.DNIAsegurado === data.dni) return contract
+            } else {
+                return contract
             }
         })
 
@@ -71,33 +73,9 @@ function Main() {
             <div className="p-5 mt-5 intro-y box">
                 <PolicyFilters onFilter={onFilter} />
                 <hr />
-
                 {
                     selectedContract ? (
-                        <div className="flex flex-col mt-4">
-                            <div className="flex items-center gap-2">
-                                <Lucide icon="CheckCircle" className="w-6 h-6 text-success" />
-                                <span className="text-sm font-medium">{t("contractSelected")}</span>
-                            </div>
-                            <div className="flex flex-col mt-4">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium">{t("company")}</span>
-                                    <span className="text-sm font-medium">{selectedContract.Compania.Codigo}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium">{t("branch")}</span>
-                                    <span className="text-sm font-medium">{selectedContract.Ramo.Codigo}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium">{t("insuranceDNI")}</span>
-                                    <span className="text-sm font-medium">{selectedContract.DNIAsegurado}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium">{t("policyNumber")}</span>
-                                    <span className="text-sm font-medium">{selectedContract.CodigoPoliza}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <ContractForm selectedContract={selectedContract} setSelectedContract={setSelectedContract} />
                     ) : (
                         <Alert variant="soft-secondary" className="flex items-center my-4 justify-center">
                             <Lucide icon="AlertOctagon" className="w-6 h-6 mr-2" />{" "}

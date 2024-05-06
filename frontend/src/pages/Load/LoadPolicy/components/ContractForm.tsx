@@ -1,5 +1,4 @@
 import Button from '@/components/Base/Button'
-import Lucide from '@/components/Base/Lucide'
 import InputField from '@/custom-components/FormElements/InputField'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect } from 'react'
@@ -7,6 +6,8 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
+import ObservationHistory from './ObservationHistory'
 
 type Props = {
     selectedContract: any,
@@ -16,6 +17,7 @@ type Props = {
 const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
     const { t } = useTranslation()
+    const navigate = useNavigate();
 
     const defaultValues = {
         FechaAltaSolicitud: '',
@@ -75,62 +77,66 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
     return (
         <form className="flex flex-col mt-4 box" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 box p-4 m-4 mb-2">
-                <div className="w-full sm:w-1/2">
-                    <InputField
-                        control={control}
-                        name="FechaAltaSolicitud"
-                        type='date'
-                        label="RegistrationDateRequest"
-                        disabled
-                    />
+            <div className="box p-4 m-4 mb-2">
+                <div className="flex flex-col sm:flex-row gap-0  sm:gap-4">
+                    <div className="w-full sm:w-1/2">
+                        <InputField
+                            control={control}
+                            name="FechaAltaSolicitud"
+                            type='date'
+                            label="RegistrationDateRequest"
+                            disabled
+                        />
+                    </div>
+                    <div className="w-full sm:w-1/2">
+                        <InputField
+                            control={control}
+                            name="RamoCodigo"
+                            type='text'
+                            label="Branch"
+                            disabled
+                        />
+                    </div>
                 </div>
-                <div className="w-full sm:w-1/2">
-                    <InputField
-                        control={control}
-                        name="RamoCodigo"
-                        type='text'
-                        label="Branch"
-                        disabled
-                    />
+
+                <div className="flex flex-col sm:flex-row gap-0  sm:gap-4">
+                    <div className="w-full sm:w-1/2">
+                        <InputField
+                            control={control}
+                            name="ProfesionAsegurado"
+                            type='text'
+                            label="InsuranceProfession"
+                            disabled
+                        />
+                    </div>
+                    <div className="w-full sm:w-1/2">
+                        <InputField
+                            control={control}
+                            name="DeporteAsegurado"
+                            type='text'
+                            label="InsuranceSport"
+                            disabled
+                        />
+                    </div>
+                    <div className="w-full sm:w-1/2">
+                        <InputField
+                            control={control}
+                            name="EdadAsegurado"
+                            type='number'
+                            label="InsuranceAge"
+                            disabled
+                        />
+                    </div>
                 </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 box p-4 m-4 mb-2">
-                <div className="w-full sm:w-1/2">
-                    <InputField
-                        control={control}
-                        name="ProfesionAsegurado"
-                        type='text'
-                        label="InsuranceProfession"
-                        disabled
-                    />
-                </div>
-                <div className="w-full sm:w-1/2">
-                    <InputField
-                        control={control}
-                        name="DeporteAsegurado"
-                        type='text'
-                        label="InsuranceSport"
-                        disabled
-                    />
-                </div>
-                <div className="w-full sm:w-1/2">
-                    <InputField
-                        control={control}
-                        name="EdadAsegurado"
-                        type='number'
-                        label="InsuranceAge"
-                        disabled
-                    />
-                </div>
-            </div>
+            <ObservationHistory selectedContract={selectedContract}/>
 
             <div className="flex flex-col sm:flex-row justify-center items-center my-2 gap-3">
-                <Button variant="secondary" onClick={() => setSelectedContract(null)}>
+                <Button variant="secondary" onClick={() => navigate('/')}>
                     {t("goBack")}
                 </Button>
-                <Button variant="danger" onClick={() => console.log("Clear form")}>
+                <Button variant="danger" onClick={() => setSelectedContract(null)}>
                     {t("clearForm")}
                 </Button>
                 <Button variant="primary" disabled={!isValid} type='submit'>

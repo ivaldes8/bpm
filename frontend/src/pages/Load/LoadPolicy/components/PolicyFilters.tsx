@@ -54,8 +54,8 @@ const PolicyFilters = ({ onFilter }: Props) => {
             <InputField
                 control={control}
                 name="policy"
-                label="accountNumber/branch"
-                placeholder="Número de cuenta/Sucursal ..."
+                label="indentifier"
+                placeholder="Identificador ..."
             />
 
             <InputField
@@ -67,7 +67,7 @@ const PolicyFilters = ({ onFilter }: Props) => {
 
             <InputField
                 control={control}
-                name="secuencialDni"
+                name="dni"
                 label="secuencialDni"
                 placeholder="DNI secuencial ..."
             />

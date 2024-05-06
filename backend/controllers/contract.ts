@@ -6,12 +6,53 @@ import { InternalException } from "../exceptions/internal-exception";
 import { createContratoSchema, updateContratoSchema } from "../schema/contract";
 
 export const getContracts = async (req: Request, res: Response) => {
+
+    const { company, policy, dni, secuencialDni } = req.query;
+    let requestedCompany = null;
+
+    if (company) {
+        try {
+            requestedCompany = await prismaClient.compania.findFirstOrThrow({
+                where: {
+                    CompaniaId: parseInt(company as string)
+                }
+            })
+        } catch (error) {
+            throw new NotFoundException("Company not found", ErrorCode.NOT_FOUND_EXCEPTION)
+        }
+    }
+
     const contracts = await prismaClient.contrato.findMany({
         include: {
             Usuario: true,
             Compania: true,
             Ramo: true,
-            CanalMediador: true
+            CanalMediador: true,
+            ObservacionContrato: {
+                include: {
+                    Usuario: true
+                },
+                orderBy: {
+                    FechaAlta: 'desc'
+                }
+            }
+        },
+        where: {
+            ...(requestedCompany && requestedCompany.Codigo === 'UCV' && policy ? {
+                CCC: policy as string
+            } : {}),
+            ...(requestedCompany && requestedCompany.Codigo !== 'UCV' && policy ? {
+                OR: [
+                    { CodigoSolicitud: policy as string },
+                    { CodigoPoliza: policy as string }
+                ]
+            } : {}),
+            ...(dni ? {
+                DNIAsegurado: dni as string
+            } : {}),
+            ...(secuencialDni ? {
+                DNIAsegurado: secuencialDni as string
+            } : {}),
         }
     })
 

@@ -130,5 +130,10 @@
     "InsuranceSport": "Deporte del asegurado",
     "InsuranceAge": "Edad del asegurado",
     "goBack": "Volver",
-    "clearForm": "Limpiar formulario"
+    "clearForm": "Limpiar formulario",
+    "indentifier": "Identificador",
+    "companyNotSelected": "Compañía no seleccionada",
+    "showObservations": "Mostrar observaciones",
+    "hideObservations": "Ocultar observaciones",
+    "noCommentsFound": "No se encontraron comentarios"
 }

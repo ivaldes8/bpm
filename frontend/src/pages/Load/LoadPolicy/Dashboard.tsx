@@ -9,11 +9,14 @@ import handlePromise from "@/utils/promise";
 import ContractService from "@/services/ContractService";
 import SelectContractModal from "./components/SelectContractModal";
 import ContractForm from "./components/ContractForm";
+import { useAppSelector } from "@/stores/hooks";
 
 function Main() {
     const { t } = useTranslation();
     const [alert, setAlert] = useContext(AlertContext);
     const [loading, setLoading] = useContext(LoadingContext);
+
+    const { company } = useAppSelector((state) => state.settings)
 
     const [contractList, setContractList] = useState<any[]>([]);
     const [filteredContracts, setFilteredContracts] = useState<any[]>([]);
@@ -21,9 +24,9 @@ function Main() {
 
     const [selectContractModal, setselectContractModal] = useState<boolean>(false);
 
-    const getContracts = async () => {
+    const getContracts = async (params: any) => {
         setLoading(true)
-        const [error, response, data] = await handlePromise(ContractService.getContracts());
+        const [error, response, data] = await handlePromise(ContractService.getContracts(params));
         setLoading(false)
         if (!response.ok) {
             return setAlert({
@@ -33,22 +36,32 @@ function Main() {
             })
         }
         setContractList(data)
+
+        if (data.length === 1) {
+            setSelectedContract(data[0])
+        } else {
+            setFilteredContracts(data)
+        }
     }
 
     const onFilter = async (data: any) => {
-        const filtered = contractList.filter((contract) => {
-            if (data.dni) {
-                if (contract.DNIAsegurado === data.dni) return contract
-            } else {
-                return contract
-            }
-        })
 
-        if (filtered.length && filtered.length === 1) {
-            setSelectedContract(filtered[0])
-        } else if (filtered.length > 1) {
-            setFilteredContracts(filtered)
+        if (!company) {
+            return setAlert({
+                type: "error",
+                show: true,
+                text: "companyNotSelected",
+            })
         }
+
+        setSelectedContract(null)
+
+        const params = {
+            company: company.CompaniaId,
+            ...data
+        }
+
+        await getContracts(params)
     }
 
     useEffect(() => {
@@ -56,14 +69,6 @@ function Main() {
             setselectContractModal(true)
         }
     }, [filteredContracts])
-
-
-    useEffect(() => {
-        getContracts()
-    }, [])
-
-
-
 
     return (
         <>

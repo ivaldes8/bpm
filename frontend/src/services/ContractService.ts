@@ -3,8 +3,8 @@ import api from "@/utils/api/useApi"
 const baseUrl = "/contracts"
 
 export default {
-    getContracts() {
-        return api.get(`${baseUrl}`)
+    getContracts(params: any) {
+        return api.get(`${baseUrl}`, params)
     },
     getContractById(id: string) {
         return api.get(`${baseUrl}/${id}`)

@@ -288,7 +288,7 @@ model ObservacionContrato {
   ContratoId       Int
   Contenido        String
   FechaUltimaModif DateTime @default(now())
-  FechaObs         DateTime @default(now())
+  FechaAlta        DateTime @default(now())
   Usuario          Usuario  @relation(fields: [UsuarioId], references: [UsuarioId])
   Contrato         Contrato @relation(fields: [ContratoId], references: [ContratoId])
 }
@@ -299,7 +299,7 @@ model DocumentoContrato {
   TipoDocId           Int
   UsuarioId           Int
   EstadoDoc           String
-  NumeReclamaciones   Int
+  NumeReclamaciones   Int                   @default(0)
   Contrato            Contrato              @relation(fields: [ContratoId], references: [ContratoId])
   MaestroDocumentos   MaestroDocumentos     @relation(fields: [TipoDocId], references: [TipoDocumentoId])
   Usuario             Usuario               @relation(fields: [UsuarioId], references: [UsuarioId])

@@ -14,9 +14,7 @@ app.use(cors());
 
 app.use("/api", rootRouter);
 
-export const prismaClient = new PrismaClient({
-    log: ['query']
-})
+export const prismaClient = new PrismaClient()
 
 if (NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../frontend/dist/")));

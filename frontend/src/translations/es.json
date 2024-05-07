@@ -135,5 +135,8 @@
     "companyNotSelected": "Compañía no seleccionada",
     "showObservations": "Mostrar observaciones",
     "hideObservations": "Ocultar observaciones",
-    "noCommentsFound": "No se encontraron comentarios"
+    "noCommentsFound": "No se encontraron comentarios",
+    "observation": "Observación",
+    "addObservation": "Añadir observación",
+    "Observations added successfully": "Observaciones añadidas satisfactoriamente"
 }

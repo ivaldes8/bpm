@@ -26,7 +26,20 @@ export const getContracts = async (req: Request, res: Response) => {
         include: {
             Usuario: true,
             Compania: true,
-            Ramo: true,
+            Ramo: {
+                include: {
+                    RamoTipoOperacion: {
+                        include: {
+                            RamoDocumento: {
+                                include: {
+                                    MaestroDocumento: true
+                                }
+                            }
+                        }
+                    
+                    }
+                }
+            },
             CanalMediador: true,
             ObservacionContrato: {
                 include: {

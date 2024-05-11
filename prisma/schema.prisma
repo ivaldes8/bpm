@@ -68,12 +68,13 @@ model Compania {
   Nombre           String
   Codigo           String     @unique
   Descripcion      String     @unique
-  Telefono         String
-  CorreoComp       String
-  ReclamarComp     Boolean    @default(false)
-  CorreoSoporte    String
-  ReclamarSoporte  Boolean    @default(false)
+  Telefono         String?
+  CorreoComp       String?
+  ReclamarComp     Boolean?   @default(false)
+  CorreoSoporte    String?
+  ReclamarSoporte  Boolean?   @default(false)
   Activo           Boolean    @default(true)
+  ColorBase        String?
   FechaInicio      DateTime   @default(now())
   FechaBaja        DateTime?
   FechaUltimaModif DateTime   @default(now())
@@ -119,7 +120,7 @@ model MaestroDocumentos {
   FamiliaId         Int
   Codigo            String
   Nombre            String
-  Descripcion       String
+  Descripcion       String?
   Suplemento        Boolean
   Activo            Boolean
   FechaInicio       DateTime            @default(now())
@@ -133,7 +134,7 @@ model MaestroDocumentos {
 
 model MaestroIncidencias {
   TipoIncidenciaId Int    @id
-  DocAsociadoId    Int
+  DocAsociadoId    Int?
   Codigo           String
   Nombre           String
 
@@ -141,7 +142,7 @@ model MaestroIncidencias {
   FechaInicio         DateTime              @default(now())
   FechaBaja           DateTime?
   FechaUltimaModif    DateTime              @default(now())
-  FamiliaDocumento    FamiliaDocumento      @relation(fields: [DocAsociadoId], references: [FamiliaId])
+  FamiliaDocumento    FamiliaDocumento?      @relation(fields: [DocAsociadoId], references: [FamiliaId])
   TipoDocIncidencia   TipoDocIncidencia[]
   IncidenciaDocumento IncidenciaDocumento[]
 }
@@ -192,8 +193,8 @@ model Ramo {
 model RamoTipoOperacion {
   RamoTipoOpId          Int                    @id
   RamoId                Int
-  PlantillaIncidencia   Int
-  PlantillaConciliacion Int
+  PlantillaIncidencia   Int?
+  PlantillaConciliacion Int?
   TipoOperacion         String
   Activo                Boolean
   FechaInicio           DateTime               @default(now())
@@ -208,16 +209,14 @@ model RamoDocumento {
   RamoDocId             Int                    @id
   RamoId                Int
   DocumentoId           Int
-  AnexoIncidencias      Int
-  AnexoConciliacion     Int
-  Caratula              Int
-  RequiereComunicacion  Boolean
+  AnexoIncidencias      Int?
+  AnexoConciliacion     Int?
+  Caratula              Int?
+  RequiereComunicacion  Boolean?              @default(false)
   Fase                  String
   Activo                Boolean
   FechaInicio           DateTime               @default(now())
   FechaBaja             DateTime?
-  PlantillaIncidencia   Int
-  PlantillaConciliacion Int
   RamoTipoOperacion     RamoTipoOperacion      @relation(fields: [RamoId], references: [RamoTipoOpId])
   MaestroDocumento      MaestroDocumentos      @relation(fields: [DocumentoId], references: [TipoDocumentoId])
   anexoIncidencia       RepositorioPlantillas? @relation("AnexoIncidenciaPlantilla", fields: [AnexoIncidencias], references: [PlantillaId])

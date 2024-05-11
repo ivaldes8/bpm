@@ -14,6 +14,7 @@ import { AlertContext } from '@/utils/Contexts/AlertContext'
 import { LoadingContext } from '@/utils/Contexts/LoadingContext'
 import handlePromise from "@/utils/promise";
 import ObservationContractService from '@/services/ObservationContractService'
+import DocumentList from './DocumentList'
 
 type Props = {
     selectedContract: any,
@@ -37,7 +38,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         DeporteAsegurado: '',
         EdadAsegurado: 0,
         NoDigitalizar: false,
-        observations: []
+        observations: [],
+        documents: []
     }
 
     const schema = () => yup.object().shape(
@@ -50,7 +52,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
             DeporteAsegurado: yup.string().required(t("errors.required") ?? ''),
             EdadAsegurado: yup.number().required(t("errors.required") ?? ''),
             NoDigitalizar: yup.boolean(),
-            observations: yup.array().of(yup.object().shape({ observation: yup.string().required(t("errors.required") ?? '') }))
+            observations: yup.array().of(yup.object().shape({ observation: yup.string().required(t("errors.required") ?? '') })),
+            documents: yup.array()
         }
     )
 
@@ -70,11 +73,12 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         name: "observations"
     });
 
+
     const onSubmit = async (data: any) => {
         const observations = data.observations
         setLoading(true)
 
-        await Promise.all(observations.map(async (observation: any) => {
+        for (const observation of observations) {
             const toSend = {
                 ContratoId: selectedContract.ContratoId,
                 Contenido: observation.observation
@@ -89,7 +93,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                     text: error ? error : "Error while adding observation",
                 })
             }
-        }))
+        }
+
         setLoading(false)
 
         setAlert({
@@ -102,7 +107,21 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
     }
 
     useEffect(() => {
-        if (selectedContract) {
+
+        const resetFormFiels = async () => {
+            const docList = []
+            const RamoTipoOperacionArray = selectedContract?.Ramo.RamoTipoOperacion;
+            for (let i = 0; i < RamoTipoOperacionArray.length; i++) {
+                for (let j = 0; j < RamoTipoOperacionArray[i].RamoDocumento.length; j++) {
+                    await docList.push({
+                        id: RamoTipoOperacionArray[i].RamoDocumento[j].RamoDocId,
+                        present: true,
+                        name: RamoTipoOperacionArray[i].RamoDocumento[j].MaestroDocumento.Nombre
+                    })
+                }
+
+            }
+
             reset({
                 FechaAltaSolicitud: moment(selectedContract?.FechaAltaSolicitud).format('YYYY-MM-DD'),
                 RamoId: selectedContract?.RamoId,
@@ -112,8 +131,12 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 DeporteAsegurado: selectedContract?.DeporteAsegurado,
                 EdadAsegurado: selectedContract?.EdadAsegurado,
                 NoDigitalizar: false,
-                observations: []
+                observations: [],
+                documents: docList
             })
+        }
+        if (selectedContract) {
+            resetFormFiels()
         }
     }, [selectedContract])
 
@@ -194,6 +217,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                     </Button>
                 </div>
             </div>
+
+            <DocumentList control={control} selectedContract={selectedContract} />
 
             <ObservationHistory selectedContract={selectedContract} />
 

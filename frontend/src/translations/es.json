@@ -138,5 +138,8 @@
     "noCommentsFound": "No se encontraron comentarios",
     "observation": "Observación",
     "addObservation": "Añadir observación",
-    "Observations added successfully": "Observaciones añadidas satisfactoriamente"
+    "Observations added successfully": "Observaciones añadidas satisfactoriamente",
+    "showDocumentList": "Mostrar lista de documentos",
+    "hideDocumentList": "Ocultar lista de documentos",
+    "noDocumentsFound": "No se encontraron documentos"
 }

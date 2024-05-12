@@ -43,7 +43,7 @@ const ADMIN_NAVIGATION: Array<Menu> = [
             },
             {
                 icon: "ShieldX",
-                pathname: "/user-list",
+                pathname: "/load-incidence-policy",
                 title: "Grabación de poliza con incidencia"
             },
             {

@@ -13,6 +13,7 @@ import UploadCancellation from "../pages/Upload/Cancellation/CancellationList"
 import UploadDigitalSignature from "../pages/Upload/DigitalSignature/DigitalSignatureList"
 
 import LoadPolicy from "../pages/Load/LoadPolicy/Dashboard"
+import LoadIncidencePolicy from "../pages/Load/LoadIncidencePolicy/Dashboard"
 
 import Layout from "../themes";
 
@@ -57,10 +58,14 @@ function Router() {
           element: <UploadDigitalSignature />,
         },
 
-         // Load
-         {
+        // Load
+        {
           path: "load-policy",
           element: <LoadPolicy />,
+        },
+        {
+          path: "load-incidence-policy",
+          element: <LoadIncidencePolicy />,
         },
         {
           path: "upload-tablet",

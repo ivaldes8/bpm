@@ -71,7 +71,7 @@ function Main() {
     return (
         <>
             <div className="flex flex-col items-center mt-4 intro-y sm:flex-row">
-                <h2 className="mr-auto text-lg font-medium">{t("loadPolicy")}</h2>
+                <h2 className="mr-auto text-lg font-medium">{t("loadIncidencePolicy")}</h2>
             </div>
             <div className="p-3 mt-4 intro-y box">
                 <PolicyFilters onFilter={onFilter} />
@@ -80,7 +80,7 @@ function Main() {
                     selectedContract ? (
                         <ContractForm selectedContract={selectedContract} setSelectedContract={setSelectedContract} />
                     ) : (
-                        <Alert variant="soft-secondary" className="flex items-center my-4 justify-center">
+                        <Alert variant="soft-secondary" className="flex items-center my-3 justify-center">
                             <Lucide icon="AlertOctagon" className="w-6 h-6 mr-2" />{" "}
                             {t("noPolicyLoaded")}
                         </Alert>

@@ -48,7 +48,21 @@ export const getContracts = async (req: Request, res: Response) => {
                 orderBy: {
                     FechaAlta: 'desc'
                 }
-            }
+            },
+            DocumentoContrato: {
+                include: {
+                    MaestroDocumentos: {
+                        include: {
+                            FamiliaDocumento: {
+                                include: {
+                                    MaestroIncidencias: true
+                                }
+                            }
+                        } 
+                    },
+                    IncidenciaDocumento: true
+                }
+            },
         },
         where: {
             ...(requestedCompany && requestedCompany.Codigo === 'UCV' && policy ? {

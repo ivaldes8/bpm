@@ -142,7 +142,7 @@ model MaestroIncidencias {
   FechaInicio         DateTime              @default(now())
   FechaBaja           DateTime?
   FechaUltimaModif    DateTime              @default(now())
-  FamiliaDocumento    FamiliaDocumento?      @relation(fields: [DocAsociadoId], references: [FamiliaId])
+  FamiliaDocumento    FamiliaDocumento?     @relation(fields: [DocAsociadoId], references: [FamiliaId])
   TipoDocIncidencia   TipoDocIncidencia[]
   IncidenciaDocumento IncidenciaDocumento[]
 }
@@ -206,22 +206,22 @@ model RamoTipoOperacion {
 }
 
 model RamoDocumento {
-  RamoDocId             Int                    @id
-  RamoId                Int
-  DocumentoId           Int
-  AnexoIncidencias      Int?
-  AnexoConciliacion     Int?
-  Caratula              Int?
-  RequiereComunicacion  Boolean?              @default(false)
-  Fase                  String
-  Activo                Boolean
-  FechaInicio           DateTime               @default(now())
-  FechaBaja             DateTime?
-  RamoTipoOperacion     RamoTipoOperacion      @relation(fields: [RamoId], references: [RamoTipoOpId])
-  MaestroDocumento      MaestroDocumentos      @relation(fields: [DocumentoId], references: [TipoDocumentoId])
-  anexoIncidencia       RepositorioPlantillas? @relation("AnexoIncidenciaPlantilla", fields: [AnexoIncidencias], references: [PlantillaId])
-  anexoConciliacion     RepositorioPlantillas? @relation("AnexoConciliacionPlantilla", fields: [AnexoConciliacion], references: [PlantillaId])
-  caratula              RepositorioPlantillas? @relation("CaratulaPlantilla", fields: [Caratula], references: [PlantillaId])
+  RamoDocId            Int                    @id
+  RamoId               Int
+  DocumentoId          Int
+  AnexoIncidencias     Int?
+  AnexoConciliacion    Int?
+  Caratula             Int?
+  RequiereComunicacion Boolean?               @default(false)
+  Fase                 String
+  Activo               Boolean
+  FechaInicio          DateTime               @default(now())
+  FechaBaja            DateTime?
+  RamoTipoOperacion    RamoTipoOperacion      @relation(fields: [RamoId], references: [RamoTipoOpId])
+  MaestroDocumento     MaestroDocumentos      @relation(fields: [DocumentoId], references: [TipoDocumentoId])
+  anexoIncidencia      RepositorioPlantillas? @relation("AnexoIncidenciaPlantilla", fields: [AnexoIncidencias], references: [PlantillaId])
+  anexoConciliacion    RepositorioPlantillas? @relation("AnexoConciliacionPlantilla", fields: [AnexoConciliacion], references: [PlantillaId])
+  caratula             RepositorioPlantillas? @relation("CaratulaPlantilla", fields: [Caratula], references: [PlantillaId])
 }
 
 model TipoConciliacion {
@@ -310,10 +310,10 @@ model IncidenciaDocumento {
   DocumentoId           Int
   TipoIncidenciaId      Int
   UsuarioId             Int
-  FechaIncidencia       DateTime
-  Resuelta              Boolean
-  NumReclamaciones      Int
-  FechaUltimaModif      DateTime                @default(now())
+  FechaIncidencia       DateTime?               @default(now())
+  Resuelta              Boolean?                @default(false)
+  NumReclamaciones      Int?                    @default(0)
+  FechaUltimaModif      DateTime?                @default(now())
   DocumentoContrato     DocumentoContrato       @relation(fields: [DocumentoId], references: [DocumentoId])
   Usuario               Usuario                 @relation(fields: [UsuarioId], references: [UsuarioId])
   MaestroIncidencias    MaestroIncidencias      @relation(fields: [TipoIncidenciaId], references: [TipoIncidenciaId])

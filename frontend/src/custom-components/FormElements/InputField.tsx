@@ -36,7 +36,7 @@ const InputField = ({ control, name, type = "text", labelEnabled = true, info, l
                 labelEnabled && (
                     <FormLabel
                         htmlFor="validation-form-1"
-                        className="flex flex-col w-full sm:flex-row font-medium"
+                        className="flex flex-col w-full sm:flex-row font-medium text-xs mb-0"
                     >
                         {
                             petName
@@ -72,6 +72,7 @@ const InputField = ({ control, name, type = "text", labelEnabled = true, info, l
                             }
 
                             <FormInput
+                                formInputSize="sm"
                                 id="validation-form-1"
                                 accept={accept ? accept : undefined}
                                 name={name}
@@ -90,7 +91,7 @@ const InputField = ({ control, name, type = "text", labelEnabled = true, info, l
                                 onBlur={onBlur}
                                 className={clsx([{
                                     "border-danger": error,
-                                }, `block items-center px-4 py-3 ${showIcon && 'pl-12'}`])}
+                                }, `block items-center px-4 py-2 ${showIcon && 'pl-12'}`])}
 
                             />
                         </div>

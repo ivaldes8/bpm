@@ -7,6 +7,8 @@ import mediatorRoutes from "./mediator";
 import branchRoutes from "./branch";
 import contractRoutes from "./contract";
 import contractObservationRoutes from "./contractObservation";
+import contractDocumentRoutes from "./contractDocument";
+import incidenceDocumentRoutes from "./incidenceDocument";
 
 const rootRouter: Router = Router()
 
@@ -18,6 +20,8 @@ rootRouter.use("/branches", branchRoutes)
 rootRouter.use("/load", loadRoutes)
 rootRouter.use("/contracts", contractRoutes)
 rootRouter.use("/contract-observations", contractObservationRoutes)
+rootRouter.use("/contract-documents", contractDocumentRoutes)
+rootRouter.use("/incidence-documents", incidenceDocumentRoutes)
 
 
 export default rootRouter

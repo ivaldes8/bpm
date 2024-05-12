@@ -141,5 +141,16 @@
     "Observations added successfully": "Observaciones añadidas satisfactoriamente",
     "showDocumentList": "Mostrar lista de documentos",
     "hideDocumentList": "Ocultar lista de documentos",
-    "noDocumentsFound": "No se encontraron documentos"
+    "noDocumentsFound": "No se encontraron documentos",
+    "loadIncidencePolicy": "Cargar póliza con incidencia",
+    "noIncidencesFound": "No se encontraron incidencias",
+    "hideIncidenceList": "Ocultar lista de incidencias",
+    "showIncidenceList": "Mostrar lista de incidencias",
+    "All documents must be present": "Todos los documentos deben estar presentes",
+    "AgentDNI": "DNI del tomador",
+    "AgentName": "Nombre del tomador",
+    "InsuranceDNI": "DNI del asegurado",
+    "CCC": "CCC",
+    "RequestCode": "Código de solicitud",
+    "PolicyCode": "Código de póliza"
 }

@@ -16,6 +16,7 @@ import handlePromise from "@/utils/promise";
 import ObservationContractService from '@/services/ObservationContractService'
 import DocumentList from './DocumentList'
 import DocumentContractService from '@/services/DocumentContractService'
+import DocumentIncidenceService from '@/services/DocumentIncidenceService'
 
 type Props = {
     selectedContract: any,
@@ -90,10 +91,18 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
 
     const onSubmit = async (data: any) => {
-
-        const docList = data.documents
         const observations = data.observations
+        const docList = data.documents
         setLoading(true)
+
+        if (selectedContract.Conciliar === true && docList.find((doc: any) => doc.present === false)) {
+            setLoading(false)
+            return setAlert({
+                type: "error",
+                show: true,
+                text: t("All documents must be present"),
+            })
+        }
 
         for (const observation of observations) {
             const toSend = {
@@ -115,17 +124,42 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         for (const doc of docList) {
             const toSend = {
                 ContratoId: selectedContract.ContratoId,
-                DocId: doc.id
+                DocId: doc.docTypeId,
+                Estado: doc.present ? 'PRESENT' : 'NOT_PRESENT',
             }
 
-            const [error, response, data] = await handlePromise(DocumentContractService.createDocumentContract(toSend));
+            const [error, response, data] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
             if (!response.ok) {
                 setLoading(false)
                 return setAlert({
                     type: "error",
                     show: true,
-                    text: error ? error : "Error while adding document contract",
+                    text: error ? error : "Error while updating document contract",
                 })
+            }
+
+            for (const incidence of doc.incidences) {
+                const toSend = {
+                    DocumentoId: doc.id,
+                    Resuelta: incidence.checked,
+                    TipoIncidenciaId: incidence.id
+                }
+
+                const currentDoc = selectedContract.DocumentoContrato.find((doc: any) => doc.DocumentoId === toSend.DocumentoId)
+                const existingIncidence = currentDoc?.IncidenciaDocumento.find((incidence: any) => incidence.TipoIncidenciaId === toSend.TipoIncidenciaId)
+                const [error, response, data] = await handlePromise(
+                    existingIncidence ?
+                        DocumentIncidenceService.updateDocumentIncidence(existingIncidence.IncidenciaId, toSend) :
+                        DocumentIncidenceService.createDocumentIncidence(toSend)
+                );
+                if (!response.ok) {
+                    setLoading(false)
+                    return setAlert({
+                        type: "error",
+                        show: true,
+                        text: error ? error : "Error while adding incidence document",
+                    })
+                }
             }
         }
 
@@ -144,16 +178,22 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
         const resetFormFiels = async () => {
             const docList = []
-            const RamoTipoOperacionArray = selectedContract?.Ramo.RamoTipoOperacion;
-            for (let i = 0; i < RamoTipoOperacionArray.length; i++) {
-                for (let j = 0; j < RamoTipoOperacionArray[i].RamoDocumento.length; j++) {
-                    await docList.push({
-                        id: RamoTipoOperacionArray[i].RamoDocumento[j].RamoDocId,
-                        present: true,
-                        name: RamoTipoOperacionArray[i].RamoDocumento[j].MaestroDocumento.Nombre
-                    })
-                }
+            const contractDocuments = selectedContract?.DocumentoContrato;
 
+            for (let i = 0; i < contractDocuments.length; i++) {
+                await docList.push({
+                    id: contractDocuments[i].DocumentoId,
+                    docTypeId: contractDocuments[i].TipoDocId,
+                    present: contractDocuments[i].EstadoDoc === 'PRESENT' ? true : selectedContract.Conciliar === true ? true : false,
+                    name: contractDocuments[i].MaestroDocumentos.Nombre,
+                    incidences: contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
+                        return {
+                            id: incidence.TipoIncidenciaId,
+                            name: incidence.Nombre,
+                            checked: contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta ?? false
+                        }
+                    })
+                })
             }
 
             reset({
@@ -176,6 +216,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 documents: docList
             })
         }
+
         if (selectedContract) {
             resetFormFiels()
         }
@@ -331,7 +372,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 </div>
             </div>
 
-            <DocumentList control={control} />
+            <DocumentList selectedContract={selectedContract} control={control} />
 
             <ObservationHistory selectedContract={selectedContract} />
 

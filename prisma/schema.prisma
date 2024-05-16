@@ -38,6 +38,7 @@ model Usuario {
   DocumentoContrato     DocumentoContrato[]
   IncidenciaDocumento   IncidenciaDocumento[]
   ObservacionIncidencia ObservacionIncidencia[]
+  Reclamaciones         Reclamaciones[]
 }
 
 model LogAccion {
@@ -270,7 +271,7 @@ model Contrato {
   Conciliar            Boolean
   Suplemento           Boolean?              @default(false)
   NoDigitalizar        Boolean               @default(false)
-  FechaConciliacion    DateTime              @default(now())
+  FechaConciliacion    DateTime?
   FechaUltimaModif     DateTime              @default(now())
   Compania             Compania              @relation(fields: [CompaniaId], references: [CompaniaId])
   Ramo                 Ramo                  @relation(fields: [RamoId], references: [RamoId])
@@ -279,6 +280,7 @@ model Contrato {
   Usuario              Usuario               @relation(fields: [UsuarioUltimaModif], references: [UsuarioId])
   ObservacionContrato  ObservacionContrato[]
   DocumentoContrato    DocumentoContrato[]
+  Reclamaciones        Reclamaciones[]
 }
 
 model ObservacionContrato {
@@ -299,6 +301,7 @@ model DocumentoContrato {
   UsuarioId           Int
   EstadoDoc           String
   NumeReclamaciones   Int                   @default(0)
+  FechaReclamacion    DateTime?
   Contrato            Contrato              @relation(fields: [ContratoId], references: [ContratoId])
   MaestroDocumentos   MaestroDocumentos     @relation(fields: [TipoDocId], references: [TipoDocumentoId])
   Usuario             Usuario               @relation(fields: [UsuarioId], references: [UsuarioId])
@@ -313,11 +316,21 @@ model IncidenciaDocumento {
   FechaIncidencia       DateTime?               @default(now())
   Resuelta              Boolean?                @default(false)
   NumReclamaciones      Int?                    @default(0)
-  FechaUltimaModif      DateTime?                @default(now())
+  FechaUltimaModif      DateTime?               @default(now())
   DocumentoContrato     DocumentoContrato       @relation(fields: [DocumentoId], references: [DocumentoId])
   Usuario               Usuario                 @relation(fields: [UsuarioId], references: [UsuarioId])
   MaestroIncidencias    MaestroIncidencias      @relation(fields: [TipoIncidenciaId], references: [TipoIncidenciaId])
   ObservacionIncidencia ObservacionIncidencia[]
+}
+
+model Reclamaciones {
+  ReclamacionId    Int      @id @default(autoincrement())
+  ContratoId       Int
+  UsuarioId        Int
+  Descricion       String
+  FechaReclamacion DateTime @default(now())
+  Contrato         Contrato @relation(fields: [ContratoId], references: [ContratoId])
+  Usuario          Usuario  @relation(fields: [UsuarioId], references: [UsuarioId])
 }
 
 model ObservacionIncidencia {

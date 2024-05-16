@@ -1,12 +1,24 @@
 import express, { Express } from "express"
+import cron from "node-cron"
 import rootRouter from "./routes"
 import { PrismaClient } from "@prisma/client";
 import { NODE_ENV, PORT } from "./secrets";
 import { errorMiddleware } from "./middlewares/errors";
 import path from "path";
 import cors from 'cors';
+import { sendEmailWithIncidencesByContract } from "./nodemailer";
 
 const app: Express = express()
+
+// Create a transporter object using the default SMTP transport
+
+// Schedule task to run every minute
+cron.schedule('* * * * *', async () => {
+
+    console.log('Sending an email every minute');
+    // await sendEmailWithIncidencesByContract()
+
+});
 
 app.use(express.json());
 

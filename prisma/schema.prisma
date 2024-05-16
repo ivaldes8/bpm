@@ -243,44 +243,44 @@ model Contrato {
   UsuarioUltimaModif Int
   TipoConciliacionId Int?
 
-  Activo               Boolean?              @default(true)
-  FechaAltaSolicitud   DateTime              @default(now())
-  FechaAltaContrato    DateTime              @default(now())
-  CCC                  String?
-  CodigoSolicitud      String?
-  CodigoPoliza         String?
-  FechaEfectoSolicitud DateTime?
-  FechaEfectoContrato  DateTime?
-  AnuladoSE            Boolean
-  CSRespAfirm          Boolean
-  DNITomador           String
-  NombreTomador        String
-  FechaDNITomador      DateTime?
-  DNIAsegurado         String
-  NombreAsegurado      String
-  ProfesionAsegurado   String
-  DeporteAsegurado     String
-  EdadAsegurado        Int
-  IndicadorFDPRECON    Boolean?
-  TipoEnvioFDPRECON    String?
-  ResultadoFDPRECON    String?
-  IndicadorFDCON       Boolean?
-  TipoEnvioFDCON       String?
-  ResultadoFDCON       String?
-  Revisar              Boolean
-  Conciliar            Boolean
-  Suplemento           Boolean?              @default(false)
-  NoDigitalizar        Boolean               @default(false)
-  FechaConciliacion    DateTime?
-  FechaUltimaModif     DateTime              @default(now())
-  Compania             Compania              @relation(fields: [CompaniaId], references: [CompaniaId])
-  Ramo                 Ramo                  @relation(fields: [RamoId], references: [RamoId])
-  CanalMediador        Mediador              @relation(fields: [OficinaId], references: [MediadorId])
-  TipoConciliacion     TipoConciliacion?     @relation(fields: [TipoConciliacionId], references: [TipoConciliacionId])
-  Usuario              Usuario               @relation(fields: [UsuarioUltimaModif], references: [UsuarioId])
-  ObservacionContrato  ObservacionContrato[]
-  DocumentoContrato    DocumentoContrato[]
-  Reclamaciones        Reclamaciones[]
+  Activo                   Boolean?              @default(true)
+  FechaAltaSolicitud       DateTime              @default(now())
+  FechaAltaContrato        DateTime              @default(now())
+  CCC                      String?
+  CodigoSolicitud          String?
+  CodigoPoliza             String?
+  FechaEfectoSolicitud     DateTime?
+  FechaEfectoContrato      DateTime?
+  AnuladoSE                Boolean
+  CSRespAfirm              Boolean
+  DNITomador               String
+  NombreTomador            String
+  FechaDNITomador          DateTime?
+  DNIAsegurado             String
+  NombreAsegurado          String
+  ProfesionAsegurado       String
+  DeporteAsegurado         String
+  FechaNacimientoAsegurado DateTime?
+  IndicadorFDPRECON        Boolean?
+  TipoEnvioFDPRECON        String?
+  ResultadoFDPRECON        String?
+  IndicadorFDCON           Boolean?
+  TipoEnvioFDCON           String?
+  ResultadoFDCON           String?
+  Revisar                  Boolean
+  Conciliar                Boolean
+  Suplemento               Boolean?              @default(false)
+  NoDigitalizar            Boolean               @default(false)
+  FechaConciliacion        DateTime?
+  FechaUltimaModif         DateTime              @default(now())
+  Compania                 Compania              @relation(fields: [CompaniaId], references: [CompaniaId])
+  Ramo                     Ramo                  @relation(fields: [RamoId], references: [RamoId])
+  CanalMediador            Mediador              @relation(fields: [OficinaId], references: [MediadorId])
+  TipoConciliacion         TipoConciliacion?     @relation(fields: [TipoConciliacionId], references: [TipoConciliacionId])
+  Usuario                  Usuario               @relation(fields: [UsuarioUltimaModif], references: [UsuarioId])
+  ObservacionContrato      ObservacionContrato[]
+  DocumentoContrato        DocumentoContrato[]
+  Reclamaciones            Reclamaciones[]
 }
 
 model ObservacionContrato {

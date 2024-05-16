@@ -152,5 +152,6 @@
     "InsuranceDNI": "DNI del asegurado",
     "CCC": "CCC",
     "RequestCode": "Código de solicitud",
-    "PolicyCode": "Código de póliza"
+    "PolicyCode": "Código de póliza",
+    "InsuranceBirthDate": "Fecha de nacimiento del asegurado"
 }

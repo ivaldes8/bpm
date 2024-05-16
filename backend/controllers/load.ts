@@ -319,7 +319,7 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
                     AnuladoSE: record["ANULADO SIN EFECTO"] === 'S' ? true : false,
                     DNIAsegurado: record["ID_ASEGURADO"],
                     NombreAsegurado: record["NOMBRE ASEGURADO"],
-                    EdadAsegurado: parseInt(record["EDAD ASEGURADO"]),
+                    FechaNacimientoAsegurado: record["EDAD ASEGURADO"] ? new Date(record["EDAD ASEGURADO"]) : null,
                     CSRespAfirm: record["CS CON RESPUESTAS AFIRMATIVAS"] === 'S' ? true : false,
                     ProfesionAsegurado: record["PROFESION"],
                     DeporteAsegurado: record["DEPORTE"],

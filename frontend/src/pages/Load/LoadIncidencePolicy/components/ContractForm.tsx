@@ -45,7 +45,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         NombreAsegurado: '',
         ProfesionAsegurado: '',
         DeporteAsegurado: '',
-        EdadAsegurado: 0,
+        FechaNacimientoAsegurado: '',
         NoDigitalizar: false,
         observations: [],
         documents: []
@@ -66,7 +66,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
             NombreAsegurado: yup.string(),
             ProfesionAsegurado: yup.string().required(t("errors.required") ?? ''),
             DeporteAsegurado: yup.string().required(t("errors.required") ?? ''),
-            EdadAsegurado: yup.number().required(t("errors.required") ?? ''),
+            FechaNacimientoAsegurado: yup.string(),
             NoDigitalizar: yup.boolean(),
             observations: yup.array().of(yup.object().shape({ observation: yup.string().required(t("errors.required") ?? '') })),
             documents: yup.array()
@@ -210,7 +210,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 NombreAsegurado: selectedContract?.NombreAsegurado,
                 ProfesionAsegurado: selectedContract?.ProfesionAsegurado,
                 DeporteAsegurado: selectedContract?.DeporteAsegurado,
-                EdadAsegurado: selectedContract?.EdadAsegurado,
+                FechaNacimientoAsegurado: selectedContract?.FechaNacimientoAsegurado ? moment(selectedContract?.FechaNacimientoAsegurado).format('YYYY-MM-DD') : '',
                 NoDigitalizar: false,
                 observations: [],
                 documents: docList
@@ -341,9 +341,9 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                     <div className="w-full sm:w-1/2">
                         <InputField
                             control={control}
-                            name="EdadAsegurado"
-                            type='number'
-                            label="InsuranceAge"
+                            name="FechaNacimientoAsegurado"
+                            type='date'
+                            label="InsuranceBirthDate"
                             disabled
                         />
                     </div>

@@ -6,6 +6,7 @@ import { BadRequestsException } from "../exceptions/bad-requests";
 import { parseCsv, parseExcel } from "../utils/fileProcessors";
 import { LogActionsEnum } from "../constants/LogActionsEnum";
 import { LogCargaTypeEnum } from "../constants/LogCargaTypeEnum";
+import { ContractDocumentStatusesEnum } from "../constants/ContractDocumentStatusesEnum";
 
 export const getLoadLogs = async (req: Request, res: Response) => {
     const loadLogs = await prismaClient.logCarga.findMany({})
@@ -116,6 +117,13 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
     let ErrorLogs: any[] = [];
     let RegistrosOk: number = 0;
     let RegistrosError: number = 0;
+
+    const systemUser = await prismaClient.usuario.findFirst({
+        where: {
+            Codigo: '0001',
+            Nombre: 'Sistema'
+        }
+    });
 
     for await (let record of records) {
         let hasError = false;
@@ -289,7 +297,7 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
                 }
             })
 
-            await prismaClient.contrato.create({
+            const createdContract = await prismaClient.contrato.create({
                 data: {
                     Compania: {
                         connect: {
@@ -335,8 +343,180 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
                     Revisar: record["REVISAR"] === 'SI' ? true : false,
                     Conciliar: record["CONCILIAR"] === 'SI' ? true : false,
                     Suplemento: record["SUPLEMENTO"] && parseInt(record["SUPLEMENTO"]) === 1 ? true : false,
+                },
+                include: {
+                    Ramo: {
+                        include: {
+                            RamoTipoOperacion: {
+                                include: {
+                                    RamoDocumento: {
+                                        include: {
+                                            MaestroDocumento: {
+                                                include: {
+                                                    FamiliaDocumento: true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             })
+            if (createdContract.ResultadoFDCON === 'Transacción aceptada' && createdContract?.IndicadorFDCON === true) {
+                for (const ramoTipoOperacion of createdContract.Ramo.RamoTipoOperacion) {
+                    for (const ramoDocumento of ramoTipoOperacion.RamoDocumento) {
+                        await prismaClient.documentoContrato.create({
+                            data: {
+                                Contrato: {
+                                    connect: {
+                                        ContratoId: createdContract.ContratoId
+                                    }
+                                },
+                                MaestroDocumentos: {
+                                    connect: {
+                                        TipoDocumentoId: ramoDocumento.MaestroDocumento.TipoDocumentoId
+                                    }
+                                },
+                                Usuario: {
+                                    connect: {
+                                        UsuarioId: systemUser?.UsuarioId
+                                    }
+                                },
+                                EstadoDoc: ContractDocumentStatusesEnum.CORRECT
+                            }
+                        })
+                    }
+                }
+
+                const preLoadConciliation = await prismaClient.tipoConciliacion.findFirst({
+                    where: {
+                        Nombre: "Carga previa"
+                    }
+                })
+
+                if (preLoadConciliation) {
+                    await prismaClient.contrato.update({
+                        where: {
+                            ContratoId: createdContract.ContratoId
+                        },
+                        data: {
+                            TipoConciliacion: {
+                                connect: {
+                                    TipoConciliacionId: preLoadConciliation?.TipoConciliacionId
+                                }
+                            }
+                        }
+                    })
+                }
+            } else if ((createdContract.ResultadoFDCON !== 'Transacción aceptada' && createdContract.IndicadorFDCON) || createdContract.IndicadorFDPRECON && createdContract.ResultadoFDPRECON === 'Transacción aceptada') {
+                for (const ramoTipoOperacion of createdContract.Ramo.RamoTipoOperacion) {
+                    for (const ramoDocumento of ramoTipoOperacion.RamoDocumento) {
+                        if (ramoDocumento.Fase === 'PRECON') {
+                            const documentoContrato = await prismaClient.documentoContrato.create({
+                                data: {
+                                    Contrato: {
+                                        connect: {
+                                            ContratoId: createdContract.ContratoId
+                                        }
+                                    },
+                                    MaestroDocumentos: {
+                                        connect: {
+                                            TipoDocumentoId: ramoDocumento.MaestroDocumento.TipoDocumentoId
+                                        }
+                                    },
+                                    Usuario: {
+                                        connect: {
+                                            UsuarioId: systemUser?.UsuarioId
+                                        }
+                                    },
+                                    EstadoDoc: ContractDocumentStatusesEnum.CORRECT
+                                }
+                            })
+                        }
+
+                    }
+                }
+
+                const preLoadConciliation = await prismaClient.tipoConciliacion.findFirst({
+                    where: {
+                        Nombre: "Carga previa"
+                    }
+                })
+
+                if (preLoadConciliation) {
+                    await prismaClient.contrato.update({
+                        where: {
+                            ContratoId: createdContract.ContratoId
+                        },
+                        data: {
+                            TipoConciliacion: {
+                                connect: {
+                                    TipoConciliacionId: preLoadConciliation?.TipoConciliacionId
+                                }
+                            }
+                        }
+                    })
+                }
+            } else {
+                for (const ramoTipoOperacion of createdContract.Ramo.RamoTipoOperacion) {
+                    for (const ramoDocumento of ramoTipoOperacion.RamoDocumento) {
+                        const documentoContrato = await prismaClient.documentoContrato.create({
+                            data: {
+                                Contrato: {
+                                    connect: {
+                                        ContratoId: createdContract.ContratoId
+                                    }
+                                },
+                                MaestroDocumentos: {
+                                    connect: {
+                                        TipoDocumentoId: ramoDocumento.MaestroDocumento.TipoDocumentoId
+                                    }
+                                },
+                                Usuario: {
+                                    connect: {
+                                        UsuarioId: systemUser?.UsuarioId
+                                    }
+                                },
+                                EstadoDoc: ContractDocumentStatusesEnum.NOT_PRESENT
+                            }
+                        })
+
+                        const notFoundIncidence = await prismaClient.maestroIncidencias.findFirst({
+                            where: {
+                                DocAsociadoId: ramoDocumento.MaestroDocumento.FamiliaDocumento.FamiliaId,
+                                Nombre: {
+                                    contains: "no se ha recibido"
+                                }
+                            }
+                        })
+
+                        if (notFoundIncidence) {
+                            await prismaClient.incidenciaDocumento.create({
+                                data: {
+                                    Usuario: {
+                                        connect: {
+                                            UsuarioId: systemUser?.UsuarioId
+                                        }
+                                    },
+                                    DocumentoContrato: {
+                                        connect: {
+                                            DocumentoId: documentoContrato.DocumentoId
+                                        }
+                                    },
+                                    MaestroIncidencias: {
+                                        connect: {
+                                            TipoIncidenciaId: notFoundIncidence.TipoIncidenciaId
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+
             RegistrosOk++;
         }
     }

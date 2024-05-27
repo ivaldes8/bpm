@@ -128,21 +128,18 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 Estado: doc.present ? 'PRESENT' : 'NOT_PRESENT',
             }
 
-            const [error, response, data] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
-            if (!response.ok) {
-                setLoading(false)
-                return setAlert({
-                    type: "error",
-                    show: true,
-                    text: error ? error : "Error while updating document contract",
-                })
-            }
-
             for (const incidence of doc.incidences) {
                 const toSend = {
+                    ContratoId: selectedContract.ContratoId,
                     DocumentoId: doc.id,
-                    Resuelta: incidence.checked,
-                    TipoIncidenciaId: incidence.id
+                    Resuelta: !incidence.checked,
+                    TipoIncidenciaId: incidence.id,
+                }
+
+                if (!doc.present && incidence.name.includes('no se ha recibido')) {
+                    toSend.Resuelta = false
+                } else if (doc.present && incidence.name.includes('no se ha recibido')) {
+                    toSend.Resuelta = true
                 }
 
                 const currentDoc = selectedContract.DocumentoContrato.find((doc: any) => doc.DocumentoId === toSend.DocumentoId)
@@ -161,6 +158,16 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                     })
                 }
             }
+
+            const [error, response, data] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
+            if (!response.ok) {
+                setLoading(false)
+                return setAlert({
+                    type: "error",
+                    show: true,
+                    text: error ? error : "Error while updating document contract",
+                })
+            }
         }
 
         setLoading(false)
@@ -176,7 +183,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
     useEffect(() => {
 
-        const resetFormFiels = async () => {
+        const resetFormFields = async () => {
             const docList = []
             const contractDocuments = selectedContract?.DocumentoContrato;
 
@@ -184,13 +191,13 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 await docList.push({
                     id: contractDocuments[i].DocumentoId,
                     docTypeId: contractDocuments[i].TipoDocId,
-                    present: contractDocuments[i].EstadoDoc === 'PRESENT' ? true : selectedContract.Conciliar === true ? true : false,
+                    present: contractDocuments[i].EstadoDoc === 'PRESENT' || contractDocuments[i].EstadoDoc === 'CORRECT' ? true : selectedContract.Conciliar === true ? true : false,
                     name: contractDocuments[i].MaestroDocumentos.Nombre,
                     incidences: contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
                         return {
                             id: incidence.TipoIncidenciaId,
                             name: incidence.Nombre,
-                            checked: contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta ?? false
+                            checked: contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false ? true : false
                         }
                     })
                 })
@@ -218,7 +225,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         }
 
         if (selectedContract) {
-            resetFormFiels()
+            resetFormFields()
         }
     }, [selectedContract])
 
@@ -350,6 +357,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 </div>
             </div>
 
+            <DocumentList selectedContract={selectedContract} control={control} />
+
             <div className="box p-4 m-4 mb-2">
                 <div className="flex flex-col gap-3">
                     {fields.map((item, index) => (
@@ -371,8 +380,6 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                     </Button>
                 </div>
             </div>
-
-            <DocumentList selectedContract={selectedContract} control={control} />
 
             <ObservationHistory selectedContract={selectedContract} />
 

@@ -64,6 +64,16 @@ export const createContractObservation = async (req: Request, res: Response) => 
             }
         })
 
+
+        await prismaClient.contrato.update({
+            where: {
+                ContratoId: validatedData.ContratoId
+            },
+            data: {
+                FechaUltimaModif: new Date()
+            }
+        })
+
         res.json(createdContractObservation);
     } catch (error) {
         throw new InternalException("Something went wrong!", error, ErrorCode.INTERNAL_EXCEPTION)
@@ -112,6 +122,15 @@ export const updateContractObservation = async (req: Request, res: Response) => 
                     }
                 },
                 Contenido: validatedData.Contenido
+            }
+        })
+
+        await prismaClient.contrato.update({
+            where: {
+                ContratoId: validatedData.ContratoId
+            },
+            data: {
+                FechaUltimaModif: new Date()
             }
         })
 

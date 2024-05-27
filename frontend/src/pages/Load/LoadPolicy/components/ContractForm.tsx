@@ -16,6 +16,7 @@ import handlePromise from "@/utils/promise";
 import ObservationContractService from '@/services/ObservationContractService'
 import DocumentList from './DocumentList'
 import DocumentContractService from '@/services/DocumentContractService'
+import DocumentIncidenceService from '@/services/DocumentIncidenceService'
 
 type Props = {
     selectedContract: any,
@@ -95,6 +96,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         const observations = data.observations
         setLoading(true)
 
+        //Create observations
         for (const observation of observations) {
             const toSend = {
                 ContratoId: selectedContract.ContratoId,
@@ -115,16 +117,45 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         for (const doc of docList) {
             const toSend = {
                 ContratoId: selectedContract.ContratoId,
-                DocId: doc.id
+                DocId: doc.docTypeId,
+                Estado: 'PRESENT',
             }
 
-            const [error, response, data] = await handlePromise(DocumentContractService.createDocumentContract(toSend));
+            //Mark incidences as resolved
+            for (const incidence of doc.incidences) {
+                const toSend = {
+                    ContratoId: selectedContract.ContratoId,
+                    DocumentoId: doc.id,
+                    Resuelta: true,
+                    TipoIncidenciaId: incidence.id,
+                }
+
+                const currentDoc = selectedContract.DocumentoContrato.find((doc: any) => doc.DocumentoId === toSend.DocumentoId)
+                const existingIncidence = currentDoc?.IncidenciaDocumento.find((incidence: any) => incidence.TipoIncidenciaId === toSend.TipoIncidenciaId)
+
+                if (existingIncidence) {
+                    const [error, response, data] = await handlePromise(
+                        DocumentIncidenceService.updateDocumentIncidence(existingIncidence.IncidenciaId, toSend)
+                    );
+                    if (!response.ok) {
+                        setLoading(false)
+                        return setAlert({
+                            type: "error",
+                            show: true,
+                            text: error ? error : "Error while adding incidence document",
+                        })
+                    }
+                }
+            }
+
+            //Update document contracts
+            const [error, response, data] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
             if (!response.ok) {
                 setLoading(false)
                 return setAlert({
                     type: "error",
                     show: true,
-                    text: error ? error : "Error while adding document contract",
+                    text: error ? error : "Error while updating document contract",
                 })
             }
         }
@@ -144,16 +175,23 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
         const resetFormFiels = async () => {
             const docList = []
+            const contractDocuments = selectedContract?.DocumentoContrato;
             const RamoTipoOperacionArray = selectedContract?.Ramo.RamoTipoOperacion;
-            for (let i = 0; i < RamoTipoOperacionArray.length; i++) {
-                for (let j = 0; j < RamoTipoOperacionArray[i].RamoDocumento.length; j++) {
-                    await docList.push({
-                        id: RamoTipoOperacionArray[i].RamoDocumento[j].RamoDocId,
-                        present: true,
-                        name: RamoTipoOperacionArray[i].RamoDocumento[j].MaestroDocumento.Nombre
-                    })
-                }
 
+            for (let i = 0; i < contractDocuments.length; i++) {
+                await docList.push({
+                    id: contractDocuments[i].DocumentoId,
+                    docTypeId: contractDocuments[i].TipoDocId,
+                    present: true,
+                    name: contractDocuments[i].MaestroDocumentos.Nombre,
+                    incidences: contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
+                        return {
+                            id: incidence.TipoIncidenciaId,
+                            name: incidence.Nombre,
+                            checked: contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false ? true : false
+                        }
+                    })
+                })
             }
 
             reset({
@@ -309,6 +347,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 </div>
             </div>
 
+            <DocumentList control={control} />
+
             <div className="box p-4 m-4 mb-2">
                 <div className="flex flex-col gap-3">
                     {fields.map((item, index) => (
@@ -330,8 +370,6 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                     </Button>
                 </div>
             </div>
-
-            <DocumentList control={control} />
 
             <ObservationHistory selectedContract={selectedContract} />
 

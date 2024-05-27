@@ -55,8 +55,7 @@ const SelectContractModal = ({ show, setShow, selectedContract, setSelectedContr
                                         </div>
                                     </div>
                                     <div className="px-2 py-1 text-xs font-medium text-white rounded-full cursor-pointer bg-success">
-                                        {contract.CodigoPoliza}
-                                    </div>
+                                        {contract.CodigoPoliza && contract.CodigoPoliza !== "" ? contract.CodigoPoliza : contract.CodigoSolicitud}                                    </div>
                                 </div>
                             </div>
                         )

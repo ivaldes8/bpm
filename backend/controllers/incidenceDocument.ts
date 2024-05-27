@@ -4,6 +4,7 @@ import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
 import { InternalException } from "../exceptions/internal-exception";
 import { createIncidenciaDocumentoSchema } from "../schema/incidenceDocument";
+import { ContractDocumentStatusesEnum } from "../constants/ContractDocumentStatusesEnum";
 
 export const getIncidenceDocuments = async (req: Request, res: Response) => {
 
@@ -35,6 +36,16 @@ export const getIncidenceDocuments = async (req: Request, res: Response) => {
 export const createIncidenceDocument = async (req: Request, res: Response) => {
 
     const validatedData = createIncidenciaDocumentoSchema.parse(req.body)
+
+    try {
+        await prismaClient.contrato.findFirstOrThrow({
+            where: {
+                ContratoId: validatedData.ContratoId
+            }
+        })
+    } catch (error) {
+        throw new NotFoundException("Contract not found", ErrorCode.NOT_FOUND_EXCEPTION)
+    }
 
     try {
         await prismaClient.documentoContrato.findFirstOrThrow({
@@ -84,6 +95,15 @@ export const createIncidenceDocument = async (req: Request, res: Response) => {
             }
         })
 
+        await prismaClient.contrato.update({
+            where: {
+                ContratoId: validatedData.ContratoId
+            },
+            data: {
+                FechaUltimaModif: new Date()
+            }
+        })
+
         res.json(createdIncidenceDocument);
     } catch (error) {
         throw new InternalException("Something went wrong!", error, ErrorCode.INTERNAL_EXCEPTION)
@@ -92,6 +112,7 @@ export const createIncidenceDocument = async (req: Request, res: Response) => {
 
 export const updateIncidenceDocument = async (req: Request, res: Response) => {
 
+    // Validations
     try {
         await prismaClient.incidenciaDocumento.findFirstOrThrow({
             where: {
@@ -104,6 +125,18 @@ export const updateIncidenceDocument = async (req: Request, res: Response) => {
 
     const validatedData = createIncidenciaDocumentoSchema.parse(req.body)
 
+    // Validations
+    try {
+        await prismaClient.contrato.findFirstOrThrow({
+            where: {
+                ContratoId: validatedData.ContratoId
+            }
+        })
+    } catch (error) {
+        throw new NotFoundException("Contract not found", ErrorCode.NOT_FOUND_EXCEPTION)
+    }
+
+    // Validations
     try {
         await prismaClient.documentoContrato.findFirstOrThrow({
             where: {
@@ -114,6 +147,7 @@ export const updateIncidenceDocument = async (req: Request, res: Response) => {
         throw new NotFoundException("Contract document not found", ErrorCode.NOT_FOUND_EXCEPTION)
     }
 
+    // Validations
     try {
         await prismaClient.maestroIncidencias.findFirstOrThrow({
             where: {
@@ -124,6 +158,7 @@ export const updateIncidenceDocument = async (req: Request, res: Response) => {
         throw new NotFoundException("Incidence not found", ErrorCode.NOT_FOUND_EXCEPTION)
     }
 
+    //Update incidence document
     try {
         const updatedIncidenceDocument = await prismaClient.incidenciaDocumento.update({
             where: {
@@ -154,6 +189,17 @@ export const updateIncidenceDocument = async (req: Request, res: Response) => {
                 } : {})
             }
         })
+
+        //Update contract last modification date
+        await prismaClient.contrato.update({
+            where: {
+                ContratoId: validatedData.ContratoId
+            },
+            data: {
+                FechaUltimaModif: new Date()
+            }
+        })
+
 
         res.json(updatedIncidenceDocument);
     } catch (error) {

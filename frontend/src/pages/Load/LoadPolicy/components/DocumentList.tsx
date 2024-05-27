@@ -3,7 +3,6 @@ import { Disclosure } from '@/components/Base/Headless'
 import Lucide from '@/components/Base/Lucide'
 import CheckBoxField from '@/custom-components/FormElements/CheckBoxField'
 import InputField from '@/custom-components/FormElements/InputField'
-import { useEffect, useState } from 'react'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -21,7 +20,7 @@ const DocumentList = ({ control }: Props) => {
 
     return (
         <div className="box p-4 m-4 mb-0">
-            <Disclosure>
+            <Disclosure defaultOpen>
                 {({ open }) => (
                     <>
                         <Disclosure.Button>

@@ -22,7 +22,7 @@ const DocumentList = ({ control, selectedContract }: Props) => {
 
     return (
         <div className="box p-4 m-4 mb-0">
-            <Disclosure>
+            <Disclosure defaultOpen>
                 {({ open }) => (
                     <>
                         <Disclosure.Button className="py-0">

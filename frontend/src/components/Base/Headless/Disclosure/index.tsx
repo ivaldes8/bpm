@@ -19,7 +19,7 @@ const disclosureContext = createContext<{
   key: number;
 }>({
   open: false,
-  close: () => {},
+  close: () => { },
   key: 0,
 });
 
@@ -29,7 +29,7 @@ const groupContext = createContext<{
   variant: Variant;
 }>({
   selectedIndex: null,
-  setSelectedIndex: () => {},
+  setSelectedIndex: () => { },
   variant: "default",
 });
 
@@ -46,12 +46,15 @@ function Disclosure({
   return (
     <HeadlessDisclosure
       as="div"
-      defaultOpen={group.selectedIndex === key}
+      defaultOpen={
+        group.selectedIndex === key ||
+        props.defaultOpen
+      }
       className={twMerge([
         "py-4 first:-mt-4 last:-mb-4",
         "[&:not(:last-child)]:border-b [&:not(:last-child)]:border-slate-200/60 [&:not(:last-child)]:dark:border-darkmode-400",
         group.variant == "boxed" &&
-          "p-4 first:mt-0 last:mb-0 border border-slate-200/60 mt-3 dark:border-darkmode-400",
+        "p-4 first:mt-0 last:mb-0 border border-slate-200/60 mt-3 dark:border-darkmode-400",
         className,
       ])}
       {...props}
@@ -67,9 +70,9 @@ function Disclosure({
           <>
             {typeof children === "function"
               ? children({
-                  open: open,
-                  close: close,
-                })
+                open: open,
+                close: close,
+              })
               : children}
           </>
         </disclosureContext.Provider>
@@ -106,14 +109,14 @@ Disclosure.Group = <C extends React.ElementType = "div">({
         <Component className={className} {...props}>
           {Array.isArray(children)
             ? children.map((item, key) => {
-                return {
-                  ...item,
-                  props: {
-                    ...item.props,
-                    key: key,
-                  },
-                };
-              })
+              return {
+                ...item,
+                props: {
+                  ...item.props,
+                  key: key,
+                },
+              };
+            })
             : children}
         </Component>
       }
@@ -129,9 +132,9 @@ Disclosure.Button = ({
   const disclosure = useContext(disclosureContext);
   const group = useContext(groupContext);
 
-  useEffect(() => {
-    group.selectedIndex !== disclosure.key && disclosure.close();
-  }, [group.selectedIndex]);
+  // useEffect(() => {
+  //   group.selectedIndex !== disclosure.key && disclosure.close();
+  // }, [group.selectedIndex]);
 
   return (
     <HeadlessDisclosure.Button

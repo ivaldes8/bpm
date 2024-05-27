@@ -153,6 +153,7 @@ model TipoDocIncidencia {
   TipoDocumentoId     Int
   TipoIncidenciaId    Int
   Activo              Boolean
+  MailInterno         Boolean            @default(false)
   FechaInicio         DateTime           @default(now())
   FechaBaja           DateTime?
   FechaUltimaModif    DateTime           @default(now())
@@ -228,10 +229,10 @@ model RamoDocumento {
 model TipoConciliacion {
   TipoConciliacionId Int        @id
   Nombre             String
-  Activo             Boolean
-  FechaInicio        DateTime   @default(now())
+  Activo             Boolean?   @default(true)
+  FechaInicio        DateTime?  @default(now())
   FechaBaja          DateTime?
-  FechaUltimaModif   DateTime   @default(now())
+  FechaUltimaModif   DateTime?  @default(now())
   Contrato           Contrato[]
 }
 
@@ -244,8 +245,8 @@ model Contrato {
   TipoConciliacionId Int?
 
   Activo                   Boolean?              @default(true)
-  FechaAltaSolicitud       DateTime              @default(now())
-  FechaAltaContrato        DateTime              @default(now())
+  FechaAltaSolicitud       DateTime?
+  FechaAltaContrato        DateTime?
   CCC                      String?
   CodigoSolicitud          String?
   CodigoPoliza             String?
@@ -302,6 +303,7 @@ model DocumentoContrato {
   EstadoDoc           String
   NumeReclamaciones   Int                   @default(0)
   FechaReclamacion    DateTime?
+  FechaConciliacion   DateTime?
   Contrato            Contrato              @relation(fields: [ContratoId], references: [ContratoId])
   MaestroDocumentos   MaestroDocumentos     @relation(fields: [TipoDocId], references: [TipoDocumentoId])
   Usuario             Usuario               @relation(fields: [UsuarioId], references: [UsuarioId])

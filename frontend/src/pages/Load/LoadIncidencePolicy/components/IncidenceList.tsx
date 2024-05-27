@@ -3,6 +3,7 @@ import { Disclosure } from '@/components/Base/Headless'
 import Lucide from '@/components/Base/Lucide'
 import CheckBoxField from '@/custom-components/FormElements/CheckBoxField'
 import InputField from '@/custom-components/FormElements/InputField'
+import clsx from 'clsx'
 import { useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -22,7 +23,7 @@ const IncidenceList = ({ control, index, selectedContract }: Props) => {
 
     return (
         <div className="box p-2 m-4 ml-8 mt-0 mb-2">
-            <Disclosure>
+            <Disclosure defaultOpen>
                 {({ open }) => (
                     <>
                         <Disclosure.Button className="py-0">
@@ -33,7 +34,10 @@ const IncidenceList = ({ control, index, selectedContract }: Props) => {
                                 {((fields[index] as any).incidences && (fields[index] as any).incidences.length > 0) ? (
                                     <div className="flex flex-col gap-0">
                                         {(fields[index] as any).incidences.map((item: any, i: any) => (
-                                            <div key={item.id} className='flex gap-2 items-center my-0 py-0'>
+                                            <div key={item.id} className={clsx([
+                                                'flex gap-2 items-center my-0 py-0',
+                                                item.name.includes('no se ha recibido') ? 'hidden' : 'block',
+                                            ])}>
                                                 <div>
                                                     <CheckBoxField
                                                         control={control}

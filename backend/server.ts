@@ -6,7 +6,8 @@ import { NODE_ENV, PORT } from "./secrets";
 import { errorMiddleware } from "./middlewares/errors";
 import path from "path";
 import cors from 'cors';
-import { sendEmailWithIncidencesByContract } from "./nodemailer";
+import { sendEmailWithIncidencesByContract } from "./jobs/sendEmailWithIncidencesByContract";
+import { checkNoLoadedContracts } from "./jobs/checkNoLoadedContracts";
 
 const app: Express = express()
 
@@ -14,10 +15,9 @@ const app: Express = express()
 
 // Schedule task to run every minute
 cron.schedule('* * * * *', async () => {
-
-    console.log('Sending an email every minute');
-    // await sendEmailWithIncidencesByContract()
-
+    console.log("Executing cron jobs")
+    await checkNoLoadedContracts()
+    await sendEmailWithIncidencesByContract()
 });
 
 app.use(express.json());

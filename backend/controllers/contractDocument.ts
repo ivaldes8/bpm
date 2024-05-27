@@ -70,6 +70,15 @@ export const createContractDocument = async (req: Request, res: Response) => {
             }
         })
 
+        await prismaClient.contrato.update({
+            where: {
+                ContratoId: validatedData.ContratoId
+            },
+            data: {
+                FechaUltimaModif: new Date()
+            }
+        })
+
         res.json(createdContractDocument);
     } catch (error) {
         throw new InternalException("Something went wrong!", error, ErrorCode.INTERNAL_EXCEPTION)
@@ -78,6 +87,7 @@ export const createContractDocument = async (req: Request, res: Response) => {
 
 export const updateContractDocument = async (req: Request, res: Response) => {
 
+    //Validations
     try {
         await prismaClient.documentoContrato.findFirstOrThrow({
             where: {
@@ -90,6 +100,7 @@ export const updateContractDocument = async (req: Request, res: Response) => {
 
     const validatedData = updateContratoDocumentoSchema.parse(req.body)
 
+    //Validations
     try {
         await prismaClient.contrato.findFirstOrThrow({
             where: {
@@ -100,6 +111,7 @@ export const updateContractDocument = async (req: Request, res: Response) => {
         throw new NotFoundException("Contract not found", ErrorCode.NOT_FOUND_EXCEPTION)
     }
 
+    //Update contract document
     try {
         const updatedContractDocument = await prismaClient.documentoContrato.update({
             where: {
@@ -125,6 +137,76 @@ export const updateContractDocument = async (req: Request, res: Response) => {
                 ...(validatedData.Estado ? {
                     EstadoDoc: validatedData.Estado
                 } : {})
+            }
+        })
+
+        //Check if the documentContract is correct
+        const hasActiveIncidences = await prismaClient.incidenciaDocumento.findFirst({
+            where: {
+                DocumentoId: updatedContractDocument.DocumentoId,
+                Resuelta: false
+            }
+        });
+
+        if (!hasActiveIncidences) {
+            await prismaClient.documentoContrato.update({
+                where: {
+                    DocumentoId: updatedContractDocument.DocumentoId
+                },
+                data: {
+                    EstadoDoc: validatedData.Estado === 'NOT_PRESENT' ? validatedData.Estado : ContractDocumentStatusesEnum.CORRECT,
+                    FechaConciliacion: validatedData.Estado === 'NOT_PRESENT' ? null : new Date()
+                }
+            })
+        } else {
+            await prismaClient.documentoContrato.update({
+                where: {
+                    DocumentoId: updatedContractDocument.DocumentoId
+                },
+                data: {
+                    FechaConciliacion: null
+                }
+            })
+        }
+
+        //Update contract last modification date or conciliation date depending if all are document conciliated
+        const hasNoConciliatedDocuments = await prismaClient.documentoContrato.findFirst({
+            where: {
+                ContratoId: validatedData.ContratoId,
+                EstadoDoc: {
+                    not: ContractDocumentStatusesEnum.CORRECT
+                }
+            }
+        });
+
+        const manualConciliation = await prismaClient.tipoConciliacion.findFirst({
+            where: {
+                Nombre: "MANUAL"
+            }
+        })
+
+        await prismaClient.contrato.update({
+            where: {
+                ContratoId: validatedData.ContratoId
+            },
+            data: {
+                FechaUltimaModif: new Date(),
+                ...(!hasNoConciliatedDocuments ? {
+                    FechaConciliacion: new Date()
+                } : {
+                    FechaConciliacion: null
+                }),
+                ...(!hasNoConciliatedDocuments && manualConciliation ? {
+                    TipoConciliacion: {
+                        connect: {
+                            TipoConciliacionId: manualConciliation.TipoConciliacionId
+                        }
+                    }
+                } : {
+                    TipoConciliacion: {
+                        disconnect: true
+                    }
+                }),
             }
         })
 

@@ -7,6 +7,7 @@ import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
 import UserList from "../pages/Administration/Users/UserList"
 import CompanyList from "../pages/Administration/Company/CompanyList"
+import MediadorList from "../pages/Administration/Mediador/MediadorList"
 import UploadDaily from "../pages/Upload/Daily/DailyList"
 import UploadTablet from "../pages/Upload/Tablet/TabletList"
 import UploadCancellation from "../pages/Upload/Cancellation/CancellationList"
@@ -16,6 +17,7 @@ import LoadPolicy from "../pages/Load/LoadPolicy/Dashboard"
 import LoadIncidencePolicy from "../pages/Load/LoadIncidencePolicy/Dashboard"
 
 import Layout from "../themes";
+import path from "path";
 
 function Router() {
   const routes = [
@@ -76,6 +78,10 @@ function Router() {
         {
           path: "company-list",
           element: <CompanyList />,
+        },
+        {
+          path: "mediators-list",  
+          element: <MediadorList />
         },
         {
           path: "user-list",

@@ -137,6 +137,7 @@
     "hideObservations": "Ocultar observaciones",
     "noCommentsFound": "No se encontraron comentarios",
     "observation": "Observación",
+    "observations": "Observaciones",
     "addObservation": "Añadir observación",
     "Observations added successfully": "Observaciones añadidas satisfactoriamente",
     "showDocumentList": "Mostrar lista de documentos",
@@ -153,5 +154,21 @@
     "CCC": "CCC",
     "RequestCode": "Código de solicitud",
     "PolicyCode": "Código de póliza",
-    "InsuranceBirthDate": "Fecha de nacimiento del asegurado"
+    "InsuranceBirthDate": "Fecha de nacimiento del asegurado",
+    "commercial": "Comercial",
+    "commercials": "Comerciales",
+    "addCommercial": "Añadir comercial",
+    "createCommercial": "Crear comercial",
+    "editCommercial": "Editar comercial",
+    "deleteCommercial": "Eliminar comercial",
+    "responsible": "Responsable",
+    "responsible2": "Responsable 2",
+    "responsibleEmail": "Correo del responsable",
+    "responsibleEmail2": "Correo del responsable 2",
+    "channel": "Canal",
+    "zone": "Zona",
+    "claim": "Reclamar"
+
+
+
 }

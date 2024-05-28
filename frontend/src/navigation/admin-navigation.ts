@@ -74,7 +74,7 @@ const ADMIN_NAVIGATION: Array<Menu> = [
             },
             {
                 icon: "LampDesk",
-                pathname: "/company-list",
+                pathname: "/mediators-list",
                 title: "Comerciales"
             },
             {

@@ -227,7 +227,7 @@ model RamoDocumento {
 }
 
 model TipoConciliacion {
-  TipoConciliacionId Int        @id
+  TipoConciliacionId Int        @id @default(autoincrement())
   Nombre             String
   Activo             Boolean?   @default(true)
   FechaInicio        DateTime?  @default(now())

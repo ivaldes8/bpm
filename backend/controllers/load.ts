@@ -9,7 +9,14 @@ import { LogCargaTypeEnum } from "../constants/LogCargaTypeEnum";
 import { ContractDocumentStatusesEnum } from "../constants/ContractDocumentStatusesEnum";
 
 export const getLoadLogs = async (req: Request, res: Response) => {
-    const loadLogs = await prismaClient.logCarga.findMany({})
+    const { type } = req.query;
+    const loadLogs = await prismaClient.logCarga.findMany({
+        where: {
+            ...(type && type !== '' ? {
+                Tipo: type as string
+            } : {}),
+        }
+    })
 
     res.json(loadLogs)
 }
@@ -44,7 +51,7 @@ export const importData = async (req: Request, res: Response) => {
         case "policy":
             processedData = await processPolicyData(records, user)
 
-            const logAction = await prismaClient.logAccion.create({
+            const policyLogAction = await prismaClient.logAccion.create({
                 data: {
                     Accion: LogActionsEnum.CARGA_POLIZA,
                     Usuario: {
@@ -64,12 +71,40 @@ export const importData = async (req: Request, res: Response) => {
                     ErrorLogs: JSON.stringify(processedData.ErrorLogs),
                     LogAccion: {
                         connect: {
-                            LogId: logAction.LogId
+                            LogId: policyLogAction.LogId
                         }
                     },
                 }
             })
             break;
+        case "digitalSignature":
+            processedData = await processDigitalSignatureData(records, user)
+
+            const digitalSignatureLogAction = await prismaClient.logAccion.create({
+                data: {
+                    Accion: LogActionsEnum.CARGA_POLIZA,
+                    Usuario: {
+                        connect: {
+                            UsuarioId: user.UsuarioId
+                        }
+                    }
+                }
+            })
+
+            result = await prismaClient.logCarga.create({
+                data: {
+                    Tipo: LogCargaTypeEnum.DIGITAL_SIGNATURE,
+                    RegistrosOk: processedData.RegistrosOk,
+                    RegistrosError: processedData.RegistrosError,
+                    TotalRegistros: records.length,
+                    ErrorLogs: JSON.stringify(processedData.ErrorLogs),
+                    LogAccion: {
+                        connect: {
+                            LogId: digitalSignatureLogAction.LogId
+                        }
+                    },
+                }
+            })
 
         default:
             break;
@@ -514,6 +549,146 @@ const processPolicyData = async (records: any[], user: { UsuarioId: any; }) => {
                             })
                         }
                     }
+                }
+            }
+
+            RegistrosOk++;
+        }
+    }
+
+    return {
+        ErrorLogs,
+        RegistrosOk,
+        RegistrosError
+    }
+
+}
+
+const processDigitalSignatureData = async (records: any[], user: { UsuarioId: any; }) => {
+    let ErrorLogs: any[] = [];
+    let RegistrosOk: number = 0;
+    let RegistrosError: number = 0;
+
+    const systemUser = await prismaClient.usuario.findFirst({
+        where: {
+            Codigo: '0001',
+            Nombre: 'Sistema'
+        }
+    });
+
+    for await (let record of records) {
+        let hasError = false;
+        let errors: any[] = [];
+
+        if (!record["NUM_POLIZA"]) {
+            errors.push("NUM_POLIZA es obligatorio")
+            hasError = true;
+        }
+
+        if (!record["RESULTADO"]) {
+            errors.push("RESULTADO es obligatorio")
+            hasError = true;
+        }
+
+        if (record["NUM_POLIZA"]) {
+            const contract = await prismaClient.contrato.findFirst({
+                where: {
+                    CodigoPoliza: `${record["NUM_POLIZA"]}`
+                }
+            })
+
+            if (!contract) {
+                errors.push("Contrato no encontrado")
+                hasError = true;
+            }
+        }
+
+        if (hasError) {
+            ErrorLogs.push({
+                ...record,
+                errors
+            })
+            RegistrosError++;
+            continue;
+        } else {
+            if (record["RESULTADO"] === 'Transacción aceptada') {
+                const contract = await prismaClient.contrato.findFirst({
+                    where: {
+                        CodigoPoliza: record["NUM_POLIZA"]
+                    },
+                    include: {
+                        DocumentoContrato: {
+                            include: {
+                                IncidenciaDocumento: true,
+                                MaestroDocumentos: {
+                                    include: {
+                                        FamiliaDocumento: true
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                })
+
+                const conciliationType = await prismaClient.tipoConciliacion.findFirst({
+                    where: {
+                        Nombre: "actualización de histórico"
+                    }
+                })
+
+                if (contract && conciliationType) {
+                    for (const documentoContrato of contract.DocumentoContrato) {
+                        for (const documentIncidence of documentoContrato.IncidenciaDocumento) {
+                            await prismaClient.incidenciaDocumento.update({
+                                where: {
+                                    IncidenciaId: documentIncidence.IncidenciaId
+                                },
+                                data: {
+                                    Resuelta: true,
+                                    Usuario: {
+                                        connect: {
+                                            UsuarioId: systemUser?.UsuarioId
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                        await prismaClient.documentoContrato.update({
+                            where: {
+                                DocumentoId: documentoContrato.DocumentoId
+                            },
+                            data: {
+                                EstadoDoc: ContractDocumentStatusesEnum.CORRECT,
+                                FechaConciliacion: new Date(),
+                                Usuario: {
+                                    connect: {
+                                        UsuarioId: systemUser?.UsuarioId
+                                    }
+                                }
+                            }
+                        })
+                    }
+
+                    await prismaClient.contrato.update({
+                        where: {
+                            ContratoId: contract.ContratoId
+                        },
+                        data: {
+                            TipoConciliacion: {
+                                connect: {
+                                    TipoConciliacionId: conciliationType.TipoConciliacionId
+                                }
+                            },
+                            FechaConciliacion: new Date(),
+                            ResultadoFDCON: record["RESULTADO"],
+                            Usuario: {
+                                connect: {
+                                    UsuarioId: systemUser?.UsuarioId
+                                }
+                            }
+                        }
+                    })
                 }
             }
 

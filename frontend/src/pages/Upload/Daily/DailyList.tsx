@@ -100,7 +100,7 @@ function Main() {
                 <Table
                     ref={table}
                     tableName="DailyFiles"
-                    endpoint="/load"
+                    endpoint="/load?type=POLIZA"
                     columns={columns() as ColumnDefinition[]}
                     filter={filter}
                     setFilter={setFilter}

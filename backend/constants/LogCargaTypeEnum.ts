@@ -1,3 +1,4 @@
 export const LogCargaTypeEnum = {
-    POLICY: 'POLIZA'
+    POLICY: 'POLIZA',
+    DIGITAL_SIGNATURE: 'FIRMA_DIGITAL',
 }

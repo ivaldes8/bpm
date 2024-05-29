@@ -83,10 +83,17 @@ const ADMIN_NAVIGATION: Array<Menu> = [
                 title: "Compañías"
             },
             {
-                icon: "FileText",
+                icon: "FileStack",
                 pathname: "/familydoc-list",
                 title: "Familia de documentos"
-            },        
+
+            },   
+            {
+                icon: "FileCheck",
+                pathname: "/typeconciliation-list",
+                title: "Tipos de conciliación"
+            
+            },     
             {
                 icon: "UserRoundCog",
                 pathname: "/user-list",

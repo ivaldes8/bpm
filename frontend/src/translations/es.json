@@ -171,8 +171,10 @@
     "familyDocuments": "Familia de documentos",
     "createFamilyDocument": "Crear familia de documentos",
     "addFamilyDocument": "Añadir familia de documentos",
-    "editFamilyDocument": "Editar familia de documentos"
-
-
-
+    "editFamilyDocument": "Editar familia de documentos",
+    "typeConciliation": "Tipo de conciliación",
+    "typeConciliations": "Tipo de conciliaciones",
+    "addTypeConciliation": "Añadir tipo de conciliación",
+    "editTypeConciliation": "Editar tipo de conciliación",
+    "createTypeConciliation": "Crear tipo de conciliación"
 }

@@ -9,6 +9,7 @@ import contractRoutes from "./contract";
 import contractObservationRoutes from "./contractObservation";
 import contractDocumentRoutes from "./contractDocument";
 import incidenceDocumentRoutes from "./incidenceDocument";
+import familyDocumentRoutes from "./familyDocument";
 
 const rootRouter: Router = Router()
 
@@ -22,6 +23,7 @@ rootRouter.use("/contracts", contractRoutes)
 rootRouter.use("/contract-observations", contractObservationRoutes)
 rootRouter.use("/contract-documents", contractDocumentRoutes)
 rootRouter.use("/incidence-documents", incidenceDocumentRoutes)
+rootRouter.use("/family-documents", familyDocumentRoutes)
 
 
 export default rootRouter

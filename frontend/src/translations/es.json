@@ -167,7 +167,11 @@
     "responsibleEmail2": "Correo del responsable 2",
     "channel": "Canal",
     "zone": "Zona",
-    "claim": "Reclamar"
+    "claim": "Reclamar",
+    "familyDocuments": "Familia de documentos",
+    "createFamilyDocument": "Crear familia de documentos",
+    "addFamilyDocument": "Añadir familia de documentos",
+    "editFamilyDocument": "Editar familia de documentos"
 
 
 

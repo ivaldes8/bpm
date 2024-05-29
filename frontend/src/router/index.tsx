@@ -8,6 +8,7 @@ import ChangePassword from "../pages/ChangePassword";
 import UserList from "../pages/Administration/Users/UserList"
 import CompanyList from "../pages/Administration/Company/CompanyList"
 import MediadorList from "../pages/Administration/Mediador/MediadorList"
+import FamilyDocumentList from "../pages/Administration/FamilyDocument/FamilyDocumentList"
 import UploadDaily from "../pages/Upload/Daily/DailyList"
 import UploadTablet from "../pages/Upload/Tablet/TabletList"
 import UploadCancellation from "../pages/Upload/Cancellation/CancellationList"
@@ -83,6 +84,11 @@ function Router() {
           path: "mediators-list",  
           element: <MediadorList />
         },
+        {
+          path: "familydoc-list",
+          element:<FamilyDocumentList />
+        },
+
         {
           path: "user-list",
           element: <UserList />,

@@ -83,6 +83,11 @@ const ADMIN_NAVIGATION: Array<Menu> = [
                 title: "Compañías"
             },
             {
+                icon: "FileText",
+                pathname: "/familydoc-list",
+                title: "Familia de documentos"
+            },        
+            {
                 icon: "UserRoundCog",
                 pathname: "/user-list",
                 title: "Usuarios"

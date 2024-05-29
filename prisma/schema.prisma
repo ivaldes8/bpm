@@ -105,10 +105,10 @@ model Mediador {
 }
 
 model FamiliaDocumento {
-  FamiliaId          Int                  @id
-  Codigo             String
+  FamiliaId          Int                  @id @default(autoincrement())
+  Codigo             String               @unique
   Nombre             String
-  Activo             Boolean
+  Activo             Boolean?             @default(true)
   FechaInicio        DateTime             @default(now())
   FechaBaja          DateTime?
   FechaUltimaModif   DateTime             @default(now())

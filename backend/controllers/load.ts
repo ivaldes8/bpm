@@ -633,7 +633,7 @@ const processDigitalSignatureData = async (records: any[], user: { UsuarioId: an
 
                 const conciliationType = await prismaClient.tipoConciliacion.findFirst({
                     where: {
-                        Nombre: "actualización de histórico"
+                        Nombre: "Firma digital"
                     }
                 })
 

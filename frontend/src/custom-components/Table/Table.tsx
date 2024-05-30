@@ -68,7 +68,7 @@ const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, fi
                     },
                 },
                 ajaxResponse: function (url, params, response) {
-                    if (response && response.length) {
+                    if (response) {
                         let responseData = response
 
                         if (populateRole) {
@@ -83,7 +83,7 @@ const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, fi
                             show: true,
                             text: "Upss! Algo salio mal.",
                         })
-                        return { data: [] }
+                        return []
                     }
                 },
                 printAsHtml: true,

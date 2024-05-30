@@ -43,7 +43,7 @@ const UploadFile = ({ show, setShow, onRefresh }: Props) => {
 
         const formData = new FormData();
         formData.append('file', form.file);
-        formData.append('type', "digitalSignature");
+        formData.append('type', "tablet");
 
         setLoading(true)
         const [error, response, data] = await handlePromise(LoadService.uploadFile(formData));

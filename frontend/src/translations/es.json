@@ -177,5 +177,6 @@
     "addTypeConciliation": "Añadir tipo de conciliación",
     "editTypeConciliation": "Editar tipo de conciliación",
     "createTypeConciliation": "Crear tipo de conciliación",
-    "uploadDigitalSignatureFile": "Fichero de firma digital"
+    "uploadDigitalSignatureFile": "Fichero de firma digital",
+    "uploadTabletFile": "Fichero de tablet"
 }

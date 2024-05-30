@@ -44,12 +44,10 @@ const TableFilters = ({ filter, setFilter, onFilter, onResetFilter, onPrint, onE
                         }}
                         className="w-full mt-2 2xl:w-full sm:mt-0 sm:w-auto"
                     >
-                        <option value="Nombre">{t("name")}</option>
-                        <option value="Codigo">{t("code")}</option>
-                        <option value="Descripcion">{t("description")}</option>
-                        <option value="Telefono">{t("phone")}</option>
-                        <option value="CorreoComp">{t("email")}</option>
-
+                        <option value="Tipo">{t("type")}</option>
+                        <option value="TotalRegistros">{t("totalRecords")}</option>
+                        <option value="RegistrosOk">{t("okRecords")}</option>
+                        <option value="RegistrosError">{t("errorRecords")}</option>
                     </FormSelect>
                 </div>
                 <div className="items-center mt-2 sm:flex sm:mr-4 xl:mt-0">

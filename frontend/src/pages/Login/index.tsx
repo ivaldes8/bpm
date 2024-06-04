@@ -113,7 +113,7 @@ function Main() {
                   className="w-[150px]"
                   src={logoUrl}
                 />
-                <span className="ml-3 text-lg text-white"> BPM </span>
+                {/* <span className="ml-3 text-lg text-white"> BPM </span> */}
               </a>
               <div className="my-auto">
                 <img

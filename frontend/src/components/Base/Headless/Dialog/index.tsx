@@ -62,14 +62,14 @@ function Dialog({
   );
 }
 
-Dialog.Panel = ({
+function DialogPanel({
   children,
   className,
   as = "div",
   ...props
 }: ExtractProps<typeof HeadlessDialog.Panel> & {
   size?: Size;
-}) => {
+}) {
   const dialog = useContext(dialogContext);
   return (
     <>
@@ -113,13 +113,14 @@ Dialog.Panel = ({
     </>
   );
 };
+Dialog.Panel = DialogPanel;
 
-Dialog.Title = ({
+function DialogTitle({
   children,
   className,
   as = "div",
   ...props
-}: ExtractProps<typeof HeadlessDialog.Title>) => {
+}: ExtractProps<typeof HeadlessDialog.Title>) {
   return (
     <HeadlessDialog.Title
       as={as}
@@ -133,13 +134,14 @@ Dialog.Title = ({
     </HeadlessDialog.Title>
   );
 };
+Dialog.Title = DialogTitle;
 
-Dialog.Description = ({
+function DialogDescription({
   children,
   className,
   as = "div",
   ...props
-}: ExtractProps<typeof HeadlessDialog.Description>) => {
+}: ExtractProps<typeof HeadlessDialog.Description>) {
   return (
     <HeadlessDialog.Description
       as={as}
@@ -150,8 +152,9 @@ Dialog.Description = ({
     </HeadlessDialog.Description>
   );
 };
+Dialog.Description = DialogDescription;
 
-Dialog.Footer = <C extends React.ElementType = "div">({
+function DialogFooter<C extends React.ElementType = "div">({
   children,
   className,
   as,
@@ -159,7 +162,7 @@ Dialog.Footer = <C extends React.ElementType = "div">({
 }: {
   as?: C;
 } & React.PropsWithChildren &
-  React.ComponentPropsWithoutRef<C>) => {
+  React.ComponentPropsWithoutRef<C>) {
   const Component = as || "div";
 
   return (
@@ -174,5 +177,6 @@ Dialog.Footer = <C extends React.ElementType = "div">({
     </Component>
   );
 };
+Dialog.Footer = DialogFooter;
 
 export default Dialog;

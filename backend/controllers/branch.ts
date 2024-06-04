@@ -28,7 +28,7 @@ export const createBranch = async (req: Request, res: Response) => {
     }
 
     try {
-        const company = await prismaClient.compania.findFirstOrThrow({
+        await prismaClient.compania.findFirstOrThrow({
             where: {
                 CompaniaId: validatedData.CompId
             }
@@ -59,7 +59,7 @@ export const createBranch = async (req: Request, res: Response) => {
 export const updateBranch = async (req: Request, res: Response) => {
 
     try {
-        const branch = await prismaClient.ramo.findFirstOrThrow({
+        await prismaClient.ramo.findFirstOrThrow({
             where: {
                 RamoId: parseInt(req.params.id)
             }
@@ -83,7 +83,7 @@ export const updateBranch = async (req: Request, res: Response) => {
     }
 
     try {
-        const company = await prismaClient.compania.findFirstOrThrow({
+        await prismaClient.compania.findFirstOrThrow({
             where: {
                 CompaniaId: validatedData.CompId
             }

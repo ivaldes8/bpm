@@ -4,7 +4,6 @@ import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
 import { InternalException } from "../exceptions/internal-exception";
 import { createIncidenciaDocumentoSchema } from "../schema/incidenceDocument";
-import { ContractDocumentStatusesEnum } from "../constants/ContractDocumentStatusesEnum";
 
 export const getIncidenceDocuments = async (req: Request, res: Response) => {
 

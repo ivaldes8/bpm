@@ -60,7 +60,7 @@ export const createCompany = async (req: Request, res: Response) => {
 export const updateCompany = async (req: Request, res: Response) => {
 
     try {
-        const company = await prismaClient.compania.findFirstOrThrow({
+        await prismaClient.compania.findFirstOrThrow({
             where: {
                 CompaniaId: parseInt(req.params.id)
             }

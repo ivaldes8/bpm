@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { prismaClient } from "../server";
-import { createFamiliaDocumentoSchema } from "../schema/familyDocument";
-import { updateFamiliaDocumentoSchema } from "../schema/familyDocument";
+import { createFamiliaDocumentoSchema, updateFamiliaDocumentoSchema } from "../schema/familyDocument";
 import { ErrorCode } from "../exceptions/root";
 import { NotFoundException } from "../exceptions/not-found";
 import { InternalException } from "../exceptions/internal-exception";

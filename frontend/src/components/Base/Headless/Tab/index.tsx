@@ -46,8 +46,8 @@ function Tab({
           >
             {typeof children === "function"
               ? children({
-                  selected: selected,
-                })
+                selected: selected,
+              })
               : children}
           </tabContext.Provider>
         </li>
@@ -56,7 +56,7 @@ function Tab({
   );
 }
 
-Tab.Button = <C extends React.ElementType = "a">({
+const TabButton = <C extends React.ElementType = "a">({
   children,
   className,
   as,
@@ -77,33 +77,33 @@ Tab.Button = <C extends React.ElementType = "a">({
 
         // Default
         list.variant == "tabs" &&
-          "block border-transparent rounded-t-md dark:border-transparent",
+        "block border-transparent rounded-t-md dark:border-transparent",
         list.variant == "tabs" &&
-          tab.selected &&
-          "bg-white border-slate-200 border-b-transparent font-medium dark:bg-transparent dark:border-t-darkmode-400 dark:border-b-darkmode-600 dark:border-x-darkmode-400",
+        tab.selected &&
+        "bg-white border-slate-200 border-b-transparent font-medium dark:bg-transparent dark:border-t-darkmode-400 dark:border-b-darkmode-600 dark:border-x-darkmode-400",
         list.variant == "tabs" &&
-          !tab.selected &&
-          "hover:bg-slate-100 dark:hover:bg-darkmode-400 dark:hover:border-transparent",
+        !tab.selected &&
+        "hover:bg-slate-100 dark:hover:bg-darkmode-400 dark:hover:border-transparent",
 
         // Pills
         list.variant == "pills" && "rounded-md border-0",
         list.variant == "pills" &&
-          tab.selected &&
-          "bg-primary text-white font-medium",
+        tab.selected &&
+        "bg-primary text-white font-medium",
 
         // Boxed tabs
         list.variant == "boxed-tabs" &&
-          "shadow-[0px_3px_20px_#0000000b] rounded-md",
+        "shadow-[0px_3px_20px_#0000000b] rounded-md",
         list.variant == "boxed-tabs" &&
-          tab.selected &&
-          "bg-primary text-white font-medium",
+        tab.selected &&
+        "bg-primary text-white font-medium",
 
         // Link tabs
         list.variant == "link-tabs" &&
-          "border-b-2 border-transparent dark:border-transparent",
+        "border-b-2 border-transparent dark:border-transparent",
         list.variant == "link-tabs" &&
-          tab.selected &&
-          "border-b-primary font-medium dark:border-b-primary",
+        tab.selected &&
+        "border-b-primary font-medium dark:border-b-primary",
 
         className,
       ])}
@@ -113,8 +113,9 @@ Tab.Button = <C extends React.ElementType = "a">({
     </Component>
   );
 };
+Tab.Button = TabButton;
 
-Tab.Group = ({
+const TabGroup = ({
   children,
   ...props
 }: ExtractProps<typeof HeadlessTab.Group>) => {
@@ -124,8 +125,9 @@ Tab.Group = ({
     </HeadlessTab.Group>
   );
 };
+Tab.Group = TabGroup;
 
-Tab.List = ({
+const TabList = ({
   children,
   className,
   variant = "tabs",
@@ -143,7 +145,7 @@ Tab.List = ({
         as="ul"
         className={twMerge([
           variant == "tabs" &&
-            "border-b border-slate-200 dark:border-darkmode-400",
+          "border-b border-slate-200 dark:border-darkmode-400",
           "w-full flex",
           className,
         ])}
@@ -154,8 +156,9 @@ Tab.List = ({
     </listContext.Provider>
   );
 };
+Tab.List = TabList;
 
-Tab.Panels = ({
+const TabPanels = ({
   children,
   className,
   ...props
@@ -166,8 +169,9 @@ Tab.Panels = ({
     </HeadlessTab.Panels>
   );
 };
+Tab.Panels = TabPanels;
 
-Tab.Panel = ({
+const TabPanel = ({
   children,
   className,
   ...props
@@ -191,8 +195,8 @@ Tab.Panel = ({
           <>
             {typeof children === "function"
               ? children({
-                  selected: selected,
-                })
+                selected: selected,
+              })
               : children}
           </>
         </Transition>
@@ -200,5 +204,6 @@ Tab.Panel = ({
     </HeadlessTab.Panel>
   );
 };
+Tab.Panel = TabPanel;
 
 export default Tab;

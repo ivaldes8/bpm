@@ -62,7 +62,7 @@ function Slideover({
   );
 }
 
-Slideover.Panel = ({
+const SlideoverPanel = ({
   children,
   className,
   as = "div",
@@ -113,8 +113,9 @@ Slideover.Panel = ({
     </>
   );
 };
+Slideover.Panel = SlideoverPanel;
 
-Slideover.Title = ({
+const SlideoverTitle = ({
   children,
   className,
   as = "div",
@@ -133,8 +134,9 @@ Slideover.Title = ({
     </HeadlessDialog.Title>
   );
 };
+Slideover.Title = SlideoverTitle;
 
-Slideover.Description = ({
+const SlideoverDescription = ({
   children,
   className,
   as = "div",
@@ -150,8 +152,9 @@ Slideover.Description = ({
     </HeadlessDialog.Description>
   );
 };
+Slideover.Description = SlideoverDescription;
 
-Slideover.Footer = <C extends React.ElementType = "div">({
+const SlideoverFooter = <C extends React.ElementType = "div">({
   children,
   className,
   as,
@@ -174,5 +177,6 @@ Slideover.Footer = <C extends React.ElementType = "div">({
     </Component>
   );
 };
+Slideover.Footer = SlideoverFooter;
 
 export default Slideover;

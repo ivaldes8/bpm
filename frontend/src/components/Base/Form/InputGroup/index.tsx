@@ -19,7 +19,7 @@ function InputGroup(props: InputGroupProps) {
 type TextProps = React.PropsWithChildren &
   React.ComponentPropsWithoutRef<"div">;
 
-InputGroup.Text = (props: TextProps) => {
+function InputGroupText(props: TextProps) {
   const inputGroup = useContext(inputGroupContext);
   return (
     <div
@@ -27,7 +27,7 @@ InputGroup.Text = (props: TextProps) => {
       className={twMerge([
         "py-2 px-3 bg-slate-100 border shadow-sm border-slate-200 text-slate-600 dark:bg-darkmode-900/20 dark:border-darkmode-900/20 dark:text-slate-400",
         inputGroup &&
-          "rounded-none [&:not(:first-child)]:border-l-transparent first:rounded-l last:rounded-r",
+        "rounded-none [&:not(:first-child)]:border-l-transparent first:rounded-l last:rounded-r",
         props.className,
       ])}
     >
@@ -35,5 +35,7 @@ InputGroup.Text = (props: TextProps) => {
     </div>
   );
 };
+
+InputGroup.Text = InputGroupText;
 
 export default InputGroup;

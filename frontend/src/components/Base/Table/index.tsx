@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 
 interface TableProps
   extends React.PropsWithChildren,
-    React.ComponentPropsWithoutRef<"table"> {
+  React.ComponentPropsWithoutRef<"table"> {
   dark?: boolean;
   bordered?: boolean;
   hover?: boolean;
@@ -59,7 +59,7 @@ function Table({
 
 interface TheadProps
   extends React.PropsWithChildren,
-    React.ComponentPropsWithoutRef<"thead"> {
+  React.ComponentPropsWithoutRef<"thead"> {
   variant?: "default" | "light" | "dark";
 }
 
@@ -68,7 +68,7 @@ const theadContext = createContext<{
 }>({
   variant: "default",
 });
-Table.Thead = ({ className, ...props }: TheadProps) => {
+const TableThead = ({ className, ...props }: TheadProps) => {
   return (
     <theadContext.Provider
       value={{
@@ -88,26 +88,28 @@ Table.Thead = ({ className, ...props }: TheadProps) => {
     </theadContext.Provider>
   );
 };
+Table.Thead = TableThead;
 
 type TbodyProps = React.PropsWithChildren<
   React.ComponentPropsWithoutRef<"tbody">
 >;
 
-Table.Tbody = ({ className, ...props }: TbodyProps) => {
+const TableTbody = ({ className, ...props }: TbodyProps) => {
   return <thead className={className}>{props.children}</thead>;
 };
+Table.Tbody = TableTbody;
 
 type TrProps = React.PropsWithChildren & React.ComponentPropsWithoutRef<"tr">;
 
-Table.Tr = ({ className, ...props }: TrProps) => {
+const TableTr = ({ className, ...props }: TrProps) => {
   const table = useContext(tableContext);
   return (
     <tr
       className={twMerge([
         table.hover &&
-          "[&:hover_td]:bg-slate-100 [&:hover_td]:dark:bg-darkmode-300 [&:hover_td]:dark:bg-opacity-50",
+        "[&:hover_td]:bg-slate-100 [&:hover_td]:dark:bg-darkmode-300 [&:hover_td]:dark:bg-opacity-50",
         table.striped &&
-          "[&:nth-of-type(odd)_td]:bg-slate-100 [&:nth-of-type(odd)_td]:dark:bg-darkmode-300 [&:nth-of-type(odd)_td]:dark:bg-opacity-50",
+        "[&:nth-of-type(odd)_td]:bg-slate-100 [&:nth-of-type(odd)_td]:dark:bg-darkmode-300 [&:nth-of-type(odd)_td]:dark:bg-opacity-50",
         className,
       ])}
       {...props}
@@ -116,10 +118,11 @@ Table.Tr = ({ className, ...props }: TrProps) => {
     </tr>
   );
 };
+Table.Tr = TableTr;
 
 type ThProps = React.PropsWithChildren & React.ComponentPropsWithoutRef<"th">;
 
-Table.Th = ({ className, ...props }: ThProps) => {
+const TableTh = ({ className, ...props }: ThProps) => {
   const table = useContext(tableContext);
   const thead = useContext(theadContext);
   return (
@@ -139,10 +142,11 @@ Table.Th = ({ className, ...props }: ThProps) => {
     </th>
   );
 };
+Table.Th = TableTh;
 
 type TdProps = React.PropsWithChildren & React.ComponentPropsWithoutRef<"td">;
 
-Table.Td = ({ className, ...props }: TdProps) => {
+const TableTd = ({ className, ...props }: TdProps) => {
   const table = useContext(tableContext);
   return (
     <td
@@ -159,5 +163,6 @@ Table.Td = ({ className, ...props }: TdProps) => {
     </td>
   );
 };
+Table.Td = TableTd;
 
 export default Table;

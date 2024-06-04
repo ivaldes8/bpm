@@ -105,7 +105,7 @@ export const importData = async (req: Request, res: Response) => {
                     },
                 }
             })
-
+            break;
         case "tablet":
             processedData = await processTabletData(records, user)
 
@@ -134,7 +134,7 @@ export const importData = async (req: Request, res: Response) => {
                     },
                 }
             })
-
+            break;
         default:
             break;
     }

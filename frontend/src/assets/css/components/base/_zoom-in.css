@@ -4,7 +4,6 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
     transition-duration: 300ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     &:hover {
       transform: scale(theme("scale.105"));

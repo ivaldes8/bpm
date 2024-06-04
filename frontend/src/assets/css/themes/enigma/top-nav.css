@@ -362,15 +362,6 @@
                                         "colors.black" / 10%
                                     );
                                 }
-                                & > li {
-                                    /* Third level */
-                                    & > .top-menu {
-                                        .top-menu__title {
-                                            .top-menu__sub-icon {
-                                            }
-                                        }
-                                    }
-                                }
                             }
                         }
                     }

@@ -4,7 +4,6 @@ import { Transition } from "react-transition-group";
 import { useState, useEffect, createRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toRaw } from "@/utils/helper";
-import { selectTheme } from "@/stores/themeSlice";
 import { useAppSelector } from "@/stores/hooks";
 import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./mobile-menu";
 import Lucide from "@/components/Base/Lucide";
@@ -18,7 +17,6 @@ function Main() {
   const [formattedMenu, setFormattedMenu] = useState<
     Array<FormattedMenu | "divider">
   >([]);
-  const themeStore = useAppSelector(selectTheme);
   const { menu } = useAppSelector((state) => state.menu);
   const mobileMenu = () => nestedMenu(toRaw(menu), location);
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);

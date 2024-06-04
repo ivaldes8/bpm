@@ -211,10 +211,6 @@
                             &:not(.side-menu--active) {
                                 color: theme("colors.white" / 70%);
                             }
-                            &:hover {
-                            }
-                            .side-menu__icon {
-                            }
                         }
                         & > ul {
                             background-color: theme("colors.white" / 4%);
@@ -247,10 +243,6 @@
                                     }
                                     &:not(.side-menu--active) {
                                         color: theme("colors.white" / 70%);
-                                    }
-                                    &:hover {
-                                    }
-                                    .side-menu__icon {
                                     }
                                 }
                             }
@@ -359,10 +351,6 @@
                                 &:not(.side-menu--active) {
                                     color: theme("colors.slate.400");
                                 }
-                                &:hover {
-                                }
-                                .side-menu__icon {
-                                }
                             }
                             & > ul {
                                 background-color: transparent;
@@ -379,10 +367,6 @@
                                         }
                                         &:not(.side-menu--active) {
                                             color: theme("colors.slate.400");
-                                        }
-                                        &:hover {
-                                        }
-                                        .side-menu__icon {
                                         }
                                     }
                                 }

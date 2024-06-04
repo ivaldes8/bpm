@@ -145,7 +145,6 @@ const slideUp = (
   el.style.transitionProperty = "height, margin, padding";
   el.style.transitionDuration = duration + "ms";
   el.style.height = el.offsetHeight + "px";
-  el.offsetHeight;
   el.style.overflow = "hidden";
   el.style.height = "0";
   el.style.paddingTop = "0";
@@ -182,7 +181,6 @@ const slideDown = (
   el.style.paddingBottom = "0";
   el.style.marginTop = "0";
   el.style.marginBottom = "0";
-  el.offsetHeight;
   el.style.transitionProperty = "height, margin, padding";
   el.style.transitionDuration = duration + "ms";
   el.style.height = height + "px";

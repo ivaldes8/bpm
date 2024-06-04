@@ -1,9 +1,5 @@
 import _ from "lodash";
-import fakerData from "@/utils/faker";
 import Button from "@/components/Base/Button";
-import { FormInput, FormLabel } from "@/components/Base/Form";
-import Lucide from "@/components/Base/Lucide";
-import { Menu } from "@/components/Base/Headless";
 import { useTranslation } from "react-i18next";
 import { useContext, useEffect } from "react";
 import { AlertContext } from "@/utils/Contexts/AlertContext";
@@ -38,7 +34,7 @@ function Main() {
       newPassword: yup.string().required(t("errors.required") ?? ''),
       confirmPassword: yup.string()
         .required(t("errors.required") ?? '')
-        .oneOf([yup.ref('newPassword')], t("errors.passwordMatch" ?? '')),
+        .oneOf([yup.ref('newPassword')], t("errors.passwordMatch") ?? ''),
     }
   )
 

@@ -15,36 +15,37 @@ export const parseCsv = async (file: Express.Multer.File): Promise<any[]> => {
     });
 }
 
-export const parseExcel = async (file: Express.Multer.File): Promise<any[]> => {
-    return new Promise(async (resolve, reject) => {
+export const parseExcel = (file: Express.Multer.File): Promise<any[]> => {
+    return new Promise((resolve, reject) => {
         const workbook = new excel.Workbook();
 
-        try {
-            await workbook.xlsx.readFile(file.path);
-            const worksheet = workbook.getWorksheet(1);
-            const results: any[] = [];
+        workbook.xlsx.readFile(file.path)
+            .then(() => {
+                const worksheet = workbook.getWorksheet(1);
+                const results: any[] = [];
 
-            if (worksheet) {
-                const headers: string[] = [];
-                worksheet.eachRow((row: any, rowNumber: number) => {
-                    const rowData: any = {};
-                    row.eachCell((cell: any, colNumber: number) => {
-                        if (rowNumber === 1) {
-                            headers[colNumber] = cell.value;
-                        } else {
-                            rowData[headers[colNumber]] = cell.value;
+                if (worksheet) {
+                    const headers: string[] = [];
+                    worksheet.eachRow((row: any, rowNumber: number) => {
+                        const rowData: any = {};
+                        row.eachCell((cell: any, colNumber: number) => {
+                            if (rowNumber === 1) {
+                                headers[colNumber] = cell.value;
+                            } else {
+                                rowData[headers[colNumber]] = cell.value;
+                            }
+                        });
+                        if (rowNumber !== 1) {
+                            results.push(rowData);
                         }
                     });
-                    if (rowNumber !== 1) {
-                        results.push(rowData);
-                    }
-                });
-            }
+                }
 
-            resolve(results);
-        } catch (error) {
-            console.log(error, "ERROR");
-            reject(error);
-        }
+                resolve(results);
+            })
+            .catch((error) => {
+                console.log(error, "ERROR");
+                reject(error);
+            });
     });
 }

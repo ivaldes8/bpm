@@ -196,10 +196,6 @@
                             &:not(.side-menu--active) {
                                 color: theme("colors.slate.600");
                             }
-                            &:hover {
-                            }
-                            .side-menu__icon {
-                            }
                         }
                         & > ul {
                             background-color: theme("colors.white" / 4%);
@@ -236,10 +232,6 @@
                                     }
                                     &:not(.side-menu--active) {
                                         color: theme("colors.slate.600");
-                                    }
-                                    &:hover {
-                                    }
-                                    .side-menu__icon {
                                     }
                                 }
                             }
@@ -350,10 +342,6 @@
                                         color: theme("colors.slate.400");
                                     }
                                 }
-                                &:hover {
-                                }
-                                .side-menu__icon {
-                                }
                             }
                             & > ul {
                                 background-color: transparent;
@@ -384,10 +372,6 @@
                                                     "colors.slate.400"
                                                 );
                                             }
-                                        }
-                                        &:hover {
-                                        }
-                                        .side-menu__icon {
                                         }
                                     }
                                 }

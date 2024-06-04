@@ -81,7 +81,7 @@ function Disclosure({
   );
 }
 
-Disclosure.Group = <C extends React.ElementType = "div">({
+function DisclosureGroup<C extends React.ElementType = "div">({
   children,
   className,
   as,
@@ -93,7 +93,7 @@ Disclosure.Group = <C extends React.ElementType = "div">({
   selectedIndex?: number;
   variant?: Variant;
 } & React.PropsWithChildren &
-  React.ComponentPropsWithoutRef<C>) => {
+  React.ComponentPropsWithoutRef<C>) {
   const [active, setActive] = useState(selectedIndex);
   const Component = as || "div";
 
@@ -124,7 +124,8 @@ Disclosure.Group = <C extends React.ElementType = "div">({
   );
 };
 
-Disclosure.Button = ({
+Disclosure.Group = DisclosureGroup;
+const DisclosureButton = ({
   children,
   className,
   ...props
@@ -153,8 +154,9 @@ Disclosure.Button = ({
     </HeadlessDisclosure.Button>
   );
 };
+Disclosure.Button = DisclosureButton;
 
-Disclosure.Panel = ({
+const DisclosurePanel = ({
   children,
   className,
   ...props
@@ -182,5 +184,6 @@ Disclosure.Panel = ({
     </Transition>
   );
 };
+Disclosure.Panel = DisclosurePanel;
 
 export default Disclosure;

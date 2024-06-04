@@ -1,6 +1,4 @@
 import { useRoutes } from "react-router-dom";
-import DashboardOverview1 from "../pages/DashboardOverview1";
-import UsersLayout1 from "../pages/UsersLayout1";
 import Login from "../pages/Login";
 import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
@@ -19,7 +17,6 @@ import LoadPolicy from "../pages/Load/LoadPolicy/Dashboard"
 import LoadIncidencePolicy from "../pages/Load/LoadIncidencePolicy/Dashboard"
 
 import Layout from "../themes";
-import path from "path";
 
 function Router() {
   const routes = [
@@ -29,11 +26,7 @@ function Router() {
       children: [
         {
           path: "/",
-          element: <DashboardOverview1 />,
-        },
-        {
-          path: "users-layout-1",
-          element: <UsersLayout1 />,
+          element: <UploadDaily />,
         },
         {
           path: "profile",
@@ -82,12 +75,12 @@ function Router() {
           element: <CompanyList />,
         },
         {
-          path: "mediators-list",  
+          path: "mediators-list",
           element: <MediadorList />
         },
         {
           path: "familydoc-list",
-          element:<FamilyDocumentList />
+          element: <FamilyDocumentList />
         },
         {
           path: "typeconciliation-list",

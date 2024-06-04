@@ -36,7 +36,7 @@ export const getContracts = async (req: Request, res: Response) => {
                                 }
                             }
                         }
-                    
+
                     }
                 }
             },
@@ -58,7 +58,7 @@ export const getContracts = async (req: Request, res: Response) => {
                                     MaestroIncidencias: true
                                 }
                             }
-                        } 
+                        }
                     },
                     IncidenciaDocumento: true
                 }
@@ -91,7 +91,7 @@ export const createContract = async (req: Request, res: Response) => {
     const validatedData = createContratoSchema.parse(req.body)
 
     try {
-        const company = await prismaClient.compania.findFirstOrThrow({
+        await prismaClient.compania.findFirstOrThrow({
             where: {
                 CompaniaId: validatedData.CompaniaId
             }
@@ -101,7 +101,7 @@ export const createContract = async (req: Request, res: Response) => {
     }
 
     try {
-        const ramo = await prismaClient.ramo.findFirstOrThrow({
+        await prismaClient.ramo.findFirstOrThrow({
             where: {
                 RamoId: validatedData.RamoId
             }
@@ -111,7 +111,7 @@ export const createContract = async (req: Request, res: Response) => {
     }
 
     try {
-        const mediador = await prismaClient.mediador.findFirstOrThrow({
+        await prismaClient.mediador.findFirstOrThrow({
             where: {
                 MediadorId: validatedData.OficinaId
             }
@@ -158,7 +158,7 @@ export const createContract = async (req: Request, res: Response) => {
 export const updateContract = async (req: Request, res: Response) => {
 
     try {
-        const contract = await prismaClient.contrato.findFirstOrThrow({
+        await prismaClient.contrato.findFirstOrThrow({
             where: {
                 ContratoId: parseInt(req.params.id)
             }
@@ -171,7 +171,7 @@ export const updateContract = async (req: Request, res: Response) => {
 
 
     try {
-        const company = await prismaClient.compania.findFirstOrThrow({
+        await prismaClient.compania.findFirstOrThrow({
             where: {
                 CompaniaId: validatedData.CompaniaId
             }
@@ -181,7 +181,7 @@ export const updateContract = async (req: Request, res: Response) => {
     }
 
     try {
-        const ramo = await prismaClient.ramo.findFirstOrThrow({
+        await prismaClient.ramo.findFirstOrThrow({
             where: {
                 RamoId: validatedData.RamoId
             }
@@ -191,7 +191,7 @@ export const updateContract = async (req: Request, res: Response) => {
     }
 
     try {
-        const mediador = await prismaClient.mediador.findFirstOrThrow({
+        await prismaClient.mediador.findFirstOrThrow({
             where: {
                 MediadorId: validatedData.OficinaId
             }

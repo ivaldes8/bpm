@@ -33,7 +33,10 @@ export const settingsSlice = createSlice({
     initialState,
     reducers: {
         reset: (state) => {
-            state = initialState
+            state.company = initialState.company;
+            state.companyList = initialState.companyList;
+            state.caja = initialState.caja;
+            state.lote = initialState.lote;
         },
         setCompany: (state, action) => {
             state.company = action.payload

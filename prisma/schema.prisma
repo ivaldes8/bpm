@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -57,7 +57,7 @@ model LogCarga {
   TotalRegistros   Int
   RegistrosOk      Int
   RegistrosError   Int
-  ErrorLogs        String?
+  ErrorLogs        String?   @db.LongText
   FechaCarga       DateTime  @default(now())
   FechaBaja        DateTime?
   FechaUltimaModif DateTime  @default(now())
@@ -137,7 +137,7 @@ model MaestroIncidencias {
   TipoIncidenciaId Int    @id
   DocAsociadoId    Int?
   Codigo           String
-  Nombre           String
+  Nombre           String @db.Text
 
   Activo              Boolean
   FechaInicio         DateTime              @default(now())
@@ -208,7 +208,7 @@ model RamoTipoOperacion {
 }
 
 model RamoDocumento {
-  RamoDocId            Int                    @id
+  RamoDocId            Int                    @id @default(autoincrement())
   RamoId               Int
   DocumentoId          Int
   AnexoIncidencias     Int?

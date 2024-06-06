@@ -16,8 +16,8 @@
 - cd frontend && yarn install
 - cd ..
 - npx prisma generate
-- npx prisma db push
-- npx prisma db seed
+- npx prisma migrate deploy
+- npx prisma db seed (if needed)
 - npx prisma studio (If want to open the db manager only)
 - yarn backend
 - yarn frontend

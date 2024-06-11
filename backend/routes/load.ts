@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { errorHandler } from "../error-handler";
-import { getLoadLogs, importData, getLoadLogById, deleteLoadLog } from "../controllers/load";
+import { getLoadLogs, importData, getLoadLogById, deleteLoadLog } from "../controllers/load/load";
 import monitorMiddleware from "../middlewares/monitor";
 import authMiddleware from "../middlewares/auth";
 import multer from "multer";

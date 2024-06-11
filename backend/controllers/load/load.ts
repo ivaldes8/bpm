@@ -49,7 +49,7 @@ export const importData = async (req: Request, res: Response) => {
     let processedData = null;
     let result = null;
     switch (req.body.type) {
-        case "policy":
+        case "policy": {
             processedData = await processPolicyData(records, user)
 
             const policyLogAction = await prismaClient.logAccion.create({
@@ -78,7 +78,8 @@ export const importData = async (req: Request, res: Response) => {
                 }
             })
             break;
-        case "digitalSignature":
+        }
+        case "digitalSignature": {
             processedData = await processDigitalSignatureData(records, user)
 
             const digitalSignatureLogAction = await prismaClient.logAccion.create({
@@ -107,7 +108,8 @@ export const importData = async (req: Request, res: Response) => {
                 }
             })
             break;
-        case "tablet":
+        }
+        case "tablet": {
             processedData = await processTabletData(records, user)
 
             const tabletLogAction = await prismaClient.logAccion.create({
@@ -136,6 +138,7 @@ export const importData = async (req: Request, res: Response) => {
                 }
             })
             break;
+        }
         default:
             break;
     }

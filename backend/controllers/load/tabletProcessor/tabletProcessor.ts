@@ -1,9 +1,9 @@
 import { Usuario } from "@prisma/client";
 import { prismaClient } from "../../../server";
-import { digitalSignatureValidator } from "./digitalSignatureValidator";
+import { tabletValidator } from "./tabletValidator";
 import { contractUpdater } from "./contractUpdater";
 
-export const processDigitalSignatureData = async (records: any[], user: { UsuarioId: any; }) => {
+export const processTabletData = async (records: any[], user: { UsuarioId: any; }) => {
     let ErrorLogs: any[] = [];
     let RegistrosOk: number = 0;
     let RegistrosError: number = 0;
@@ -19,7 +19,7 @@ export const processDigitalSignatureData = async (records: any[], user: { Usuari
         let hasError = false;
         let errors: any[] = [];
 
-        const { hasError: hasErr, errors: err } = await digitalSignatureValidator(record);
+        const { hasError: hasErr, errors: err } = await tabletValidator(record);
 
         if (hasErr) {
             hasError = true;
@@ -32,6 +32,7 @@ export const processDigitalSignatureData = async (records: any[], user: { Usuari
                 errors
             })
             RegistrosError++;
+            continue;
         } else {
             await contractUpdater(record, systemUser as Usuario, user);
 

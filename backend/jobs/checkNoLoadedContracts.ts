@@ -19,7 +19,6 @@ export const checkNoLoadedContracts = async () => {
     });
 
     for (const contract of contracts) {
-
         const createdAt = contract.FechaAltaSolicitud ? contract.FechaAltaSolicitud : contract.FechaAltaContrato;
 
         if (createdAt) {
@@ -36,9 +35,7 @@ export const checkNoLoadedContracts = async () => {
     }
 }
 
-
 const generateIncidences = async (contractId: number, createdDate: Date) => {
-
     const systemUser = await prismaClient.usuario.findFirst({
         where: {
             Codigo: '0001',
@@ -47,9 +44,7 @@ const generateIncidences = async (contractId: number, createdDate: Date) => {
     });
 
     const contract = await prismaClient.contrato.findFirst({
-        where: {
-            ContratoId: contractId
-        },
+        where: { ContratoId: contractId },
         include: {
             Ramo: {
                 include: {
@@ -74,82 +69,51 @@ const generateIncidences = async (contractId: number, createdDate: Date) => {
 
     if (contract) {
         const RamoTipoOperacionArray = contract.Ramo?.RamoTipoOperacion;
-        const docList = []
-        for (let i = 0; i < RamoTipoOperacionArray.length; i++) {
-            for (let j = 0; j < RamoTipoOperacionArray[i].RamoDocumento.length; j++) {
-                await docList.push({
-                    id: RamoTipoOperacionArray[i].RamoDocumento[j].RamoDocId,
-                })
+        const docList = [];
+
+        for (const ramoTipoOperacion of RamoTipoOperacionArray) {
+            for (const ramoDocumento of ramoTipoOperacion.RamoDocumento) {
+                docList.push({
+                    id: ramoDocumento.RamoDocId,
+                });
             }
         }
 
-        for (let i = 0; i < docList.length; i++) {
+        for (const doc of docList) {
             const createdContractDocument = await prismaClient.documentoContrato.create({
                 data: {
-                    Usuario: {
-                        connect: {
-                            UsuarioId: systemUser?.UsuarioId
-                        }
-                    },
-                    Contrato: {
-                        connect: {
-                            ContratoId: contractId
-                        }
-                    },
-                    MaestroDocumentos: {
-                        connect: {
-                            TipoDocumentoId: docList[i].id
-                        }
-                    },
+                    Usuario: { connect: { UsuarioId: systemUser?.UsuarioId } },
+                    Contrato: { connect: { ContratoId: contractId } },
+                    MaestroDocumentos: { connect: { TipoDocumentoId: doc.id } },
                     EstadoDoc: ContractDocumentStatusesEnum.PENDING
                 },
-                include: {
-                    MaestroDocumentos: true
-                }
-            })
+                include: { MaestroDocumentos: true }
+            });
 
             const familiaDocId = createdContractDocument.MaestroDocumentos?.FamiliaId;
 
             if (familiaDocId) {
-                const incidenseList = await prismaClient.maestroIncidencias.findMany({
-                    where: {
-                        DocAsociadoId: familiaDocId
-                    }
+                const incidenceList = await prismaClient.maestroIncidencias.findMany({
+                    where: { DocAsociadoId: familiaDocId }
                 });
 
-                const notFoundIncidence = incidenseList.find((incidence) => incidence.Nombre.includes('no se ha recibido'));
+                const notFoundIncidence = incidenceList.find(incidence => incidence.Nombre.includes('no se ha recibido'));
 
                 if (notFoundIncidence) {
                     await prismaClient.incidenciaDocumento.create({
                         data: {
-                            Usuario: {
-                                connect: {
-                                    UsuarioId: systemUser?.UsuarioId
-                                }
-                            },
-                            DocumentoContrato: {
-                                connect: {
-                                    DocumentoId: createdContractDocument.DocumentoId
-                                }
-                            },
-                            MaestroIncidencias: {
-                                connect: {
-                                    TipoIncidenciaId: notFoundIncidence.TipoIncidenciaId
-                                }
-                            }
+                            Usuario: { connect: { UsuarioId: systemUser?.UsuarioId } },
+                            DocumentoContrato: { connect: { DocumentoId: createdContractDocument.DocumentoId } },
+                            MaestroIncidencias: { connect: { TipoIncidenciaId: notFoundIncidence.TipoIncidenciaId } }
                         }
-                    })
+                    });
                 }
             }
         }
 
         await prismaClient.contrato.update({
-            where: {
-                ContratoId: contract.ContratoId
-            },
-            data: {
-                FechaUltimaModif: createdDate
-            }
+            where: { ContratoId: contract.ContratoId },
+            data: { FechaUltimaModif: createdDate }
         });
     }
 }

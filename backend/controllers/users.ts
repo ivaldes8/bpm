@@ -99,7 +99,7 @@ export const updateUser = async (req: Request, res: Response) => {
     let validatedData = UpdateUserSchema.parse(req.body) as any
 
     try {
-        const user = await prismaClient.usuario.findFirstOrThrow({
+        await prismaClient.usuario.findFirstOrThrow({
             where: {
                 UsuarioId: parseInt(req.params.id)
             }
@@ -145,7 +145,7 @@ export const updateUser = async (req: Request, res: Response) => {
         where: {
             UsuarioId: parseInt(req.params.id)
         },
-        data: { ...validatedData as any, FechaUltimaModif: new Date() },
+        data: { ...validatedData, FechaUltimaModif: new Date() },
         include: {
             Rol: true
         }

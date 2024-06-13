@@ -25,11 +25,7 @@ export const sendEmailWithIncidencesByContract = async () => {
 
     for (const contract of contracts) {
         if (!contract.FechaConciliacion) {
-            const currentDate = new Date();
-            const lastModifiedDate = new Date(contract.FechaUltimaModif);
-            const diffInTime = currentDate.getTime() - lastModifiedDate.getTime();
-            const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
-            if (diffInDays === 30 || diffInDays === 60 || diffInDays === 90) {
+            if (isDueForReminder(contract.FechaUltimaModif)) {
                 const documents = await buildDocumentsWithIncidences(contract);
                 if (documents.length > 0) {
                     const cc = await searchCC(contract) ? contract.Compania.CorreoSoporte : '';
@@ -41,20 +37,25 @@ export const sendEmailWithIncidencesByContract = async () => {
     }
 }
 
-export const searchCC = async (contract: any) => {
-    let cc = false;
+const isDueForReminder = (lastModified: Date): boolean => {
+    const currentDate = new Date();
+    const lastModifiedDate = new Date(lastModified);
+    const diffInTime = currentDate.getTime() - lastModifiedDate.getTime();
+    const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
+    return diffInDays === 30 || diffInDays === 60 || diffInDays === 90;
+}
+
+export const searchCC = async (contract: any): Promise<string> => {
     for (const document of contract.DocumentoContrato) {
         for (const incidence of document.IncidenciaDocumento) {
             for (const type of incidence.MaestroIncidencias.TipoDocIncidencia) {
-                if (type.MailInterno === true) {
-                    cc = true;
-                    break;
+                if (type.MailInterno) {
+                    return contract.Compania.CorreoSoporte ?? '';
                 }
             }
         }
     }
-
-    return cc
+    return '';
 }
 
 export const buildDocumentsWithIncidences = async (contract: any) => {

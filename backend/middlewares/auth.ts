@@ -13,6 +13,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     }
 
     try {
+        //@ts-ignore
         const payload = jwt.verify(token!, JWT_SECRET) as any
 
         const user = await prismaClient.usuario.findFirst({

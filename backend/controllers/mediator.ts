@@ -24,7 +24,7 @@ export const createMediator = async (req: Request, res: Response) => {
 export const updateMediator = async (req: Request, res: Response) => {
 
     try {
-        const mediator = await prismaClient.mediador.findFirstOrThrow({
+        await prismaClient.mediador.findFirstOrThrow({
             where: {
                 MediadorId: parseInt(req.params.id)
             }

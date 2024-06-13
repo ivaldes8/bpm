@@ -32,7 +32,6 @@ export const processPolicyData = async (records: any[], user: { UsuarioId: any; 
                 errors
             })
             RegistrosError++;
-            continue;
         } else {
             await policyCreator(record, systemUser as Usuario, user);
 

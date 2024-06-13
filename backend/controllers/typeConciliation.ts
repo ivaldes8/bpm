@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import { prismaClient } from "../server";
-import { createTypeConciliationSchema } from "../schema/typeConciliation";
-import { updateTypeConciliationSchema } from "../schema/typeConciliation";
+import { createTypeConciliationSchema, updateTypeConciliationSchema } from "../schema/typeConciliation";
 import { ErrorCode } from "../exceptions/root";
 import { NotFoundException } from "../exceptions/not-found";
 import { InternalException } from "../exceptions/internal-exception";
-import { BadRequestsException } from "../exceptions/bad-requests";
 
 export const getTypeConciliation = async (req: Request, res: Response) => {
   const typeConciliation = await prismaClient.tipoConciliacion.findMany({});

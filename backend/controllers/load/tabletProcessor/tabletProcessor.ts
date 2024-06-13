@@ -32,7 +32,6 @@ export const processTabletData = async (records: any[], user: { UsuarioId: any; 
                 errors
             })
             RegistrosError++;
-            continue;
         } else {
             await contractUpdater(record, systemUser as Usuario, user);
 

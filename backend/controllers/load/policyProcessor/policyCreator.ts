@@ -72,17 +72,19 @@ const createContract = async (record: any, company: any, branch: any, mediator: 
     });
 };
 
-const createDocuments = async (createdContract: any, systemUser: Usuario, status: string) => {
+const createDocuments = async (createdContract: any, systemUser: Usuario, status: string, forPrecon: boolean) => {
     for (const ramoTipoOperacion of createdContract.Ramo.RamoTipoOperacion) {
         for (const ramoDocumento of ramoTipoOperacion.RamoDocumento) {
-            await prismaClient.documentoContrato.create({
-                data: {
-                    Contrato: { connect: { ContratoId: createdContract.ContratoId } },
-                    MaestroDocumentos: { connect: { TipoDocumentoId: ramoDocumento.MaestroDocumento.TipoDocumentoId } },
-                    Usuario: { connect: { UsuarioId: systemUser?.UsuarioId } },
-                    EstadoDoc: status
-                }
-            });
+            if ((forPrecon && ramoDocumento.Fase === 'PRECON') || !forPrecon) {
+                await prismaClient.documentoContrato.create({
+                    data: {
+                        Contrato: { connect: { ContratoId: createdContract.ContratoId } },
+                        MaestroDocumentos: { connect: { TipoDocumentoId: ramoDocumento.MaestroDocumento.TipoDocumentoId } },
+                        Usuario: { connect: { UsuarioId: systemUser?.UsuarioId } },
+                        EstadoDoc: status
+                    }
+                });
+            }
         }
     }
 };
@@ -144,11 +146,11 @@ export const policyCreator = async (record: any, systemUser: Usuario, user: { Us
     const createdContract = await createContract(record, company, branch, mediator, user);
 
     if (createdContract.ResultadoFDCON === 'Transacción aceptada' && createdContract.IndicadorFDCON) {
-        await createDocuments(createdContract, systemUser, ContractDocumentStatusesEnum.CORRECT);
+        await createDocuments(createdContract, systemUser, ContractDocumentStatusesEnum.CORRECT, false);
         await handlePreLoadConciliation(createdContract);
     } else if ((createdContract.ResultadoFDCON !== 'Transacción aceptada' && createdContract.IndicadorFDCON) ||
         (createdContract.IndicadorFDPRECON && createdContract.ResultadoFDPRECON === 'Transacción aceptada')) {
-        await createDocuments(createdContract, systemUser, ContractDocumentStatusesEnum.CORRECT);
+        await createDocuments(createdContract, systemUser, ContractDocumentStatusesEnum.CORRECT, true);
         await handlePreLoadConciliation(createdContract);
     } else {
         await handleIncidences(createdContract, systemUser);

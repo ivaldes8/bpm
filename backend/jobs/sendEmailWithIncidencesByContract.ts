@@ -24,17 +24,19 @@ export const sendEmailWithIncidencesByContract = async () => {
     });
 
     for (const contract of contracts) {
-        if (!contract.FechaConciliacion) {
-            if (isDueForReminder(contract.FechaUltimaModif)) {
-                const documents = await buildDocumentsWithIncidences(contract);
-                if (documents.length > 0) {
-                    const cc = await searchCC(contract) ? contract.Compania.CorreoSoporte : '';
-                    sendPolicyWithIncidenceReminder(contract.Compania.CorreoComp ?? '', cc as string, documents);
-                    await updateReclamationsNumber(contract.ContratoId);
-                }
+        if (shouldSendReminder(contract)) {
+            const documents = await buildDocumentsWithIncidences(contract);
+            if (documents.length > 0) {
+                const cc = await searchCC(contract);
+                await sendPolicyWithIncidenceReminder(contract.Compania.CorreoComp ?? '', cc, documents);
+                await updateReclamationsNumber(contract.ContratoId);
             }
         }
     }
+}
+
+const shouldSendReminder = (contract: any): boolean => {
+    return !contract.FechaConciliacion && isDueForReminder(contract.FechaUltimaModif);
 }
 
 const isDueForReminder = (lastModified: Date): boolean => {

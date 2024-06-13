@@ -6,7 +6,6 @@ import { BadRequestsException } from "../../exceptions/bad-requests";
 import { parseCsv, parseExcel } from "../../utils/fileProcessors";
 import { LogActionsEnum } from "../../constants/LogActionsEnum";
 import { LogCargaTypeEnum } from "../../constants/LogCargaTypeEnum";
-import { ContractDocumentStatusesEnum } from "../../constants/ContractDocumentStatusesEnum";
 import { processPolicyData } from "./policyProcessor/policyProcessor";
 import { processDigitalSignatureData } from "./digitalSignatureProcessor/digitalSignatureProcessor";
 import { processTabletData } from "./tabletProcessor/tabletProcessor";

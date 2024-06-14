@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer"
-import { GOOGLE_EMAIL, GOOGLE_EMAIL_PASSWORD } from "./secrets";
+import { MAIL, MAIL_PASSWORD, MAIL_CLIENT } from "./secrets";
 
 export const transporter = nodemailer.createTransport({
-    service: 'gmail', // replace with your email service
+    service: MAIL_CLIENT,
     auth: {
-        user: GOOGLE_EMAIL,
-        pass: GOOGLE_EMAIL_PASSWORD
+        user: MAIL,
+        pass: MAIL_PASSWORD
     }
 });

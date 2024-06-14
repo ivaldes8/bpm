@@ -1,10 +1,36 @@
 import { Menu } from "@/stores/menuSlice";
 
-const USER_NAVIGATION: Array<Menu> = [
+const MONITOR_NAVIGATION: Array<Menu> = [
     {
         icon: "Home",
         pathname: "/",
         title: "Home",
+    },
+    {
+        icon: "HardDriveUpload",
+        title: "Carga",
+        subMenu: [
+            {
+                icon: "CalendarCheck2",
+                pathname: "/upload-daily",
+                title: "Fichero de carga diaria"
+            },
+            {
+                icon: "Tablet",
+                pathname: "/upload-tablet",
+                title: "Fichero de tableta"
+            },
+            {
+                icon: "FileX",
+                pathname: "/upload-cancellation",
+                title: "Anulaciones"
+            },
+            {
+                icon: "ClipboardPen",
+                pathname: "/upload-digital-signature",
+                title: "Firma digital"
+            }
+        ],
     },
     {
         icon: "Database",
@@ -36,7 +62,7 @@ const USER_NAVIGATION: Array<Menu> = [
             //     title: "Alta manual"
             // }
         ],
-    }
+    },
 ]
 
-export default USER_NAVIGATION;
+export default MONITOR_NAVIGATION;

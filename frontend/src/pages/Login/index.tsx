@@ -37,7 +37,7 @@ function Main() {
   const loginSchema = yup.object().shape(
     {
       codigo: yup.string().required(t("errors.required") ?? ''),
-      password: yup.string().required(t("errors.required") ?? '').min(6, t('errors.minValue', { value: 6 }) ?? ''),
+      password: yup.string().required(t("errors.required") ?? ''),
     }
   )
 

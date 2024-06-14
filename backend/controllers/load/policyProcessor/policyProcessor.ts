@@ -14,7 +14,6 @@ export const processPolicyData = async (records: any[], user: { UsuarioId: any; 
             Nombre: 'Sistema'
         }
     });
-
     for await (let record of records) {
         let hasError = false;
         let errors: any[] = [];

@@ -17,6 +17,7 @@ import LoadPolicy from "../pages/Load/LoadPolicy/Dashboard"
 import LoadIncidencePolicy from "../pages/Load/LoadIncidencePolicy/Dashboard"
 
 import Layout from "../themes";
+import Protected from "./middlewares/protected";
 
 function Router() {
   const routes = [
@@ -26,70 +27,102 @@ function Router() {
       children: [
         {
           path: "/",
-          element: <UploadDaily />,
+          element: <Protected permissions={['ADMIN', 'MONITOR', 'BASE']} >
+            <LoadPolicy />
+          </Protected>,
         },
         {
           path: "profile",
-          element: <UpdateProfile />,
+          element: <Protected permissions={['ADMIN', 'MONITOR', 'BASE']} >
+            <UpdateProfile />
+          </Protected>,
         },
         {
           path: "change-password",
-          element: <ChangePassword />,
+          element: <Protected permissions={['ADMIN', 'MONITOR', 'BASE']} >
+            <ChangePassword />
+          </Protected>,
         },
 
         // Upload
         {
           path: "upload-daily",
-          element: <UploadDaily />,
+          element: <Protected permissions={['ADMIN', 'MONITOR']} >
+            <UploadDaily />
+          </Protected>,
         },
         {
           path: "upload-tablet",
-          element: <UploadTablet />,
+          element: <Protected permissions={['ADMIN', 'MONITOR']} >
+            <UploadTablet />
+          </Protected>,
         },
         {
           path: "upload-cancellation",
-          element: <UploadCancellation />,
+          element: <Protected permissions={['ADMIN', 'MONITOR']} >
+            <UploadCancellation />
+          </Protected>,
         },
         {
           path: "upload-digital-signature",
-          element: <UploadDigitalSignature />,
+          element: <Protected permissions={['ADMIN', 'MONITOR']} >
+            <UploadDigitalSignature />
+          </Protected>,
         },
 
         // Load
         {
           path: "load-policy",
-          element: <LoadPolicy />,
+          element: <Protected permissions={['ADMIN', 'MONITOR', 'BASE']} >
+            <LoadPolicy />
+          </Protected>,
         },
         {
           path: "load-incidence-policy",
-          element: <LoadIncidencePolicy />,
+          element: <Protected permissions={['ADMIN', 'MONITOR', 'BASE']} >
+            <LoadIncidencePolicy />
+          </Protected>,
         },
         {
           path: "upload-tablet",
-          element: <UploadTablet />,
+          element: <Protected permissions={['ADMIN', 'MONITOR', 'BASE']} >
+            <UploadTablet />
+          </Protected>,
         },
 
         // Administration
         {
           path: "company-list",
-          element: <CompanyList />,
+          element: <Protected permissions={['ADMIN']} >
+            <CompanyList />
+          </Protected>
+          ,
         },
         {
           path: "mediators-list",
-          element: <MediadorList />
+          element: <Protected permissions={['ADMIN']} >
+            <MediadorList />
+          </Protected>
+
         },
         {
           path: "familydoc-list",
-          element: <FamilyDocumentList />
+          element: <Protected permissions={['ADMIN']} >
+            <FamilyDocumentList />
+          </Protected>
         },
         {
           path: "typeconciliation-list",
-          element: <TypeConciliationList />,
+          element: <Protected permissions={['ADMIN']} >
+            <TypeConciliationList />
+          </Protected>,
         },
 
         {
           path: "user-list",
-          element: <UserList />,
+          element: <Protected permissions={['ADMIN']} >
+            <UserList />
+          </Protected>,
         }
       ],
     },

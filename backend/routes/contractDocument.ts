@@ -9,8 +9,8 @@ import { createContractDocument, deleteContractDocument, getContractDocumentById
 const contractDocumentRoutes: Router = Router()
 
 contractDocumentRoutes.get('/', [authMiddleware], errorHandler(getContractDocuments))
-contractDocumentRoutes.post('/', [authMiddleware, adminMiddleware], errorHandler(createContractDocument))
-contractDocumentRoutes.put('/:id', [authMiddleware, adminMiddleware], errorHandler(updateContractDocument))
+contractDocumentRoutes.post('/', [authMiddleware], errorHandler(createContractDocument))
+contractDocumentRoutes.put('/:id', [authMiddleware], errorHandler(updateContractDocument))
 contractDocumentRoutes.delete('/:id', [authMiddleware, adminMiddleware], errorHandler(deleteContractDocument))
 contractDocumentRoutes.get('/:id', [authMiddleware], errorHandler(getContractDocumentById))
 

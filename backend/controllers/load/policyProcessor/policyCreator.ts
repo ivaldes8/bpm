@@ -50,7 +50,7 @@ const createContract = async (record: any, company: any, branch: any, mediator: 
             ResultadoFDCON: record["RESULTADO FIRMA DIGITAL CON"] ?? null,
             Revisar: record["REVISAR"] === 'SI',
             Conciliar: record["CONCILIAR"] === 'SI',
-            Suplemento: record["SUPLEMENTO"] && parseInt(record["SUPLEMENTO"]) === 1
+            Suplemento: record["SUPLEMENTO"] && parseInt(record["SUPLEMENTO"]) === 1 ? true : false
         },
         include: {
             Ramo: {
@@ -144,7 +144,6 @@ export const policyCreator = async (record: any, systemUser: Usuario, user: { Us
     const mediator = await fetchMediator(record["MEDIADOR"]);
 
     const createdContract = await createContract(record, company, branch, mediator, user);
-
     if (createdContract.ResultadoFDCON === 'Transacción aceptada' && createdContract.IndicadorFDCON) {
         await createDocuments(createdContract, systemUser, ContractDocumentStatusesEnum.CORRECT, false);
         await handlePreLoadConciliation(createdContract);

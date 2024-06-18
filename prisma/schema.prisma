@@ -89,7 +89,7 @@ model Mediador {
   Nombre            String
   Codigo            String
   Canal             String
-  Zona              String
+  Zona              String?
   Email             String
   Responsable       String?
   EmailResponsable  String?

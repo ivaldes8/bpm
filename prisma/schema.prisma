@@ -253,14 +253,14 @@ model Contrato {
   FechaEfectoSolicitud     DateTime?
   FechaEfectoContrato      DateTime?
   AnuladoSE                Boolean
-  CSRespAfirm              Boolean
+  CSRespAfirm              Boolean?              
   DNITomador               String
   NombreTomador            String
   FechaDNITomador          DateTime?
   DNIAsegurado             String
   NombreAsegurado          String
-  ProfesionAsegurado       String
-  DeporteAsegurado         String
+  ProfesionAsegurado       String?
+  DeporteAsegurado         String?
   FechaNacimientoAsegurado DateTime?
   IndicadorFDPRECON        Boolean?
   TipoEnvioFDPRECON        String?

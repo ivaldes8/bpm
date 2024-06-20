@@ -1,4 +1,4 @@
 const apiUrl = "http://localhost:5000/api"
-const apiTimeout = 60000
+const apiTimeout = 2400000
 
 export { apiUrl, apiTimeout }

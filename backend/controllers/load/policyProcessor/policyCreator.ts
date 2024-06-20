@@ -1,10 +1,19 @@
 import { ContractDocumentStatusesEnum } from './../../../constants/ContractDocumentStatusesEnum';
 import { Usuario } from "@prisma/client"
 import { prismaClient } from "../../../server"
+import { convertDate } from '../../../utils/utils';
 
 const fetchCompany = async (code: string) => {
+    let companyCode = code;
+
+    if (code == 'UCV') {
+        companyCode = 'UNI';
+    } else if (code == 'AVP') {
+        companyCode = 'SLS';
+    }
+
     return prismaClient.compania.findFirst({
-        where: { Codigo: code }
+        where: { Nombre: companyCode }
     });
 };
 
@@ -27,21 +36,21 @@ const createContract = async (record: any, company: any, branch: any, mediator: 
             Ramo: { connect: { RamoId: branch?.RamoId } },
             CanalMediador: { connect: { MediadorId: mediator?.MediadorId } },
             Usuario: { connect: { UsuarioId: user.UsuarioId } },
-            FechaAltaSolicitud: new Date(record["FECHA DE ALTA"]),
+            FechaAltaSolicitud: convertDate(record["FECHA DE ALTA"] ?? record["FECHA DE OPERACIÓN"]),
             CCC: record["CCC"] ?? null,
             CodigoSolicitud: record["CODIGO SOLICITUD"] ?? null,
             CodigoPoliza: record["POLIZA_CONTRATO"] ?? null,
-            FechaEfectoSolicitud: new Date(record["FECHA EFECTO"]),
+            FechaEfectoSolicitud: convertDate(record["FECHA EFECTO"]),
             AnuladoSE: record["ANULADO SIN EFECTO"] === 'S',
             DNIAsegurado: record["ID_ASEGURADO"],
             NombreAsegurado: record["NOMBRE ASEGURADO"],
-            FechaNacimientoAsegurado: record["EDAD ASEGURADO"] ? new Date(record["EDAD ASEGURADO"]) : null,
-            CSRespAfirm: record["CS CON RESPUESTAS AFIRMATIVAS"] === 'S',
-            ProfesionAsegurado: record["PROFESION"],
-            DeporteAsegurado: record["DEPORTE"],
+            FechaNacimientoAsegurado: record["EDAD ASEGURADO"] ? convertDate(record["EDAD ASEGURADO"]) : null,
+            CSRespAfirm: record["CS CON RESPUESTAS AFIRMATIVAS"] === 'S' ?? null,
+            ProfesionAsegurado: record["PROFESION"] ?? null,
+            DeporteAsegurado: record["DEPORTE"] ?? null,
             DNITomador: record["ID_TOMADOR_PARTICIPE"],
             NombreTomador: record["NOMBRE TOMADOR_PARTICIPE"],
-            FechaDNITomador: record["FECHA VALIDEZ IDENTIDAD TOMADOR"] ? new Date(record["FECHA VALIDEZ IDENTIDAD TOMADOR"]) : null,
+            FechaDNITomador: record["FECHA VALIDEZ IDENTIDAD TOMADOR"] ? convertDate(record["FECHA VALIDEZ IDENTIDAD TOMADOR"]) : null,
             IndicadorFDPRECON: record["INDICADOR FIRMA DIGITAL PRECON"] === 'SI',
             TipoEnvioFDPRECON: record["TIPO ENVIO FIRMA DIGITAL PRECON"] ?? null,
             ResultadoFDPRECON: record["RESULTADO FIRMA DIGITAL PRECON"] ?? null,

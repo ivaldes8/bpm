@@ -73,10 +73,8 @@ const nestedMenu = (menu: Array<Menu | "divider">, location: Location) => {
 const linkTo = (menu: FormattedMenu, navigate: NavigateFunction) => {
   if (menu.subMenu) {
     menu.activeDropdown = !menu.activeDropdown;
-  } else {
-    if (menu.pathname !== undefined) {
-      navigate(menu.pathname);
-    }
+  } else if (menu.pathname !== undefined) {
+    navigate(menu.pathname);
   }
 };
 

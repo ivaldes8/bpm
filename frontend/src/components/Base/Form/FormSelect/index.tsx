@@ -6,7 +6,7 @@ interface FormSelectProps extends React.ComponentPropsWithoutRef<"select"> {
   formSelectSize?: "sm" | "lg";
 }
 
-function FormSelect(props: FormSelectProps) {
+function FormSelect(props: Readonly<FormSelectProps>) {
   const formInline = useContext(formInlineContext);
   const { formSelectSize, ...computedProps } = props;
   return (

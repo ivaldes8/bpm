@@ -12,12 +12,12 @@ export interface NotificationElement extends HTMLDivElement {
 
 export interface NotificationProps
   extends React.PropsWithChildren,
-    React.ComponentPropsWithoutRef<"div"> {
+  React.ComponentPropsWithoutRef<"div"> {
   options: Options;
   getRef: (el: NotificationElement) => void;
 }
 
-function Notification(props: NotificationProps) {
+function Notification(props: Readonly<NotificationProps>) {
   const initialRender = useRef(true);
   const toastifyRef = createRef<NotificationElement>();
 
@@ -51,7 +51,7 @@ function Notification(props: NotificationProps) {
 Notification.defaultProps = {
   className: "",
   options: {},
-  getRef: () => {},
+  getRef: () => { },
 };
 
 export default Notification;

@@ -32,7 +32,7 @@ function Table({
   striped,
   sm,
   ...props
-}: TableProps) {
+}: Readonly<TableProps>) {
   return (
     <tableContext.Provider
       value={{

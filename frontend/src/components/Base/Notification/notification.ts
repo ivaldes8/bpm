@@ -1,7 +1,7 @@
 import Toastify from "toastify-js";
 import { NotificationElement, NotificationProps } from "./index";
 
-const toastifyClass = "_" + Math.random().toString(36).substr(2, 9);
+const toastifyClass = "_" + Math.random().toString(36).slice(2, 11);
 
 const init = (el: NotificationElement, props: NotificationProps) => {
   el.showToast = () => {

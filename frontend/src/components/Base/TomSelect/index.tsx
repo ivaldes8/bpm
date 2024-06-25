@@ -1,9 +1,8 @@
 import "@/assets/css/vendors/tom-select.css";
-import { createRef, useEffect } from "react";
+import { createRef, useEffect, useRef, useMemo } from "react";
 import { setValue, init, updateValue } from "./tom-select";
 import { TomSettings, RecursivePartial } from "tom-select/src/types/index";
 import TomSelectPlugin from "tom-select";
-import { useRef, useMemo } from "react";
 import clsx from "clsx";
 
 export interface TomSelectElement extends HTMLSelectElement {
@@ -24,7 +23,7 @@ export interface TomSelectProps
   getRef: (el: TomSelectElement) => void;
 }
 
-function TomSelect(props: TomSelectProps) {
+function TomSelect(props: Readonly<TomSelectProps>) {
   const initialRender = useRef(true);
   const tomSelectRef = createRef<TomSelectElement>();
 
@@ -46,8 +45,8 @@ function TomSelect(props: TomSelectProps) {
           return confirm(
             values.length > 1
               ? "Are you sure you want to remove these " +
-                  values.length +
-                  " items?"
+              values.length +
+              " items?"
               : 'Are you sure you want to remove "' + values[0] + '"?'
           );
         },
@@ -72,7 +71,7 @@ function TomSelect(props: TomSelectProps) {
         // Unique attribute
         tomSelectRef.current.setAttribute(
           "data-id",
-          "_" + Math.random().toString(36).substr(2, 9)
+          "_" + Math.random().toString(36).slice(2, 9)
         );
 
         // Clone the select element to prevent tom select remove the original element
@@ -133,9 +132,9 @@ TomSelect.defaultProps = {
   className: "",
   options: {},
   value: "",
-  onOptionAdd: () => {},
-  onChange: () => {},
-  getRef: () => {},
+  onOptionAdd: () => { },
+  onChange: () => { },
+  getRef: () => { },
 };
 
 export default TomSelect;

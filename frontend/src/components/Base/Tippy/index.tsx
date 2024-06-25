@@ -45,7 +45,7 @@ const init = <C extends React.ElementType>(
 
 const Tippy = <C extends React.ElementType = "span">(props: TippyProps<C>) => {
   const tippyRef = createRef<PopperElement>();
-  const Component = props.as || "span";
+  const Component = props.as ?? "span";
 
   const isDisabled = () => {
     if (tippyRef.current && tippyRef.current._tippy !== undefined) {

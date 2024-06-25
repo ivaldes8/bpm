@@ -39,10 +39,8 @@ function Litepicker(props: LitepickerProps) {
         init(litepickerRef.current, props);
       }
       initialRender.current = false;
-    } else {
-      if (tempValue.current !== props.value && litepickerRef.current !== null) {
-        reInit(litepickerRef.current, props);
-      }
+    } else if (tempValue.current !== props.value && litepickerRef.current !== null) {
+      reInit(litepickerRef.current, props);
     }
 
     tempValue.current = props.value;
@@ -65,8 +63,8 @@ function Litepicker(props: LitepickerProps) {
 Litepicker.defaultProps = {
   options: {},
   value: "",
-  onChange: () => {},
-  getRef: () => {},
+  onChange: () => { },
+  getRef: () => { },
 };
 
 export default Litepicker;

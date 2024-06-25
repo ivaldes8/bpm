@@ -89,13 +89,11 @@ export const getTheme = (search?: {
   name: Themes["name"];
   layout: Themes["layout"];
 }) => {
-  const searchValues =
-    search === undefined
-      ? {
-          name: localStorage.getItem("theme"),
-          layout: localStorage.getItem("layout"),
-        }
-      : search;
+  const searchValues = search ?? {
+    name: localStorage.getItem("theme"),
+    layout: localStorage.getItem("layout"),
+  };
+
   return themes.filter((item, key) => {
     return (
       item.name === searchValues.name && item.layout === searchValues.layout

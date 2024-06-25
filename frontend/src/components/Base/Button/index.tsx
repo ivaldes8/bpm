@@ -60,7 +60,7 @@ const Button: ButtonComponent = forwardRef(
     }: ButtonProps<C>,
     ref?: PolymorphicRef<C>
   ) => {
-    const Component = as || "button";
+    const Component = as ?? "button";
 
     // General Styles
     const generalStyles = [

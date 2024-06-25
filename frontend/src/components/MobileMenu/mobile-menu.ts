@@ -79,11 +79,9 @@ const linkTo = (
 ) => {
   if (menu.subMenu) {
     menu.activeDropdown = !menu.activeDropdown;
-  } else {
-    if (menu.pathname !== undefined) {
-      setActiveMobileMenu(false);
-      navigate(menu.pathname);
-    }
+  } else if (menu.pathname !== undefined) {
+    setActiveMobileMenu(false);
+    navigate(menu.pathname);
   }
 };
 

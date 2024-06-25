@@ -21,12 +21,12 @@ function Tab({
   className,
   fullWidth = true,
   ...props
-}: Omit<
+}: Readonly<Omit<
   ExtractProps<typeof HeadlessTab> & {
     fullWidth?: boolean;
   },
   "ref"
->) {
+>>) {
   const list = useContext(listContext);
   return (
     <HeadlessTab as={Fragment}>

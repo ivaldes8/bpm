@@ -10,7 +10,6 @@ import clsx from 'clsx'
 type Props = {
     control: any,
     name: string,
-    type?: string,
     labelEnabled?: boolean
     info?: string,
     label?: string,

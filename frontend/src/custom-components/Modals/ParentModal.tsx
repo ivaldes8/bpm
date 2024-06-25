@@ -51,14 +51,14 @@ const ParentModal = ({ navigateOnClose ,show = false, setShow, handleOnSubmit, c
                                 </h2>
                             </div>
 
-                            <a style={{ cursor: "pointer" }} onClick={() => {
+                            <div style={{ cursor: "pointer" }} onClick={() => {
                                 setShow(false);
                                 if(navigateOnClose){
                                     navigate(navigateOnClose);
                                 }
                             }}>
                                 <Lucide icon="X" className="w-8 h-8 text-slate-400" />
-                            </a>
+                            </div>
 
                         </Dialog.Title>
                     )

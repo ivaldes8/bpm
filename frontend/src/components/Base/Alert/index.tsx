@@ -209,7 +209,7 @@ const DismissButton = <C extends React.ElementType = "button">({
   children,
   ...props
 }: DismissButtonProps<C>) => {
-  const Component = as || "button";
+  const Component = as ?? "button";
 
   return (
     <Component
@@ -226,8 +226,9 @@ const DismissButton = <C extends React.ElementType = "button">({
   );
 };
 
-const AlertComponent = Object.assign({}, Alert, {
+const AlertComponent = {
+  ...Alert,
   DismissButton: DismissButton,
-});
+};
 
 export default AlertComponent;

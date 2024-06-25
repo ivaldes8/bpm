@@ -14,7 +14,7 @@ const app: Express = express()
 // Create a transporter object using the default SMTP transport
 
 // Schedule task to run every minute
-cron.schedule('* * * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
     console.log("Executing cron jobs")
     await checkNoLoadedContracts()
     await sendEmailWithIncidencesByContract()

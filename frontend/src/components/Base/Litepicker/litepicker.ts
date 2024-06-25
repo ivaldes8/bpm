@@ -3,7 +3,7 @@ import Litepicker from "litepicker";
 import { LitepickerElement, LitepickerProps } from "./index";
 
 const getDateFormat = (format: string | undefined) => {
-  return format !== undefined ? format : "D MMM, YYYY";
+  return format ?? "D MMM, YYYY";
 };
 
 const setValue = (props: LitepickerProps) => {

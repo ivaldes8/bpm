@@ -13,7 +13,7 @@ import { FormInput } from "@/components/Base/Form";
 import { setCaja, setCompany, setLote } from "@/stores/settingsSlice";
 import ParentModal from "@/custom-components/Modals/ParentModal";
 
-function Main(props: { layout?: "side-menu" | "simple-menu" | "top-menu" }) {
+function Main(props: Readonly<{ layout?: "side-menu" | "simple-menu" | "top-menu" }>) {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const { userData } = useAppSelector((state) => state.auth);

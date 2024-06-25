@@ -13,12 +13,12 @@ export interface TinySliderElement extends HTMLDivElement {
 
 export interface TinySliderProps
   extends React.PropsWithChildren,
-    React.ComponentPropsWithoutRef<"div"> {
+  React.ComponentPropsWithoutRef<"div"> {
   getRef: (el: TinySliderElement) => void;
   options: TinySliderSettings;
 }
 
-function TinySlider(props: TinySliderProps) {
+function TinySlider(props: Readonly<TinySliderProps>) {
   const initialRender = useRef(true);
   const sliderRef = createRef<TinySliderElement>();
 
@@ -44,7 +44,7 @@ function TinySlider(props: TinySliderProps) {
 
 TinySlider.defaultProps = {
   options: {},
-  getRef: () => {},
+  getRef: () => { },
   className: "",
 };
 

@@ -12,7 +12,6 @@ import Select from '@/custom-components/FormElements/Select';
 import { LoadingContext } from '@/utils/Contexts/LoadingContext';
 import handlePromise from "@/utils/promise";
 import UserService from '@/services/UserService';
-import { error } from 'console';
 
 type Props = {
     show: boolean,
@@ -25,8 +24,8 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
 
     const { t } = useTranslation()
 
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const defaultValue = {
         Nombre: "",
@@ -49,7 +48,7 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
     const {
         control,
         reset,
-        formState: { errors, isValid },
+        formState: { isValid },
         getValues
     } = useForm({
         mode: "onChange",
@@ -67,15 +66,15 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             Activo: formData.Activo
         }
 
-        if (selectedRow) {
-            if (selectedRow.Codigo === toSend.Codigo) {
-                //@ts-ignore
-                delete toSend.Codigo
-            }
+
+        if (selectedRow?.Codigo === toSend.Codigo) {
+            //@ts-ignore
+            delete toSend.Codigo
         }
+
         setLoading(true)
         const [error, response, data] = await handlePromise(
-            selectedRow && selectedRow.UsuarioId ? UserService.updateUser(selectedRow.UsuarioId, toSend) :
+            selectedRow?.UsuarioId ? UserService.updateUser(selectedRow.UsuarioId, toSend) :
                 UserService.createUser({ ...toSend, Password: formData.Password })
         );
         setLoading(false)
@@ -83,14 +82,14 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow && selectedRow.UsuarioId ? "Update failed" : "Creation failed",
+                text: error ? error : selectedRow?.UsuarioId ? "Update failed" : "Creation failed",
             })
         }
 
         setAlert({
             type: "success",
             show: true,
-            text: selectedRow && selectedRow.UsuarioId ? "Updated successfully" : "Created successfully",
+            text: selectedRow?.UsuarioId ? "Updated successfully" : "Created successfully",
         })
 
         onSubmit()

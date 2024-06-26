@@ -23,8 +23,8 @@ const EditMediador = ({ show, setShow, onSubmit, selectedRow }: Props) => {
 
     const { t } = useTranslation()
 
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const defaultValue = {
         Nombre: "",
@@ -61,7 +61,7 @@ const EditMediador = ({ show, setShow, onSubmit, selectedRow }: Props) => {
     const {
         control,
         reset,
-        formState: { errors, isValid },
+        formState: { isValid },
         getValues
     } = useForm({
         mode: "onChange",
@@ -101,8 +101,8 @@ const EditMediador = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             }
         }
         setLoading(true)
-        const [error, response, data] = await handlePromise(
-            selectedRow && selectedRow.MediadorId ? MediatorService.updateMediator(selectedRow.MediadorId, toSend) :
+        const [error, response,] = await handlePromise(
+            selectedRow?.MediadorId ? MediatorService.updateMediator(selectedRow.MediadorId, toSend) :
                 MediatorService.createMediator(toSend)
         );
         setLoading(false)
@@ -110,14 +110,14 @@ const EditMediador = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow && selectedRow.MediadorId ? "Update failed" : "Creation failed",
+                text: error ? error : selectedRow?.MediadorId ? "Update failed" : "Creation failed",
             })
         }
 
         setAlert({
             type: "success",
             show: true,
-            text: selectedRow && selectedRow.MediadorId ? "Updated successfully" : "Created successfully",
+            text: selectedRow?.MediadorId ? "Updated successfully" : "Created successfully",
         })
 
         onSubmit()
@@ -202,8 +202,8 @@ const EditMediador = ({ show, setShow, onSubmit, selectedRow }: Props) => {
                     name="Responsable"
                     label="responsible"
                     placeholder="Responsable ..." />
-                    
-                    
+
+
                 <InputField
                     control={control}
                     name="EmailResponsable"
@@ -215,16 +215,16 @@ const EditMediador = ({ show, setShow, onSubmit, selectedRow }: Props) => {
                     control={control}
                     name="Responsable2"
                     label="responsible2"
-                    placeholder="Responsable 2 ..." 
+                    placeholder="Responsable 2 ..."
                 />
-                    
+
                 <InputField
                     control={control}
                     name="EmailResponsable2"
                     label="responsibleEmail2"
                     placeholder="Correo del responsable 2..."
                 />
-                
+
                 <CheckBoxField
                     control={control}
                     name="Reclamar"

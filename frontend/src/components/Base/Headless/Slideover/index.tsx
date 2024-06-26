@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react";
-import { Fragment, createContext, useContext, useRef, useState } from "react";
+import { Fragment, createContext, useContext, useMemo, useRef, useState } from "react";
 
 type Size = "sm" | "md" | "lg" | "xl";
 
@@ -30,13 +30,15 @@ function Slideover({
   const focusElement = useRef<HTMLElement | null>(null);
   const [zoom, setZoom] = useState(false);
 
+  const value = useMemo(() => ({
+    open: open,
+    zoom: zoom,
+    size: size,
+  }), [open, zoom, size]);
+
   return (
     <slideoverContext.Provider
-      value={{
-        open: open,
-        zoom: zoom,
-        size: size,
-      }}
+      value={value}
     >
       <Transition appear as={Fragment} show={open}>
         <HeadlessDialog

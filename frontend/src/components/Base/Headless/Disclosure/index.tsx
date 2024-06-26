@@ -7,8 +7,8 @@ import {
   Fragment,
   createContext,
   useContext,
-  useState,
-  useEffect,
+  useMemo,
+  useState
 } from "react";
 
 type Variant = "default" | "boxed";
@@ -43,6 +43,12 @@ function Disclosure({
 }) {
   const group = useContext(groupContext);
 
+  const value = useMemo(() => ({
+    open: open,
+    close: close,
+    key: key,
+  }), [open, close, key]);
+
   return (
     <HeadlessDisclosure
       as="div"
@@ -61,11 +67,8 @@ function Disclosure({
     >
       {({ open, close }) => (
         <disclosureContext.Provider
-          value={{
-            open: open,
-            close: close,
-            key: key,
-          }}
+          //@ts-ignore
+          value={value}
         >
           <>
             {typeof children === "function"
@@ -97,13 +100,15 @@ function DisclosureGroup<C extends React.ElementType = "div">({
   const [active, setActive] = useState(selectedIndex);
   const Component = as || "div";
 
+  const value = useMemo(() => ({
+    selectedIndex: active,
+    setSelectedIndex: setActive,
+    variant: variant,
+  }), [active, setActive, variant]);
+
   return (
     <groupContext.Provider
-      value={{
-        selectedIndex: active,
-        setSelectedIndex: setActive,
-        variant: variant,
-      }}
+      value={value}
     >
       {
         <Component className={className} {...props}>
@@ -132,10 +137,6 @@ const DisclosureButton = ({
 }: ExtractProps<typeof HeadlessDisclosure.Button>) => {
   const disclosure = useContext(disclosureContext);
   const group = useContext(groupContext);
-
-  // useEffect(() => {
-  //   group.selectedIndex !== disclosure.key && disclosure.close();
-  // }, [group.selectedIndex]);
 
   return (
     <HeadlessDisclosure.Button

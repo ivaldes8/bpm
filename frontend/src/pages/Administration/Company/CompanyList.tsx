@@ -2,7 +2,6 @@ import Button from "@/components/Base/Button";
 import { useRef, useState, useContext } from "react";
 import { ColumnDefinition } from "tabulator-tables";
 import { useTranslation } from "react-i18next";
-import _ from "lodash";
 import { AlertContext } from "@/utils/Contexts/AlertContext";
 import EditCompany from "./EditCompany";
 import handlePromise from "@/utils/promise";
@@ -15,8 +14,8 @@ import CompanyService from "@/services/CompanyService";
 
 function Main() {
     const { t } = useTranslation();
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const [showEditCompanyModal, setShowEditCompanyModal] = useState<boolean>(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
@@ -31,7 +30,7 @@ function Main() {
 
     const onDeleteCompany = async () => {
         setLoading(true)
-        const [error, response, data] = await handlePromise(CompanyService.deleteCompany(selectedRow.CompaniaId));
+        const [, response,] = await handlePromise(CompanyService.deleteCompany(selectedRow.CompaniaId));
         setLoading(false)
         if (!response.ok) {
             return setAlert({

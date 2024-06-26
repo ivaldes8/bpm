@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { Tab as HeadlessTab, Transition } from "@headlessui/react";
-import { Fragment, createContext, useContext } from "react";
+import { Fragment, createContext, useContext, useMemo } from "react";
 
 type Variant = "tabs" | "pills" | "boxed-tabs" | "link-tabs";
 
@@ -28,30 +28,34 @@ function Tab({
   "ref"
 >>) {
   const list = useContext(listContext);
+
+
   return (
     <HeadlessTab as={Fragment}>
-      {({ selected }) => (
-        <li
-          className={twMerge([
-            "focus-visible:outline-none",
-            fullWidth && "flex-1",
-            list.variant == "tabs" && "-mb-px",
-          ])}
-          {...props}
-        >
-          <tabContext.Provider
-            value={{
-              selected: selected,
-            }}
+      {({ selected }) => {
+        const value = useMemo(() => ({
+          selected: selected,
+        }), [selected]);
+
+        return (
+          <li
+            className={twMerge([
+              "focus-visible:outline-none",
+              fullWidth && "flex-1",
+              list.variant == "tabs" && "-mb-px",
+            ])}
+            {...props}
           >
-            {typeof children === "function"
-              ? children({
-                selected: selected,
-              })
-              : children}
-          </tabContext.Provider>
-        </li>
-      )}
+            <tabContext.Provider value={value}>
+              {typeof children === "function"
+                ? children({
+                  selected: selected,
+                })
+                : children}
+            </tabContext.Provider>
+          </li>
+        );
+      }}
     </HeadlessTab>
   );
 }
@@ -135,12 +139,12 @@ const TabList = ({
 }: ExtractProps<typeof HeadlessTab.List> & {
   variant?: Variant;
 }) => {
+  const value = useMemo(() => ({
+    variant: variant,
+  }), [variant]);
+
   return (
-    <listContext.Provider
-      value={{
-        variant: variant,
-      }}
-    >
+    <listContext.Provider value={value}>
       <HeadlessTab.List
         as="ul"
         className={twMerge([

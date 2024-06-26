@@ -13,7 +13,7 @@ type LitepickerConfig = Partial<ILPConfiguration>;
 
 interface MainProps {
   options: {
-    format?: string | undefined;
+    format?: string;
   } & LitepickerConfig;
   value: string;
   onChange: (date: string) => void;

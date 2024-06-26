@@ -45,7 +45,7 @@ const createContract = async (record: any, company: any, branch: any, mediator: 
             DNIAsegurado: record["ID_ASEGURADO"],
             NombreAsegurado: record["NOMBRE ASEGURADO"],
             FechaNacimientoAsegurado: record["EDAD ASEGURADO"] ? convertDate(record["EDAD ASEGURADO"]) : null,
-            CSRespAfirm: record["CS CON RESPUESTAS AFIRMATIVAS"] === 'S' ?? null,
+            CSRespAfirm: record["CS CON RESPUESTAS AFIRMATIVAS"] === 'S' ? true : null,
             ProfesionAsegurado: record["PROFESION"] ?? null,
             DeporteAsegurado: record["DEPORTE"] ?? null,
             DNITomador: record["ID_TOMADOR_PARTICIPE"],
@@ -59,7 +59,7 @@ const createContract = async (record: any, company: any, branch: any, mediator: 
             ResultadoFDCON: record["RESULTADO FIRMA DIGITAL CON"] ?? null,
             Revisar: record["REVISAR"] === 'SI',
             Conciliar: record["CONCILIAR"] === 'SI',
-            Suplemento: record["SUPLEMENTO"] && parseInt(record["SUPLEMENTO"]) === 1 ? true : false
+            Suplemento: record["SUPLEMENTO"] && parseInt(record["SUPLEMENTO"]) === 1
         },
         include: {
             Ramo: {

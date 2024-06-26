@@ -28,9 +28,7 @@ const PolicyFilters = ({ onFilter }: Props) => {
     const {
         handleSubmit,
         control,
-        reset,
-        formState: { errors, isValid },
-        getValues
+        reset
     } = useForm({
         mode: "onChange",
         resolver: yupResolver(searchSchema()),

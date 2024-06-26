@@ -1,9 +1,8 @@
 import clsx from 'clsx';
-import { useForm, Controller } from "react-hook-form";
-import { FormInput, FormCheck, FormLabel, InputGroup, FormSelect } from "@/components/Base/Form";
+import { Controller } from "react-hook-form";
+import { FormLabel, InputGroup, FormSelect } from "@/components/Base/Form";
 import { useTranslation } from 'react-i18next';
 import Lucide, { Icon } from '@/components/Base/Lucide';
-import TomSelect from '@/components/Base/TomSelect';
 
 type Props = {
     control: any,
@@ -29,11 +28,6 @@ type Props = {
 const Select = ({ control, name, labelEnabled = true, info, label, placeholder, disabled = false, showIcon = false, icoName = "Activity", animationDirection = "intro-x", options, multiple = false, valueKey = "value", labelKey = "label", addNull = true, onChangeE, disableM = false, noSelectText = "noSelected" }: Props) => {
 
     const { t } = useTranslation()
-
-    const {
-        formState: { errors, isValid },
-    } = useForm({ mode: "onChange" });
-
 
     return (
         <div className={`input-form ${disableM ? '' : 'my-3 '} ${animationDirection}`}>
@@ -84,8 +78,8 @@ const Select = ({ control, name, labelEnabled = true, info, label, placeholder, 
                             >
                                 <option value="">{t(noSelectText)}</option>
                                 {
-                                    options.map((o, i) => (
-                                        <option key={i} value={o[valueKey]}>{o[labelKey]}</option>
+                                    options.map((o) => (
+                                        <option key={o[valueKey]} value={o[valueKey]}>{o[labelKey]}</option>
                                     ))
                                 }
                             </FormSelect>

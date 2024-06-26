@@ -25,7 +25,7 @@ type Props = {
 
 const Table = forwardRef(({ tableName, columns, hasActions = false, endpoint, filter, populateRole = false, setFilter, onClickEdit, onClickDelete, onClickDetail }: Props, ref) => {
     const { t } = useTranslation();
-    const [alert, setAlert] = useContext(AlertContext);
+    const [, setAlert] = useContext(AlertContext);
 
     const tableRef = createRef<HTMLDivElement>();
     const tabulator = useRef<Tabulator>();

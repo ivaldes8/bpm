@@ -1,7 +1,5 @@
-import React from 'react'
-import clsx from 'clsx';
-import { useForm, Controller } from "react-hook-form";
-import { FormInput, FormCheck, FormLabel } from "@/components/Base/Form";
+import { Controller } from "react-hook-form";
+import { FormCheck } from "@/components/Base/Form";
 import { useTranslation } from 'react-i18next';
 
 type Props = {
@@ -14,12 +12,7 @@ type Props = {
 
 const CheckBoxField = ({ control, name, labelEnabled = true, label, disabled = false }: Props) => {
 
-    const {
-        formState: { errors, isValid },
-    } = useForm({ mode: "onChange" });
-
     const { t } = useTranslation()
-
 
     return (
 

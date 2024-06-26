@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react'
 import Toast from "toastify-js";
-import { AlertContext, AlertType } from '../../utils/Contexts/AlertContext'
+import { AlertContext } from '../../utils/Contexts/AlertContext'
 import Notification from '@/components/Base/Notification'
 import Lucide from '@/components/Base/Lucide'
 import { useTranslation } from 'react-i18next'
@@ -9,10 +9,10 @@ import { useTranslation } from 'react-i18next'
 const Toastify = () => {
 
     const { t } = useTranslation();
-    const [alert, setAlert] = useContext(AlertContext);
+    const [alert,] = useContext(AlertContext);
 
     useEffect(() => {
-        if (alert && alert.show) {
+        if (alert?.show) {
             const element = document
                 .querySelectorAll("#show-notification")[0]
                 .cloneNode(true) as HTMLElement;

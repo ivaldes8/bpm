@@ -21,7 +21,7 @@ function Main() {
 
   const { t } = useTranslation();
 
-  const [alert, setAlert] = useContext(AlertContext);
+  const [, setAlert] = useContext(AlertContext);
 
   const [loading, setLoading] = useContext(LoadingContext);
 
@@ -45,7 +45,7 @@ function Main() {
     control,
     trigger,
     getValues,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(loginSchema),

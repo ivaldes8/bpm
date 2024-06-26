@@ -28,8 +28,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
     const { t } = useTranslation()
     const navigate = useNavigate();
 
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const defaultValues = {
         CCC: '',
@@ -110,13 +110,13 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 Contenido: observation.observation
             }
 
-            const [error, response, data] = await handlePromise(ObservationContractService.createObservationContract(toSend));
+            const [error, response,] = await handlePromise(ObservationContractService.createObservationContract(toSend));
             if (!response.ok) {
                 setLoading(false)
                 return setAlert({
                     type: "error",
                     show: true,
-                    text: error ? error : "Error while adding observation",
+                    text: error ?? "Error while adding observation",
                 })
             }
         }
@@ -144,7 +144,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
                 const currentDoc = selectedContract.DocumentoContrato.find((doc: any) => doc.DocumentoId === toSend.DocumentoId)
                 const existingIncidence = currentDoc?.IncidenciaDocumento.find((incidence: any) => incidence.TipoIncidenciaId === toSend.TipoIncidenciaId)
-                const [error, response, data] = await handlePromise(
+                const [error, response,] = await handlePromise(
                     existingIncidence ?
                         DocumentIncidenceService.updateDocumentIncidence(existingIncidence.IncidenciaId, toSend) :
                         DocumentIncidenceService.createDocumentIncidence(toSend)
@@ -154,18 +154,18 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                     return setAlert({
                         type: "error",
                         show: true,
-                        text: error ? error : "Error while adding incidence document",
+                        text: error ?? "Error while adding incidence document",
                     })
                 }
             }
 
-            const [error, response, data] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
+            const [error, response,] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
             if (!response.ok) {
                 setLoading(false)
                 return setAlert({
                     type: "error",
                     show: true,
-                    text: error ? error : "Error while updating document contract",
+                    text: error ?? "Error while updating document contract",
                 })
             }
         }
@@ -188,19 +188,26 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
             const contractDocuments = selectedContract?.DocumentoContrato;
 
             for (let i = 0; i < contractDocuments.length; i++) {
-                await docList.push({
+                const isPresent = contractDocuments[i].EstadoDoc === 'PRESENT' || contractDocuments[i].EstadoDoc === 'CORRECT';
+                const isConciliar = selectedContract.Conciliar === true;
+                const present = isPresent || isConciliar;
+
+                const incidences = contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
+                    const isIncidenceUnresolved = contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false;
+                    return {
+                        id: incidence.TipoIncidenciaId,
+                        name: incidence.Nombre,
+                        checked: isIncidenceUnresolved
+                    }
+                });
+
+                docList.push({
                     id: contractDocuments[i].DocumentoId,
                     docTypeId: contractDocuments[i].TipoDocId,
-                    present: contractDocuments[i].EstadoDoc === 'PRESENT' || contractDocuments[i].EstadoDoc === 'CORRECT' ? true : selectedContract.Conciliar === true ? true : false,
+                    present: present,
                     name: contractDocuments[i].MaestroDocumentos.Nombre,
-                    incidences: contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
-                        return {
-                            id: incidence.TipoIncidenciaId,
-                            name: incidence.Nombre,
-                            checked: contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false ? true : false
-                        }
-                    })
-                })
+                    incidences: incidences
+                });
             }
 
             reset({

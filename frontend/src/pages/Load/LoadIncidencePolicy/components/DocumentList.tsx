@@ -33,7 +33,7 @@ const DocumentList = ({ control, selectedContract }: Props) => {
                                 {fields && fields.length > 0 ? (
                                     <div className="flex flex-col gap-3">
                                         {fields.map((item, index) => (
-                                            <div className="">
+                                            <div key={item.id}>
                                                 <div key={item.id} className='flex gap-2 items-center'>
                                                     <div>
                                                         <CheckBoxField

@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 interface TableProps
   extends React.PropsWithChildren,
@@ -33,16 +33,16 @@ function Table({
   sm,
   ...props
 }: Readonly<TableProps>) {
+  const value = useMemo(() => ({
+    dark: dark,
+    bordered: bordered,
+    hover: hover,
+    striped: striped,
+    sm: sm,
+  }), [dark, bordered, hover, striped, sm]);
+
   return (
-    <tableContext.Provider
-      value={{
-        dark: dark,
-        bordered: bordered,
-        hover: hover,
-        striped: striped,
-        sm: sm,
-      }}
-    >
+    <tableContext.Provider value={value}>
       <table
         className={twMerge([
           "w-full text-left",
@@ -56,7 +56,6 @@ function Table({
     </tableContext.Provider>
   );
 }
-
 interface TheadProps
   extends React.PropsWithChildren,
   React.ComponentPropsWithoutRef<"thead"> {
@@ -69,12 +68,12 @@ const theadContext = createContext<{
   variant: "default",
 });
 const TableThead = ({ className, ...props }: TheadProps) => {
+  const value = useMemo(() => ({
+    variant: props.variant,
+  }), [props.variant]);
+
   return (
-    <theadContext.Provider
-      value={{
-        variant: props.variant,
-      }}
-    >
+    <theadContext.Provider value={value}>
       <thead
         className={twMerge([
           props.variant === "light" && "bg-slate-200/60 dark:bg-slate-200",

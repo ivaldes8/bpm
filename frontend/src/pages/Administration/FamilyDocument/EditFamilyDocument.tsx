@@ -22,8 +22,8 @@ const EditFamilyDocument = ({ show, setShow, onSubmit, selectedRow }: Props) => 
 
     const { t } = useTranslation()
 
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const defaultValue = {
         Nombre: "",
@@ -42,7 +42,7 @@ const EditFamilyDocument = ({ show, setShow, onSubmit, selectedRow }: Props) => 
     const {
         control,
         reset,
-        formState: { errors, isValid },
+        formState: { isValid },
         getValues
     } = useForm({
         mode: "onChange",
@@ -66,8 +66,8 @@ const EditFamilyDocument = ({ show, setShow, onSubmit, selectedRow }: Props) => 
             }
         }
         setLoading(true)
-        const [error, response, data] = await handlePromise(
-            selectedRow && selectedRow.FamiliaId ? FamilyDocumentService.updateFamilyDocument(selectedRow.FamiliaId, toSend) :
+        const [error, response,] = await handlePromise(
+            selectedRow?.FamiliaId ? FamilyDocumentService.updateFamilyDocument(selectedRow.FamiliaId, toSend) :
                 FamilyDocumentService.createFamilyDocument(toSend)
         );
         setLoading(false)
@@ -75,14 +75,14 @@ const EditFamilyDocument = ({ show, setShow, onSubmit, selectedRow }: Props) => 
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow && selectedRow.FamiliaId ? "Update failed" : "Creation failed",
+                text: error ? error : selectedRow?.FamiliaId ? "Update failed" : "Creation failed",
             })
         }
 
         setAlert({
             type: "success",
             show: true,
-            text: selectedRow && selectedRow.FamiliaId ? "Updated successfully" : "Created successfully",
+            text: selectedRow?.FamiliaId ? "Updated successfully" : "Created successfully",
         })
 
         onSubmit()

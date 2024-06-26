@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { useContext, useEffect } from "react";
 import Button from "@/components/Base/Button";
 import { useTranslation } from "react-i18next";
@@ -18,8 +17,8 @@ function Main() {
   const dispatch = useDispatch();
   const { userData, isLoading, isError, isSuccess, message } = useAppSelector((state) => state.auth);
 
-  const [alert, setAlert] = useContext(AlertContext);
-  const [loading, setLoading] = useContext(LoadingContext);
+  const [, setAlert] = useContext(AlertContext);
+  const [, setLoading] = useContext(LoadingContext);
 
   const defaultValue = {
     Nombre: "",
@@ -37,7 +36,7 @@ function Main() {
     control,
     reset,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(updateProfileSchema),

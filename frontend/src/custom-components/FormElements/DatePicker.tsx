@@ -1,9 +1,7 @@
-
-import { useEffect } from 'react'
 import Lucide from '@/components/Base/Lucide'
 import Litepicker from '@/components/Base/Litepicker'
 import { useTranslation } from 'react-i18next'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { FormLabel } from '@/components/Base/Form'
 import clsx from 'clsx'
 
@@ -19,15 +17,9 @@ type Props = {
     disableM?: boolean
 }
 
-const DatePicker = ({ control, name, labelEnabled = true, info, label, placeholder, disabled = false, animationDirection = "intro-x", disableM = false }: Props) => {
+const DatePicker = ({ control, name, labelEnabled = true, info, label, disabled = false, animationDirection = "intro-x", disableM = false }: Props) => {
 
     const { t } = useTranslation()
-
-    useEffect(() => { }, [])
-
-    const {
-        formState: { errors, isValid },
-    } = useForm({ mode: "onChange" });
 
     return (
         <div className={`  ${disableM ? '' : 'my-3 '} ${animationDirection}`}>

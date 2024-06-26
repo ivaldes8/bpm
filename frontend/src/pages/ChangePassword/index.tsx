@@ -1,4 +1,3 @@
-import _ from "lodash";
 import Button from "@/components/Base/Button";
 import { useTranslation } from "react-i18next";
 import { useContext, useEffect } from "react";
@@ -16,8 +15,8 @@ function Main() {
 
   const { t } = useTranslation()
 
-  const [alert, setAlert] = useContext(AlertContext);
-  const [loading, setLoading] = useContext(LoadingContext);
+  const [, setAlert] = useContext(AlertContext);
+  const [, setLoading] = useContext(LoadingContext);
 
   const dispatch = useDispatch();
   const { isLoading, isError, isSuccess, message } = useAppSelector((state) => state.auth);

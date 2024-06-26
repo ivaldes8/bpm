@@ -7,7 +7,7 @@ import Router from "./router";
 import "./assets/css/app.css";
 import { AlertContext, AlertType } from "./utils/Contexts/AlertContext";
 import { LoadingContext } from "./utils/Contexts/LoadingContext";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { setSideMenu } from "./stores/menuSlice";
 import { getUserData } from "./stores/authSlice";
 import Toastify from "./custom-components/Toastify/Toastify";
@@ -27,6 +27,9 @@ const Main = () => {
 
   const [splash, setSplash] = useState(true)
 
+  const alertValue = useMemo(() => [alert, setAlert], [alert, setAlert]);
+  const loadingValue = useMemo(() => [loading, setLoading], [loading, setLoading]);
+
   useEffect(() => {
     const getAuthUser = async () => {
       await store.dispatch(getUserData())
@@ -45,8 +48,8 @@ const Main = () => {
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <AlertContext.Provider value={[alert, setAlert]}>
-          <LoadingContext.Provider value={[loading, setLoading]}>
+        <AlertContext.Provider value={alertValue}>
+          <LoadingContext.Provider value={loadingValue}>
             {
               !splash && (
                 <Router />

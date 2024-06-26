@@ -83,7 +83,7 @@ const updateValue = (
   computedOptions: RecursivePartial<TomSettings>
 ) => {
   // Remove old options
-  for (const [optionKey, option] of Object.entries(
+  for (const [, option] of Object.entries(
     clonedEl.TomSelect.options
   )) {
     if (

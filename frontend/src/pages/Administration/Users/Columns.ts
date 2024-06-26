@@ -1,4 +1,3 @@
-import { stringToHTML } from "@/utils/helper";
 import { useTranslation } from "react-i18next";
 
 const columns = () => {

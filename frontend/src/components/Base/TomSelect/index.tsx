@@ -84,9 +84,8 @@ function TomSelect(props: Readonly<TomSelectProps>) {
         classNames && clonedEl.setAttribute("data-initial-class", classNames);
 
         // Hide original element
-        tomSelectRef.current?.parentNode &&
-          tomSelectRef.current?.parentNode.appendChild(clonedEl);
-        tomSelectRef.current.setAttribute("hidden", "true");
+        tomSelectRef.current?.parentNode?.appendChild(clonedEl);
+        tomSelectRef.current?.setAttribute("hidden", "true");
 
         // Initialize tom select
         setValue(clonedEl, props);

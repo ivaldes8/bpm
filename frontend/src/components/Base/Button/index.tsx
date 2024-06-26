@@ -28,18 +28,14 @@ export type Variant =
   | "instagram"
   | "linkedin";
 
-type Elevated = boolean;
 type Size = "sm" | "lg";
-type Rounded = boolean;
 
 type ButtonProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
   C,
   {
     as?: C extends string ? "button" | "a" : C;
     variant?: Variant;
-    elevated?: Elevated;
     size?: Size;
-    rounded?: Rounded;
   }
 >;
 

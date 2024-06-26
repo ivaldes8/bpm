@@ -1,8 +1,7 @@
 import clsx from 'clsx';
-import { useForm, Controller } from "react-hook-form";
-import { FormInput, FormCheck, FormLabel, InputGroup, FormTextarea } from "@/components/Base/Form";
+import { Controller } from "react-hook-form";
+import { FormLabel, InputGroup, FormTextarea } from "@/components/Base/Form";
 import { useTranslation } from 'react-i18next';
-import Lucide, { Icon } from '@/components/Base/Lucide';
 
 
 type Props = {
@@ -23,11 +22,6 @@ type Props = {
 const TextArea = ({ control, name, labelEnabled = true, info, label, placeholder, disabled = false, animationDirection = "intro-x", rows = 3, disableM = false, style = {} }: Props) => {
 
     const { t } = useTranslation()
-
-    const {
-        formState: { errors, isValid },
-    } = useForm({ mode: "onChange" });
-
 
     return (
         <div className={`input-form ${disableM ? '' : 'my-3 '} ${animationDirection}`}>

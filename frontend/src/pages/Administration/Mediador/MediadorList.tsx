@@ -2,7 +2,6 @@ import Button from "@/components/Base/Button";
 import { useRef, useState, useContext } from "react";
 import { ColumnDefinition } from "tabulator-tables";
 import { useTranslation } from "react-i18next";
-import _ from "lodash";
 import { AlertContext } from "@/utils/Contexts/AlertContext";
 import EditMediador from "./EditMediador";
 import handlePromise from "@/utils/promise";
@@ -15,8 +14,8 @@ import MediatorService from "@/services/MediatorService";
 
 function Main() {
     const { t } = useTranslation();
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const [showEditMediadorModal, setShowEditMediadorModal] = useState<boolean>(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
@@ -29,9 +28,9 @@ function Main() {
         value: "",
     });
 
-    const onDeleteMediador= async () => {
+    const onDeleteMediador = async () => {
         setLoading(true)
-        const [error, response, data] = await handlePromise(MediatorService.deleteMediator(selectedRow.MediadorId));
+        const [, response,] = await handlePromise(MediatorService.deleteMediator(selectedRow.MediadorId));
         setLoading(false)
         if (!response.ok) {
             return setAlert({

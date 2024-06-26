@@ -22,7 +22,7 @@ type Props = {
     hasIconHeader?: boolean,
     iconHeader?: Icon,
     iconHeaderColor?: string,
-    navigateOnClose? : string | undefined
+    navigateOnClose? : string
 }
 
 const ParentModal = ({ navigateOnClose ,show = false, setShow, handleOnSubmit, children, title = "", hasIconHeader = false, iconHeader = "Pencil", iconHeaderColor = "text-warning", cancelButtonText = "cancel", submitButtonText = "accept", size = "xl", disableHeight = false, hideTitle = false, hideFooter = false, disableSubmitButton = false }: Props) => {

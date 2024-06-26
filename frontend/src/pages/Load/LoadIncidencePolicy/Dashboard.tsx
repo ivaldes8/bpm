@@ -13,8 +13,8 @@ import { useAppSelector } from "@/stores/hooks";
 
 function Main() {
     const { t } = useTranslation();
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const { company } = useAppSelector((state) => state.settings)
 
@@ -31,7 +31,7 @@ function Main() {
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : "Error while retrieving contracts",
+                text: error ?? "Error while retrieving contracts",
             })
         }
 

@@ -28,8 +28,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
     const { t } = useTranslation()
     const navigate = useNavigate();
 
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const defaultValues = {
         CCC: '',
@@ -103,7 +103,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 Contenido: observation.observation
             }
 
-            const [error, response, data] = await handlePromise(ObservationContractService.createObservationContract(toSend));
+            const [error, response,] = await handlePromise(ObservationContractService.createObservationContract(toSend));
             if (!response.ok) {
                 setLoading(false)
                 return setAlert({
@@ -134,7 +134,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 const existingIncidence = currentDoc?.IncidenciaDocumento.find((incidence: any) => incidence.TipoIncidenciaId === toSend.TipoIncidenciaId)
 
                 if (existingIncidence) {
-                    const [error, response, data] = await handlePromise(
+                    const [error, response,] = await handlePromise(
                         DocumentIncidenceService.updateDocumentIncidence(existingIncidence.IncidenciaId, toSend)
                     );
                     if (!response.ok) {
@@ -142,20 +142,20 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                         return setAlert({
                             type: "error",
                             show: true,
-                            text: error ? error : "Error while adding incidence document",
+                            text: error ?? "Error while adding incidence document",
                         })
                     }
                 }
             }
 
             //Update document contracts
-            const [error, response, data] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
+            const [error, response,] = await handlePromise(DocumentContractService.updateDocumentContract(doc.id, toSend));
             if (!response.ok) {
                 setLoading(false)
                 return setAlert({
                     type: "error",
                     show: true,
-                    text: error ? error : "Error while updating document contract",
+                    text: error ?? "Error while updating document contract",
                 })
             }
         }
@@ -176,10 +176,9 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         const resetFormFiels = async () => {
             const docList = []
             const contractDocuments = selectedContract?.DocumentoContrato;
-            const RamoTipoOperacionArray = selectedContract?.Ramo.RamoTipoOperacion;
 
             for (let i = 0; i < contractDocuments.length; i++) {
-                await docList.push({
+                docList.push({
                     id: contractDocuments[i].DocumentoId,
                     docTypeId: contractDocuments[i].TipoDocId,
                     present: true,

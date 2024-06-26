@@ -22,7 +22,7 @@ const ObservationHistory = ({ selectedContract }: Props) => {
                             {selectedContract?.ObservacionContrato && selectedContract?.ObservacionContrato.length > 0 ? (
                                 <div>
                                     {selectedContract.ObservacionContrato.map((comment: any, index: number) => (
-                                        <div key={index} className="flex items-center mb-4 box p-4">
+                                        <div key={comment.FechaAlta} className="flex items-center mb-4 box p-4">
                                             <div className='w-full'>
                                                 <div className="flex flex-col sm:flex-row justify-between mb-1">
                                                     <div className="text-sm font-medium text-gray-900">{comment.Usuario?.Nombre} - {comment.Usuario?.Codigo}</div>

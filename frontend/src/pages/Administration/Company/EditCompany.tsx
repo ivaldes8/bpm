@@ -23,8 +23,8 @@ const EditCompany = ({ show, setShow, onSubmit, selectedRow }: Props) => {
 
     const { t } = useTranslation()
 
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const defaultValue = {
         Nombre: "",
@@ -55,7 +55,7 @@ const EditCompany = ({ show, setShow, onSubmit, selectedRow }: Props) => {
     const {
         control,
         reset,
-        formState: { errors, isValid },
+        formState: { isValid },
         getValues
     } = useForm({
         mode: "onChange",
@@ -90,8 +90,8 @@ const EditCompany = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             }
         }
         setLoading(true)
-        const [error, response, data] = await handlePromise(
-            selectedRow && selectedRow.CompaniaId ? CompanyService.updateCompany(selectedRow.CompaniaId, toSend) :
+        const [error, response,] = await handlePromise(
+            selectedRow?.CompaniaId ? CompanyService.updateCompany(selectedRow.CompaniaId, toSend) :
                 CompanyService.createCompany(toSend)
         );
         setLoading(false)
@@ -99,14 +99,14 @@ const EditCompany = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow && selectedRow.CompaniaId ? "Update failed" : "Creation failed",
+                text: error ? error : selectedRow?.CompaniaId ? "Update failed" : "Creation failed",
             })
         }
 
         setAlert({
             type: "success",
             show: true,
-            text: selectedRow && selectedRow.CompaniaId ? "Updated successfully" : "Created successfully",
+            text: selectedRow?.CompaniaId ? "Updated successfully" : "Created successfully",
         })
 
         onSubmit()

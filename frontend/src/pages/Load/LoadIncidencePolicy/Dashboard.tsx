@@ -2,14 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next'
 import { AlertContext } from "@/utils/Contexts/AlertContext";
 import { LoadingContext } from "@/utils/Contexts/LoadingContext";
-import PolicyFilters from "./components/PolicyFilters";
 import Alert from "@/components/Base/Alert";
 import Lucide from "@/components/Base/Lucide";
 import handlePromise from "@/utils/promise";
 import ContractService from "@/services/ContractService";
-import SelectContractModal from "./components/SelectContractModal";
+import SelectContractModal from "../common-components/SelectContractModal";
 import ContractForm from "./components/ContractForm";
 import { useAppSelector } from "@/stores/hooks";
+import PolicyFilters from "../common-components/PolicyFilters";
 
 function Main() {
     const { t } = useTranslation();

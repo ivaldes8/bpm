@@ -1,13 +1,11 @@
 import Button from '@/components/Base/Button'
-import InputField from '@/custom-components/FormElements/InputField'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useContext, useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import * as yup from 'yup'
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
-import ObservationHistory from './ObservationHistory'
+import ObservationHistory from '../../common-components/ObservationHistory'
 import TextAreaField from '@/custom-components/FormElements/TextArea'
 import Lucide from '@/components/Base/Lucide'
 import { AlertContext } from '@/utils/Contexts/AlertContext'
@@ -17,6 +15,8 @@ import ObservationContractService from '@/services/ObservationContractService'
 import DocumentList from './DocumentList'
 import DocumentContractService from '@/services/DocumentContractService'
 import DocumentIncidenceService from '@/services/DocumentIncidenceService'
+import { defaultValues, schema } from '../../common-components/schemas'
+import ContractFormInputs from '../../common-components/ContractFormInputs'
 
 type Props = {
     selectedContract: any,
@@ -31,48 +31,6 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
     const [, setAlert] = useContext(AlertContext);
     const [, setLoading] = useContext(LoadingContext);
 
-    const defaultValues = {
-        CCC: '',
-        CodigoSolicitud: '',
-        CodigoPoliza: '',
-        FechaAltaSolicitud: '',
-        RamoId: 0,
-        RamoCodigo: '',
-        Baja: false,
-        DNITomador: '',
-        NombreTomador: '',
-        DNIAsegurado: '',
-        NombreAsegurado: '',
-        ProfesionAsegurado: '',
-        DeporteAsegurado: '',
-        FechaNacimientoAsegurado: '',
-        NoDigitalizar: false,
-        observations: [],
-        documents: []
-    }
-
-    const schema = () => yup.object().shape(
-        {
-            CCC: yup.string(),
-            CodigoSolicitud: yup.string(),
-            CodigoPoliza: yup.string(),
-            FechaAltaSolicitud: yup.string().required(t("errors.required") ?? ''),
-            RamoId: yup.number().required(t("errors.required") ?? ''),
-            RamoCodigo: yup.string().required(t("errors.required") ?? ''),
-            Baja: yup.boolean(),
-            DNITomador: yup.string(),
-            NombreTomador: yup.string(),
-            DNIAsegurado: yup.string(),
-            NombreAsegurado: yup.string(),
-            ProfesionAsegurado: yup.string().required(t("errors.required") ?? ''),
-            DeporteAsegurado: yup.string().required(t("errors.required") ?? ''),
-            FechaNacimientoAsegurado: yup.string(),
-            NoDigitalizar: yup.boolean(),
-            observations: yup.array().of(yup.object().shape({ observation: yup.string().required(t("errors.required") ?? '') })),
-            documents: yup.array()
-        }
-    )
-
     const {
         control,
         reset,
@@ -80,7 +38,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
         handleSubmit
     } = useForm({
         mode: "onChange",
-        resolver: yupResolver(schema()),
+        resolver: yupResolver(schema(t)),
         defaultValues: defaultValues
     });
 
@@ -241,130 +199,8 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
 
     return (
         <form className="flex flex-col mt-4 box" onSubmit={handleSubmit(onSubmit)}>
-            <div className="box p-4 m-4 mb-2">
-                <div className="flex flex-col sm:flex-row gap-0  sm:gap-4">
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="CCC"
-                            type='text'
-                            label="CCC"
-                            disabled
-                        />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="CodigoSolicitud"
-                            type='text'
-                            label="RequestCode"
-                            disabled
-                        />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="CodigoPoliza"
-                            type='text'
-                            label="PolicyCode"
-                            disabled
-                        />
-                    </div>
-                </div>
 
-                <div className="flex flex-col sm:flex-row gap-0  sm:gap-4">
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="FechaAltaSolicitud"
-                            type='date'
-                            label="RegistrationDateRequest"
-                            disabled
-                        />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="RamoCodigo"
-                            type='text'
-                            label="Branch"
-                            disabled
-                        />
-                    </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-0  sm:gap-4">
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="DNITomador"
-                            type='text'
-                            label="AgentDNI"
-                            disabled
-                        />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="NombreTomador"
-                            type='text'
-                            label="AgentName"
-                            disabled
-                        />
-                    </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-0  sm:gap-4">
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="DNIAsegurado"
-                            type='text'
-                            label="InsuranceDNI"
-                            disabled
-                        />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="NombreAsegurado"
-                            type='text'
-                            label="InsuranceName"
-                            disabled
-                        />
-                    </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-0  sm:gap-4">
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="ProfesionAsegurado"
-                            type='text'
-                            label="InsuranceProfession"
-                            disabled
-                        />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="DeporteAsegurado"
-                            type='text'
-                            label="InsuranceSport"
-                            disabled
-                        />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                        <InputField
-                            control={control}
-                            name="FechaNacimientoAsegurado"
-                            type='date'
-                            label="InsuranceBirthDate"
-                            disabled
-                        />
-                    </div>
-                </div>
-            </div>
+            <ContractFormInputs control={control} />
 
             <DocumentList selectedContract={selectedContract} control={control} />
 

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState, store } from "./store";
+import { RootState } from "./store";
 import { User } from "@prisma/client";
 import storage from "@/utils/storage";
 import handlePromise from "@/utils/promise";
@@ -54,7 +54,7 @@ export const changePassword = createAsyncThunk('auth/changePassword', async (for
 
 interface UserState {
     user: User | null;
-    userData: any | null;
+    userData: any;
     isError: boolean;
     isSuccess: boolean;
     isLoading: boolean;

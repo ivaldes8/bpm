@@ -67,7 +67,7 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 return setAlert({
                     type: "error",
                     show: true,
-                    text: error ? error : "Error while adding observation",
+                    text: error ?? "Error while adding observation",
                 })
             }
         }
@@ -135,17 +135,17 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
             const docList = []
             const contractDocuments = selectedContract?.DocumentoContrato;
 
-            for (let i = 0; i < contractDocuments.length; i++) {
+            for (const contractDocument of contractDocuments) {
                 docList.push({
-                    id: contractDocuments[i].DocumentoId,
-                    docTypeId: contractDocuments[i].TipoDocId,
+                    id: contractDocument.DocumentoId,
+                    docTypeId: contractDocument.TipoDocId,
                     present: true,
-                    name: contractDocuments[i].MaestroDocumentos.Nombre,
-                    incidences: contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
+                    name: contractDocument.MaestroDocumentos.Nombre,
+                    incidences: contractDocument.MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
                         return {
                             id: incidence.TipoIncidenciaId,
                             name: incidence.Nombre,
-                            checked: contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false ? true : false
+                            checked: contractDocument.IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false
                         }
                     })
                 })

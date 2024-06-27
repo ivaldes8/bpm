@@ -20,8 +20,8 @@ const UploadFile = ({ show, setShow, onRefresh }: Props) => {
 
     const { t } = useTranslation()
 
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const uploadSchema = yup.object().shape({
         file: yup.mixed().required(t("errors.required") ?? ''),
@@ -31,7 +31,7 @@ const UploadFile = ({ show, setShow, onRefresh }: Props) => {
     const {
         control,
         reset,
-        formState: { errors, isValid },
+        formState: { isValid },
         getValues
     } = useForm({
         mode: "onChange",
@@ -46,13 +46,13 @@ const UploadFile = ({ show, setShow, onRefresh }: Props) => {
         formData.append('type', "digitalSignature");
 
         setLoading(true)
-        const [error, response, data] = await handlePromise(LoadService.uploadFile(formData));
+        const [error, response,] = await handlePromise(LoadService.uploadFile(formData));
         setLoading(false)
         if (!response.ok) {
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : "Upload failed",
+                text: error ?? "Upload failed",
             })
         }
 

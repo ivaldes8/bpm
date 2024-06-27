@@ -15,8 +15,8 @@ import FamilyDocumentService from "@/services/FamilyDocumentService";
 
 function Main() {
     const { t } = useTranslation();
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
+    const [, setAlert] = useContext(AlertContext);
+    const [, setLoading] = useContext(LoadingContext);
 
     const [showEditFamilyDocumentModal, setShowEditFamilyDocumentModal] = useState<boolean>(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
@@ -31,7 +31,7 @@ function Main() {
 
     const onDeleteFamilyDocument = async () => {
         setLoading(true)
-        const [error, response, data] = await handlePromise(FamilyDocumentService.deleteFamilyDocument(selectedRow.FamiliaId));
+        const [, response,] = await handlePromise(FamilyDocumentService.deleteFamilyDocument(selectedRow.FamiliaId));
         setLoading(false)
         if (!response.ok) {
             return setAlert({

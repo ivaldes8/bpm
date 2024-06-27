@@ -75,7 +75,7 @@ const EditFamilyDocument = ({ show, setShow, onSubmit, selectedRow }: Props) => 
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow?.FamiliaId ? "Update failed" : "Creation failed",
+                text: error ?? selectedRow?.FamiliaId ? "Update failed" : "Creation failed",
             })
         }
 

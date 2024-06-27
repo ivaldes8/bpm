@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import handlePromise from "@/utils/promise";
 import CompanyService from "@/services/CompanyService";
-import _ from "lodash";
 
 export const getCompanyList = createAsyncThunk('settings/companies', async (_, thunkAPI) => {
     const [error, response, data] = await handlePromise(

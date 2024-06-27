@@ -154,22 +154,22 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
                 }
             }
 
-            for (let i = 0; i < contractDocuments.length; i++) {
-                const isPresent = contractDocuments[i].EstadoDoc === 'PRESENT' || contractDocuments[i].EstadoDoc === 'CORRECT';
+            for (const contractDocument of contractDocuments) {
+                const isPresent = contractDocument.EstadoDoc === 'PRESENT' || contractDocument.EstadoDoc === 'CORRECT';
                 const isConciliar = selectedContract.Conciliar === true;
                 const present = isPresent || isConciliar;
 
-                const incidences = contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => createIncidence(incidence, contractDocuments[i]));
+                const incidences = contractDocument.MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => createIncidence(incidence, contractDocument));
 
                 docList.push({
-                    id: contractDocuments[i].DocumentoId,
-                    docTypeId: contractDocuments[i].TipoDocId,
+                    id: contractDocument.DocumentoId,
+                    docTypeId: contractDocument.TipoDocId,
                     present: present,
-                    name: contractDocuments[i].MaestroDocumentos.Nombre,
+                    name: contractDocument.MaestroDocumentos.Nombre,
                     incidences: incidences
                 });
             }
-
+            
             reset({
                 CCC: selectedContract?.CCC,
                 CodigoSolicitud: selectedContract?.CodigoSolicitud,

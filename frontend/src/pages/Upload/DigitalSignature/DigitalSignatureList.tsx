@@ -3,21 +3,14 @@ import { useRef, useState, useContext } from "react";
 import { ColumnDefinition } from "tabulator-tables";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
-import { AlertContext } from "@/utils/Contexts/AlertContext";
-import handlePromise from "@/utils/promise";
-import ConfirmationModal from "@/custom-components/Modals/ConfirmationModal";
-import { LoadingContext } from "@/utils/Contexts/LoadingContext";
 import Table from "@/custom-components/Table/Table";
 import columns from "./Columns";
 import TableFilters from "./TableFilters";
-import CompanyService from "@/services/CompanyService";
 import UploadDetail from "./UploadDetail";
 import UploadFile from "./UploadFile";
 
 function Main() {
     const { t } = useTranslation();
-    const [alert, setAlert] = useContext(AlertContext);
-    const [loading, setLoading] = useContext(LoadingContext);
 
     const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
     const [showUploadModal, setShowUploadModal] = useState<boolean>(false);

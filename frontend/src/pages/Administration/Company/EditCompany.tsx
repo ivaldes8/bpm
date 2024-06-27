@@ -99,7 +99,7 @@ const EditCompany = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow?.CompaniaId ? "Update failed" : "Creation failed",
+                text: error ?? selectedRow?.CompaniaId ? "Update failed" : "Creation failed",
             })
         }
 

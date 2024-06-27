@@ -65,7 +65,7 @@ const EditTypeConciliation = ({ show, setShow, onSubmit, selectedRow }: Props) =
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow?.tipoConciliacionId ? "Update failed" : "Creation failed",
+                text: error ?? selectedRow?.tipoConciliacionId ? "Update failed" : "Creation failed",
             })
         }
 

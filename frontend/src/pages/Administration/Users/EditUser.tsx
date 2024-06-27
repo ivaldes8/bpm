@@ -40,7 +40,7 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             Nombre: yup.string().required(t("errors.required") ?? ''),
             Codigo: yup.string().required(t("errors.required") ?? ''),
             Rol: yup.string().required(t("errors.required") ?? ''),
-            Password: selectedRow && selectedRow.UsuarioId ? yup.string() : yup.string().required(t("errors.required") ?? ''),
+            Password: selectedRow?.UsuarioId ? yup.string() : yup.string().required(t("errors.required") ?? ''),
             Activo: yup.boolean()
         }
     )
@@ -73,7 +73,7 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
         }
 
         setLoading(true)
-        const [error, response, data] = await handlePromise(
+        const [error, response,] = await handlePromise(
             selectedRow?.UsuarioId ? UserService.updateUser(selectedRow.UsuarioId, toSend) :
                 UserService.createUser({ ...toSend, Password: formData.Password })
         );

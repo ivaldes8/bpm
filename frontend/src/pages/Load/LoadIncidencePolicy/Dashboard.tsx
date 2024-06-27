@@ -21,7 +21,7 @@ function Main() {
     const [filteredContracts, setFilteredContracts] = useState<any[]>([]);
     const [selectedContract, setSelectedContract] = useState<any>(null);
 
-    const [selectContractModal, setselectContractModal] = useState<boolean>(false);
+    const [selectContractModal, setSelectContractModal] = useState<boolean>(false);
 
     const getContracts = async (params: any) => {
         setLoading(true)
@@ -64,7 +64,7 @@ function Main() {
 
     useEffect(() => {
         if (filteredContracts.length > 1) {
-            setselectContractModal(true)
+            setSelectContractModal(true)
         }
     }, [filteredContracts])
 
@@ -89,7 +89,7 @@ function Main() {
             </div>
             <SelectContractModal
                 show={selectContractModal}
-                setShow={setselectContractModal}
+                setShow={setSelectContractModal}
                 filteredContracts={filteredContracts}
                 selectedContract={selectedContract}
                 setSelectedContract={setSelectedContract}

@@ -41,7 +41,7 @@ function Main() {
     control,
     reset,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(updatePasswordSchema),

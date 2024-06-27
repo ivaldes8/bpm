@@ -11,7 +11,6 @@ type Props = {
     labelEnabled?: boolean
     info?: string,
     label?: string,
-    placeholder?: string
     disabled?: boolean,
     animationDirection?: string,
     disableM?: boolean

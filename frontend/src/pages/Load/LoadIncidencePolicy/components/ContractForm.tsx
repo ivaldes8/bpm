@@ -187,19 +187,21 @@ const ContractForm = ({ selectedContract, setSelectedContract }: Props) => {
             const docList = []
             const contractDocuments = selectedContract?.DocumentoContrato;
 
+            function createIncidence(incidence: any, document: any) {
+                const isIncidenceUnresolved = document.IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false;
+                return {
+                    id: incidence.TipoIncidenciaId,
+                    name: incidence.Nombre,
+                    checked: isIncidenceUnresolved
+                }
+            }
+
             for (let i = 0; i < contractDocuments.length; i++) {
                 const isPresent = contractDocuments[i].EstadoDoc === 'PRESENT' || contractDocuments[i].EstadoDoc === 'CORRECT';
                 const isConciliar = selectedContract.Conciliar === true;
                 const present = isPresent || isConciliar;
 
-                const incidences = contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => {
-                    const isIncidenceUnresolved = contractDocuments[i].IncidenciaDocumento.find((inci: any) => inci.TipoIncidenciaId === incidence.TipoIncidenciaId)?.Resuelta === false;
-                    return {
-                        id: incidence.TipoIncidenciaId,
-                        name: incidence.Nombre,
-                        checked: isIncidenceUnresolved
-                    }
-                });
+                const incidences = contractDocuments[i].MaestroDocumentos.FamiliaDocumento.MaestroIncidencias.map((incidence: any) => createIncidence(incidence, contractDocuments[i]));
 
                 docList.push({
                     id: contractDocuments[i].DocumentoId,

@@ -82,7 +82,7 @@ const EditUser = ({ show, setShow, onSubmit, selectedRow }: Props) => {
             return setAlert({
                 type: "error",
                 show: true,
-                text: error ? error : selectedRow?.UsuarioId ? "Update failed" : "Creation failed",
+                text: error ?? selectedRow?.UsuarioId ? "Update failed" : "Creation failed",
             })
         }
 

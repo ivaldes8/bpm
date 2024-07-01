@@ -1,6 +1,12 @@
 import { prismaClient } from "../../../server";
 import { convertDate } from "../../../utils/utils";
 
+const validateField = (record: any, field: string, condition: boolean, message: string, errors: any[]) => {
+    if (condition) {
+        errors.push(message);
+    }
+};
+
 const validateRequiredFields = (record: any, errors: any[]) => {
     const requiredFields = [
         { field: "COMPAÑÍA", message: "Compañía es obligatorio" },
@@ -19,9 +25,7 @@ const validateRequiredFields = (record: any, errors: any[]) => {
     ];
 
     requiredFields.forEach(({ field, message, optional }) => {
-        if (!record[field] && (!optional || !record[optional])) {
-            errors.push(message);
-        }
+        validateField(record, field, !record[field] && (!optional || !record[optional]), message, errors);
     });
 };
 
@@ -35,32 +39,22 @@ const validateOptionalFields = (record: any, errors: any[]) => {
     ];
 
     optionalFields.forEach(({ field, values, message }) => {
-        if (record[field] && !values.includes(record[field])) {
-            errors.push(message);
-        }
+        validateField(record, field, record[field] && !values.includes(record[field]), message, errors);
     });
 };
 
 const validateDates = async (record: any, errors: any[]) => {
-    if (record["FECHA DE OPERACIÓN"] && isNaN(convertDate(record["FECHA DE OPERACIÓN"]).getTime())) {
-        errors.push("FECHA DE OPERACIÓN fecha no válida");
-    }
+    const dateFields = [
+        { field: "FECHA DE OPERACIÓN", message: "FECHA DE OPERACIÓN fecha no válida" },
+        { field: "FECHA EFECTO", message: "FECHA EFECTO fecha no válida" },
+        { field: "FECHA DE ALTA", message: "FECHA DE ALTA fecha no válida" },
+        { field: "EDAD ASEGURADO", message: "EDAD ASEGURADO fecha no válida" },
+        { field: "FECHA VALIDEZ IDENTIDAD TOMADOR", message: "FECHA VALIDEZ IDENTIDAD TOMADOR fecha no válida" },
+    ];
 
-    if (record["FECHA EFECTO"] && isNaN(convertDate(record["FECHA EFECTO"]).getTime())) {
-        errors.push("FECHA EFECTO fecha no válida");
-    }
-
-    if (record["FECHA DE ALTA"] && isNaN(convertDate(record["FECHA DE ALTA"]).getTime())) {
-        errors.push("FECHA DE ALTA fecha no válida");
-    }
-
-    if (record["EDAD ASEGURADO"] && isNaN(convertDate(record["EDAD ASEGURADO"]).getTime())) {
-        errors.push("EDAD ASEGURADO fecha no válida");
-    }
-
-    if (record[" FECHA VALIDEZ IDENTIDAD TOMADOR"] && isNaN(convertDate(record[" FECHA VALIDEZ IDENTIDAD TOMADOR"]).getTime())) {
-        errors.push(" FECHA VALIDEZ IDENTIDAD TOMADOR fecha no válida");
-    }
+    dateFields.forEach(({ field, message }) => {
+        validateField(record, field, record[field] && isNaN(convertDate(record[field]).getTime()), message, errors);
+    });
 };
 
 const validateCompany = async (record: any, errors: any[]) => {

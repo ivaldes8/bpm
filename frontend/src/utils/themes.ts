@@ -1,19 +1,9 @@
 import { NavigateFunction } from "react-router-dom";
 import { Menu } from "@/stores/menuSlice";
 import { slideUp, slideDown } from "@/utils/helper";
+import { FormattedMenu, Location } from "@/types/sideMenu";
 
-interface Location {
-  pathname: string;
-  forceActiveMenu?: string;
-}
-
-export interface FormattedMenu extends Menu {
-  active?: boolean;
-  activeDropdown?: boolean;
-  subMenu?: FormattedMenu[];
-}
-
-// Setup simple menu
+// Setup side menu
 const findActiveMenu = (subMenu: Menu[], location: Location): boolean => {
   let match = false;
   subMenu.forEach((item) => {
@@ -78,6 +68,7 @@ const linkTo = (menu: FormattedMenu, navigate: NavigateFunction) => {
     navigate(menu.pathname);
   }
 };
+
 const enter = (el: HTMLElement) => {
   slideDown(el, 300);
 };

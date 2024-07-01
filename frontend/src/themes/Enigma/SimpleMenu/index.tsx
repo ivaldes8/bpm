@@ -3,7 +3,8 @@ import { Transition } from "react-transition-group";
 import { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/stores/hooks";
-import { FormattedMenu, linkTo, nestedMenu, enter, leave } from "./simple-menu";
+import { FormattedMenu } from "@/types/sideMenu";
+import { linkTo, nestedMenu, enter, leave } from "@/utils/themes";
 import Lucide from "@/components/Base/Lucide";
 import Tippy from "@/components/Base/Tippy";
 import clsx from "clsx";
@@ -118,7 +119,7 @@ function Main() {
                                     className={clsx([
                                       "side-menu__sub-icon",
                                       subMenu.activeDropdown &&
-                                        "transform rotate-180",
+                                      "transform rotate-180",
                                     ])}
                                   >
                                     <Lucide icon="ChevronDown" />

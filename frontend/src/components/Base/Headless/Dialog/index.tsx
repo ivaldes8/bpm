@@ -4,6 +4,11 @@ import { Fragment, createContext, useContext, useMemo, useRef, useState } from "
 
 export type Size = "sm" | "md" | "lg" | "xl";
 
+const enterAnimation = "ease-in-out duration-500";
+const enterFromAnimation = "opacity-0";
+const enterToAnimation = "opacity-100";
+const leaveAnimation = "ease-in-out duration-[400ms]";
+
 const dialogContext = createContext<{
   open: boolean;
   zoom: boolean;
@@ -75,23 +80,23 @@ function DialogPanel({
     <>
       <Transition.Child
         as="div"
-        enter="ease-in-out duration-500"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="ease-in-out duration-[400ms]"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
+        enter={enterAnimation}
+        enterFrom={enterFromAnimation}
+        enterTo={enterToAnimation}
+        leave={leaveAnimation}
+        leaveFrom={enterToAnimation}
+        leaveTo={enterFromAnimation}
         className="fixed inset-0 bg-black/60"
         aria-hidden="true"
       />
       <Transition.Child
         as="div"
-        enter="ease-in-out duration-500"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="ease-in-out duration-[400ms]"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
+        enter={enterAnimation}
+        enterFrom={enterFromAnimation}
+        enterTo={enterToAnimation}
+        leave={leaveAnimation}
+        leaveFrom={enterToAnimation}
+        leaveTo={enterFromAnimation}
         className="fixed inset-0 mt-16 overflow-y-auto"
       >
         <HeadlessDialog.Panel

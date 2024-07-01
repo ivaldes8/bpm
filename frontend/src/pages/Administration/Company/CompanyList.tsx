@@ -74,29 +74,14 @@ function Main() {
         table.current?.refetchData()
     }
 
+    const onExport = (exportMethod: string) => {
+        //@ts-ignore
+        table.current?.[exportMethod]();
+    }
+
     const onPrint = () => {
         //@ts-ignore
         table.current?.onPrint();
-    }
-
-    const onExportCsv = () => {
-        //@ts-ignore
-        table.current?.onExportCsv();
-    }
-
-    const onExportJson = () => {
-        //@ts-ignore
-        table.current?.onExportJson();
-    }
-
-    const onExportXlsx = () => {
-        //@ts-ignore
-        table.current?.onExportXlsx();
-    }
-
-    const onExportHtml = () => {
-        //@ts-ignore
-        table.current?.onExportHtml();
     }
 
     return (
@@ -117,10 +102,10 @@ function Main() {
                     onFilter={onFilter}
                     onResetFilter={onResetFilter}
                     onPrint={onPrint}
-                    onExportCsv={onExportCsv}
-                    onExportJson={onExportJson}
-                    onExportXlsx={onExportXlsx}
-                    onExportHtml={onExportHtml}
+                    onExportCsv={() => onExport('onExportCsv')}
+                    onExportJson={() => onExport('onExportJson')}
+                    onExportXlsx={() => onExport('onExportXlsx')}
+                    onExportHtml={() => onExport('onExportHtml')}
                 />
                 <Table
                     ref={table}
